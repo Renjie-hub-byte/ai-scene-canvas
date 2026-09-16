@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__PAGE_TITLE__</title>
+<style>
+  :root{
+    --bg:#f3f6fb; --surface:#ffffff;
+    --line:#e3e9f2; --line-soft:#eef2f8;
+    --ink:#182742; --ink2:#5c6b85; --ink3:#93a0b5;
+    --blue:#2f6bf0; --blue-deep:#2456c4; --blue-soft:#eaf1ff; --blue-ghost:#f0f5ff;
+    --orange:#ff7a1a; --orange-deep:#e2542c; --orange-soft:#fff2e6;
+    --teal:#0d9488; --purple:#7c5cf0;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(24,39,66,.05), 0 10px 28px rgba(24,39,66,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:15px; line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:0 26px}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:52px 0 22px;text-align:center}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.08em;color:var(--ink3);
+    background:var(--surface);border:1px solid var(--line);padding:5px 14px;border-radius:999px;margin-bottom:18px;
+  }
+  .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--blue);display:block}
+  .hero h1{font-size:33px;font-weight:700;letter-spacing:-.01em;line-height:1.35}
+  .hero h1 em{font-style:normal;color:var(--blue)}
+  .hero p{margin:12px auto 0;color:var(--ink2);font-size:14.5px;max-width:780px}
+  .legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin-top:18px;font-size:12px;color:var(--ink2)}
+  .legend .lg{display:inline-flex;align-items:center;gap:6px}
+  .legend .sw{width:22px;height:0;border-top:3px solid;border-radius:2px}
+  .legend .sq{width:11px;height:11px;border-radius:3.5px;display:inline-block}
+  .playbar{margin-top:18px;display:flex;justify-content:center;gap:10px}
+  .pbtn{
+    font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;border-radius:999px;padding:9px 22px;
+    border:1px solid var(--blue);background:var(--blue);color:#fff;transition:.15s;
+    box-shadow:0 4px 14px rgba(47,107,240,.25);
+  }
+  .pbtn:hover{background:var(--blue-deep)}
+  .pbtn.ghost{background:var(--surface);color:var(--ink2);border-color:var(--line);box-shadow:none}
+  .pbtn.ghost:hover{color:var(--ink);border-color:#cfd9e6}
+
+  /* ---------- 画布 ---------- */
+  .canvas-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--shadow)}
+  .canvas{position:relative}
+  .ticks{position:absolute;left:0;right:0;height:56px;border-bottom:1px solid var(--line-soft)}
+  .bandtag{position:absolute;top:0;height:100%;padding:10px 0 0 14px;background:linear-gradient(180deg,#fdfefe,rgba(253,254,254,0))}
+  .bandtag b{font-size:13.5px;font-weight:700;color:var(--ink)}
+  .bandtag span{display:block;font-size:10.5px;color:var(--ink3);line-height:1.4;margin-top:1px}
+  .gridline{position:absolute;top:56px;bottom:0;width:1px;background:#edf2f8}
+
+  .lane{position:absolute;left:0;right:0}
+  .lane.person{background:linear-gradient(180deg,#ffffff, #fffdfa)}
+  .lane.ai{background:linear-gradient(180deg,#f0f5ff,#eef4ff)}
+  .lane .lane-tag{
+    position:sticky;left:0;display:inline-flex;flex-direction:column;justify-content:center;
+    width:148px;height:100%;padding:0 16px;vertical-align:top;
+    background:linear-gradient(90deg,var(--surface) 78%,rgba(255,255,255,0));
+    border-right:1px solid var(--line-soft);z-index:5;
+  }
+  .lane .lane-tag b{font-size:13.5px;font-weight:650;line-height:1.4}
+  .lane .lane-tag span{font-size:11px;color:var(--ink3);line-height:1.5;margin-top:3px}
+  .lane.ai .lane-tag b{color:var(--blue-deep)}
+  .lane.person .lane-tag b{color:var(--orange-deep)}
+  .lane .cap{position:absolute;left:0;top:0;width:4px;height:100%}
+  .lane.ai .cap{background:linear-gradient(180deg,var(--blue),#9db9f7)}
+  .lane.person .cap{background:linear-gradient(180deg,var(--orange),#ffc08a)}
+
+  .node{
+    position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:11px 13px 10px;cursor:pointer;transition:.16s ease;z-index:6;
+    box-shadow:0 1px 3px rgba(24,39,66,.06);display:flex;flex-direction:column;gap:5px;
+  }
+  .node:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#cfdaf0}
+  .node::before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:3.5px;border-radius:4px}
+  .node.ai::before{background:var(--blue)}
+  .node.person::before{background:var(--orange)}
+  .node .row1{display:flex;align-items:center;gap:7px}
+  .node .tm{font-size:11px;font-weight:700;color:#fff;border-radius:6px;padding:1.5px 7px;letter-spacing:.02em}
+  .node.ai .tm{background:var(--blue)}
+  .node.person .tm{background:var(--orange)}
+  .node .sc{margin-left:auto;font-size:10px;color:var(--ink3);letter-spacing:.02em}
+  .node .tt{font-size:14.5px;font-weight:650;line-height:1.35}
+  .node .ds{font-size:11.5px;color:var(--ink2);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .node .foot{margin-top:auto;display:flex;align-items:center;gap:6px;min-width:0}
+  .node .pr{font-size:11px;color:var(--blue-deep);background:var(--blue-soft);border-radius:6px;padding:2.5px 8px;line-height:1.5;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .node.person .pr{color:var(--orange-deep);background:var(--orange-soft)}
+  .node .foot .bd{flex:none;font-size:10px;letter-spacing:.02em;white-space:nowrap}
+
+  .node.live{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,122,26,.18), var(--shadow);transform:translateY(-2px)}
+  .node.dim{opacity:.38}
+
+  .poolbar .pool{
+    position:absolute;background:linear-gradient(180deg,#fbfcff,#f6f8fd);border:1px dashed #c6d3ea;
+    border-radius:12px;padding:10px 13px;cursor:pointer;transition:.15s;z-index:6;
+  }
+  .pool:hover{border-color:var(--purple);box-shadow:var(--shadow);transform:translateY(-2px)}
+  .pool.live{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,240,.15)}
+  .pool .pn{font-size:12.5px;font-weight:650;display:flex;align-items:center;gap:6px}
+  .pool .pn .ic{font-size:14px}
+  .pool .pd{font-size:10.5px;color:var(--ink2);line-height:1.5;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pool .pf{font-size:10px;color:var(--purple);margin-top:4px}
+
+  svg.wires{position:absolute;left:0;top:0;pointer-events:none;z-index:4}
+  svg.wires path.w{fill:none;stroke-width:2.2;stroke-linecap:round}
+  svg.wires text{font-size:10.5px;font-weight:600;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+  svg.wires path.lit{stroke-dasharray:9 6;animation:flow .55s linear infinite}
+  @keyframes flow{to{stroke-dashoffset:-15}}
+
+  /* ---------- 事件带 / 周期带 ---------- */
+  .band{padding:34px 0 4px}
+  .band h2{font-size:19px;font-weight:700;display:flex;align-items:center;gap:10px}
+  .band h2 span.bar{width:4px;height:18px;border-radius:2px;background:var(--blue);display:block}
+  .band h2 small{font-weight:400;font-size:13px;color:var(--ink3)}
+  .band .sub{color:var(--ink2);font-size:13.5px;margin-top:7px;max-width:820px}
+  .bandgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;padding:16px 0 8px}
+  .ecard{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 17px 13px;cursor:pointer;transition:.16s;position:relative;
+  }
+  .ecard:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#cfdaf0}
+  .ecard .r1{display:flex;align-items:center;gap:8px}
+  .pill{font-size:10.5px;font-weight:700;border-radius:6px;padding:2px 8px;letter-spacing:.02em}
+  .pill.boss{background:var(--orange-soft);color:var(--orange-deep)}
+  .pill.staff{background:var(--blue-soft);color:var(--blue-deep)}
+  .pill.freq{background:var(--purple);color:#fff}
+  .ecard .sc{margin-left:auto;font-size:10px;color:var(--ink3)}
+  .ecard .tt{font-size:15px;font-weight:650;margin-top:8px}
+  .ecard .ds{font-size:12px;color:var(--ink2);margin-top:3px;line-height:1.6;min-height:38px}
+  .ecard .r2{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+
+  /* ---------- skill 闭环 ---------- */
+  .looptop{display:flex;gap:20px;padding:16px 0 0}
+  .loopcard{
+    flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:15px 17px 12px;cursor:pointer;transition:.16s;position:relative;
+  }
+  .loopcard:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#cfdaf0}
+  .loopcard .ic{font-size:20px}
+  .loopcard .tt{font-size:14.5px;font-weight:650;margin-top:6px}
+  .loopcard .ds{font-size:11.5px;color:var(--ink2);margin-top:3px;line-height:1.6;min-height:38px}
+  .loopcard .r2{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  .looparrows{display:flex;justify-content:space-between;align-items:center;padding:2px 14%}
+  .looparrows .larr{font-size:12px;font-weight:700;color:var(--purple)}
+  .looparrows .lbase-t{color:#d8ccf8;font-size:11px;letter-spacing:-1px}
+  .loopbase{
+    display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;transition:.16s;
+    border:1.5px dashed var(--purple);background:#fbfaff;border-radius:var(--radius);
+  }
+  .loopbase:hover{box-shadow:var(--shadow);background:#f7f2ff}
+  .loopbase .ic{font-size:22px}
+  .loopbase .tt{font-size:15px;font-weight:700;color:var(--ink)}
+  .loopbase .ds{font-size:12px;color:var(--ink2);margin-top:2px;line-height:1.6}
+  .loopbase .r2{margin-left:auto;display:flex;flex-wrap:wrap;gap:5px}
+  .loopnote{font-size:12px;color:var(--purple);text-align:center;padding:10px 0 4px}
+  .dep{font-size:10.5px;color:var(--purple);background:#f4f0ff;border:1px solid #e4dbfc;border-radius:5px;padding:1px 7px}
+  .bdg{display:inline-block;font-size:10.5px;font-weight:600;line-height:1.6;border-radius:5px;padding:1px 7px}
+  .bdg.native{color:#12886a;background:#e7f6f0;border:1px solid #c8ead9}
+  .bdg.sys{color:#33578c;background:#eef3fb;border:1px solid #d3e0f2}
+  .bdg.custom{color:#9a5b12;background:#fff5e9;border:1px solid #f2dcbe}
+
+  /* ---------- 抽屉 ---------- */
+  .mask{position:fixed;inset:0;background:rgba(17,22,34,.4);backdrop-filter:blur(3px);z-index:100;opacity:0;pointer-events:none;transition:.22s}
+  .mask.on{opacity:1;pointer-events:auto}
+  .sheet{
+    position:fixed;top:0;right:0;bottom:0;width:min(640px,100%);background:var(--bg);z-index:101;
+    transform:translateX(103%);transition:transform .3s cubic-bezier(.32,.72,0,1);
+    display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(15,22,40,.16);
+  }
+  .sheet.on{transform:translateX(0)}
+  .sheet-head{background:var(--surface);border-bottom:1px solid var(--line);padding:18px 26px;display:flex;gap:12px;align-items:flex-start;flex:none}
+  .sheet-head h2{font-size:18px;font-weight:650;line-height:1.45}
+  .sheet-head .sub{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center}
+  .sheet-head .sub .sc{font-size:11.5px;color:var(--ink3)}
+  .close{margin-left:auto;flex:none;width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink2);cursor:pointer;font-size:17px;font-family:inherit;line-height:1}
+  .close:hover{background:#f5f6f9;color:var(--ink)}
+  .sheet-body{overflow-y:auto;padding:22px 26px 56px;flex:1}
+  .blk{margin-bottom:22px}
+  .blk .lb{font-size:12px;font-weight:700;color:var(--ink3);letter-spacing:.05em;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .blk .lb i{width:5px;height:5px;border-radius:50%;background:var(--ink3);display:block}
+  .chatbox{background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .time{align-self:center;font-size:11px;color:var(--ink3);background:#eceff4;padding:2px 10px;border-radius:999px;margin:2px 0}
+  .push{align-self:center;font-size:11px;color:var(--orange-deep);background:#fff;border:1px solid #f6d8c4;padding:2px 10px;border-radius:999px;margin:2px 0}
+  .crow{display:flex;gap:9px;margin:9px 0;align-items:flex-end}
+  .crow.me{flex-direction:row-reverse}
+  .cav{width:26px;height:26px;border-radius:8px;flex:none;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff}
+  .crow.ai .cav{background:var(--blue)}
+  .crow.me .cav{background:var(--orange)}
+  .bub{background:#fff;border:1px solid #e7ecf3;border-radius:4px 12px 12px 12px;padding:10px 13px;font-size:13.2px;line-height:1.75;color:#26324a;max-width:82%;word-break:break-word;box-shadow:0 1px 2px rgba(24,39,66,.04)}
+  .crow.me .bub{background:var(--blue);border-color:var(--blue);color:#fff;border-radius:12px 4px 12px 12px}
+  .bub b{font-weight:650}
+  .bub .hr{height:1px;background:#edf1f6;margin:8px 0}
+  .chain li{list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:12.5px;color:var(--ink2);margin-bottom:7px;display:flex;gap:8px;align-items:center}
+  .chain li .ar{flex:none;font-weight:700}
+  .chain li.in .ar{color:var(--blue)}
+  .chain li.out .ar{color:var(--orange)}
+  .chain li b{color:var(--ink);font-weight:600}
+
+  footer{border-top:1px solid var(--line);margin-top:40px;padding:24px 0 46px;color:var(--ink3);font-size:12px;text-align:center;line-height:1.9}
+
+  @media (max-width:720px){
+    .wrap{padding:0 14px}
+    .hero h1{font-size:25px}
+    .sheet-body{padding:16px 16px 46px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow"><i></i>__PAGE_KICKER__</div>
+    <h1>__PAGE_TITLE_HTML__</h1>
+    <p>__PAGE_SUBTITLE__</p>
+    <div class="legend" id="legend"></div>
+    <div class="playbar">
+      <button class="pbtn" id="playBtn">▶ 播放这一天</button>
+      <button class="pbtn ghost" id="resetBtn">重置</button>
+    </div>
+  </header>
+</div>
+
+<div class="wrap">
+  <div class="canvas-scroll"><div class="canvas" id="canvas">
+    <div class="ticks" id="ticks"></div>
+    <div id="laneWrap"></div>
+    <svg class="wires" id="wires"></svg>
+    <div class="poolbar" id="poolbar"></div>
+  </div></div>
+
+  <section class="band" id="skillBand">
+    <h2><span class="bar" style="background:var(--purple)"></span>重复动作 → 沉淀 → 复用 <small>· 独立闭环 · 嵌在每天的工作里滚动</small></h2>
+    <p class="sub">__LOOP_SUB__</p>
+    <div class="looptop" id="loopTop"></div>
+    <div class="looparrows" id="loopArrows"></div>
+    <div class="loopbase" id="loopBase"></div>
+    <div class="loopnote">__LOOP_NOTE__</div>
+  </section>
+
+  <section class="band">
+    <h2><span class="bar"></span>随时插进来的事 <small>· 不占时段，事件触发，AI 先接住</small></h2>
+    <p class="sub">这些场景不在固定时间表里：审批随时到、客户随时约、报销随时报。共同点都是「一句话发起，AI 先处理，人只做最后的确认或拍板」。</p>
+    <div class="bandgrid" id="eventsGrid"></div>
+  </section>
+
+  <section class="band">
+    <h2><span class="bar"></span>按周期发生的事 <small>· 每周 / 每月 / 每季，到点自动跑</small></h2>
+    <p class="sub">低频但固定节奏的场景：到点 AI 自动产出并推送，人只在需要判断的环节出现。</p>
+    <div class="bandgrid" id="cyclesGrid"></div>
+  </section>
+</div>
+
+<div class="mask" id="mask"></div>
+<aside class="sheet" id="sheet">
+  <div class="sheet-head">
+    <div style="min-width:0">
+      <h2 id="shTitle"></h2>
+      <div class="sub" id="shSub"></div>
+    </div>
+    <button class="close" id="closeBtn">×</button>
+  </div>
+  <div class="sheet-body" id="shBody"></div>
+</aside>
+
+<footer class="wrap">
+  内容来源：场景库《各大场景收集》高管 13 + 通用办公 8，共 21 个场景全串联 · 汇报口径遵守落地六原则（企微唯一入口 / WorkBuddy 后台执行 / 数据不出域）<br>
+  本页由 scene-flow 框架生成：内容在 <b>剧本.json</b>，渲染在画布模板，构建命令 <b>python3 build_canvas.py</b> —— 改剧本不改代码，重新构建即出新画布
+</footer>
+
+<script>
+const DATA = __SCENE_DATA__;
+
+/* ══════════ 布局常量与坐标计算 ══════════ */
+const STEP = DATA.meta.step, LPAD = DATA.meta.leftPad, BANDS = DATA.meta.bands;
+const MAXSEQ = Math.max(...DATA.nodes.map(n=>n.seq));
+const slotX = s => LPAD + s * STEP;           /* 每个 seq 的槽位起点 */
+const TICKS_H = 56, LANE_H = 192, LANE_GAP = 14, NODE_H = 164, POOL_GAP = 20, POOL_H = 116;
+const laneY = i => TICKS_H + i * (LANE_H + LANE_GAP);
+const poolY = TICKS_H + DATA.lanes.length * (LANE_H + LANE_GAP) - LANE_GAP + POOL_GAP;
+const CW = slotX(MAXSEQ) + STEP + 60;
+const CH = poolY + POOL_H + 26;
+
+const laneIdx = {}; DATA.lanes.forEach((l,i)=>laneIdx[l.id]=i);
+const nodeMap = {}; DATA.nodes.forEach(n=>{ nodeMap[n.id]=n; });
+const poolMap = {}; DATA.pools.forEach(p=>{ poolMap['pool:'+p.id]=p; });
+
+/* 节点在槽位内水平居中；同槽同泳道冲突由 build 校验拦截 */
+DATA.nodes.forEach(n=>{ n._x = slotX(n.seq) + (STEP - (n.w||210)) / 2; });
+
+/* ══════════ 渲染 ══════════ */
+const el = (html)=>{ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; };
+const esc = s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const badgeCls = b => b==='native'?'native':(b==='sys'?'sys':'custom');
+const badgeName = k => (DATA.legend.badges.find(x=>x.k===k)||{}).name || k;
+const badgesHtml = bs => (bs||[]).map(b=>`<span class="bdg ${badgeCls(b)}">${badgeName(b)}</span>`).join('');
+const scenesStr = s => (s||[]).join(' · ');
+
+function renderCanvas(){
+  const cv = document.getElementById('canvas');
+  cv.style.width = CW+'px'; cv.style.height = CH+'px';
+
+  /* 时段带标签 + seq 边界竖线 */
+  let th='';
+  BANDS.forEach(b=>{
+    const x=slotX(b.from), w=(b.to-b.from+1)*STEP;
+    th+=`<div class="bandtag" style="left:${x}px;width:${w}px"><b>${esc(b.name)}</b><span>${esc(b.tip||'')}</span></div>`;
+  });
+  for(let s=1;s<=MAXSEQ;s++){
+    th+=`<div class="gridline" style="left:${slotX(s)-6}px"></div>`;
+  }
+  document.getElementById('ticks').innerHTML=th;
+  document.getElementById('ticks').style.width=CW+'px';
+
+  /* 泳道 */
+  document.getElementById('laneWrap').innerHTML = DATA.lanes.map((l,i)=>`
+    <div class="lane ${l.type}" style="top:${laneY(i)}px;height:${LANE_H}px">
+      <div class="cap"></div>
+      <div class="lane-tag"><b>${esc(l.name)}</b><span>${esc(l.sub||'')}</span></div>
+    </div>`).join('');
+
+  /* 节点 */
+  DATA.nodes.forEach(n=>{
+    const y = laneY(laneIdx[n.lane]) + (LANE_H-NODE_H)/2;
+    const w = n.w||180;
+    const d = el(`<div class="node ${n.role}" data-id="${n.id}" style="left:${n._x}px;top:${y}px;width:${w}px;height:${NODE_H}px">
+      <div class="row1"><span class="tm">${esc(n.phase)}</span><span class="sc">${scenesStr(n.scenes)}</span></div>
+      <div class="tt">${esc(n.title)}</div>
+      <div class="ds">${esc(n.desc)}</div>
+      <div class="foot"><span class="pr">产物 · ${esc(n.prod)}</span><span class="bd">${badgesHtml(n.badge)}</span></div>
+    </div>`);
+    d.onclick=()=>openNode(n.id);
+    cv.appendChild(d); n._el=d; n._cy=y+NODE_H/2;
+  });
+
+  /* 地基池 */
+  const pb=document.getElementById('poolbar');
+  DATA.pools.forEach(p=>{
+    const c=el(`<div class="pool" data-id="pool:${p.id}" style="left:${p.x}px;top:${poolY}px;width:${p.w}px;height:${POOL_H}px">
+      <div class="pn"><span class="ic">${p.icon||'📦'}</span>${esc(p.name)}</div>
+      <div class="pd">${esc(p.desc)}</div>
+      <div class="pf">沉淀 / 取用闭环 · 点开详情</div>
+    </div>`);
+    c.onclick=()=>openPool(p.id);
+    pb.appendChild(c); p._el=c;
+  });
+
+  renderWires();
+}
+
+function anchor(id, side){ /* side: 'right'|'left'|'top'|'bottom' */
+  if(id.startsWith('pool:')){
+    const p=poolMap[id];
+    return {x:p.x, r:p.x+p.w, cx:p.x+p.w/2, top:poolY, bot:poolY+POOL_H};
+  }
+  const n=nodeMap[id];
+  return {x:n._x, r:n._x+(n.w||180), cx:n._x+(n.w||180)/2, top:n._cy-NODE_H/2, bot:n._cy+NODE_H/2, cy:n._cy};
+}
+
+const LINK_COLOR={info:'var(--blue)',task:'var(--teal)',decision:'var(--orange)',asset:'var(--purple)'};
+
+function renderWires(){
+  const svg=document.getElementById('wires');
+  svg.setAttribute('width',CW); svg.setAttribute('height',CH);
+  svg.style.width=CW+'px'; svg.style.height=CH+'px';
+  let defs='';
+  Object.entries(LINK_COLOR).forEach(([k,c])=>{
+    defs+=`<marker id="arr-${k}" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${c}"/></marker>`;
+  });
+
+  /* 同一目标多条入线：y 锚点错开 */
+  const inCnt={}, outCnt={}, pinCnt={}, poutCnt={};
+  DATA.links.forEach(l=>{ inCnt[l.to]=(inCnt[l.to]||0); outCnt[l.from]=(outCnt[l.from]||0); });
+
+  let body='';
+  DATA.links.forEach((l,i)=>{
+    const col=LINK_COLOR[l.type]||'var(--blue)';
+    const cls=`w ${l._lit?'lit':''}`;
+    const mk=`url(#arr-${l.type==='asset'?'asset':l.type})`;
+    const dash=(l.loop||l.style==='dashed')?` stroke-dasharray="7 6"`:'';
+
+    if(l.from.startsWith('pool:')||l.to.startsWith('pool:')){
+      /* 资产线：节点底部 ↔ 池顶部，经底部走廊走横平竖直的工程线 */
+      const isDown=!l.from.startsWith('pool:');
+      const nId=isDown?l.from:l.to, pId=isDown?l.to:l.from;
+      const n=anchor(nId), p=anchor(pId);
+      const pid=pId;
+      pinCnt[pid]=pinCnt[pid]||0; poutCnt[pid]=poutCnt[pid]||0;
+      let dPath, lx, ly;
+      if(isDown){
+        const gy=poolY-16;
+        const pin=p.cx-60+pinCnt[pid]*48; pinCnt[pid]++;
+        dPath=`M${n.cx},${n.bot} L${n.cx},${gy} L${pin},${gy} L${pin},${p.top}`;
+        lx=(n.cx+pin)/2; ly=gy-5;
+      }else{
+        const gy=poolY-8;
+        const pout=p.cx+60+poutCnt[pid]*48; poutCnt[pid]++;
+        dPath=`M${pout},${p.top} L${pout},${gy} L${n.cx},${gy} L${n.cx},${n.bot}`;
+        lx=(pout+n.cx)/2; ly=gy-5;
+      }
+      body+=`<path class="${cls}" data-link="${i}" d="${dPath}" stroke="${col}"${dash} marker-end="${mk}" stroke-linejoin="round"/>`;
+      body+=`<text x="${lx}" y="${ly}" fill="${col}" text-anchor="middle">${esc(l.label)}</text>`;
+      return;
+    }
+    if(l.loop){
+      /* 回环：从 from 底部走底部走廊到 to 底部 */
+      const a=anchor(l.from), b=anchor(l.to);
+      const gy=poolY-8;
+      const sx=a.cx, ex=b.cx;
+      body+=`<path class="${cls}" data-link="${i}" d="M${sx},${a.bot} L${sx},${gy} L${ex},${gy} L${ex},${b.bot}" stroke="${col}"${dash} marker-end="${mk}" stroke-linejoin="round"/>`;
+      body+=`<text x="${(sx+ex)/2}" y="${gy-6}" fill="${col}" text-anchor="middle">${esc(l.label)}</text>`;
+      return;
+    }
+    /* 常规：右缘 → 左缘（相邻环节短距线，无长折线） */
+    const a=anchor(l.from), b=anchor(l.to);
+    const k=inCnt[l.to]++; 
+    const y1=a.cy!==undefined?a.cy:(a.top+NODE_H/2);
+    const y2=(b.cy!==undefined?b.cy:(b.top+NODE_H/2))+(k>0?(k%2?10:-10):0);
+    const x1=a.r, x2=b.x;
+    const dx=Math.max(56,(x2-x1)/2);
+    const dPath=`M${x1},${y1} C${x1+dx},${y1} ${x2-dx},${y2} ${x2},${y2}`;
+    const t=0.42, f=3*t*t-2*t*t*t;
+    const mx=x1+(x2-x1)*f, my=y1+(y2-y1)*f;
+    body+=`<path class="${cls}" data-link="${i}" d="${dPath}" stroke="${col}"${dash} marker-end="${mk}"/>`;
+    body+=`<text x="${mx}" y="${my-8}" fill="${col}" text-anchor="middle">${esc(l.label)}</text>`;
+  });
+
+  svg.innerHTML=defs+body;
+  DATA.links.forEach((l,i)=>l._el=svg.querySelector(`[data-link="${i}"]`));
+}
+
+/* ---------- 图例 ---------- */
+function renderLegend(){
+  const L=DATA.legend;
+  document.getElementById('legend').innerHTML =
+    L.links.map(x=>`<span class="lg"><span class="sw" style="border-color:${LINK_COLOR[x.type]}"></span>${esc(x.name)}</span>`).join('')
+    + L.roles.map(x=>`<span class="lg"><span class="sq" style="background:${x.k==='ai'?'var(--blue)':'var(--orange)'}"></span>${esc(x.name)}</span>`).join('')
+    + L.badges.map(x=>`<span class="lg">${esc(x.name)}</span>`).join('');
+}
+
+  /* ---------- skill 闭环 ---------- */
+  function loopCard(s){
+    return `<div class="ic">${s.icon||'📌'}</div>
+      <div class="tt">${esc(s.title)}</div>
+      <div class="ds">${esc(s.desc)}</div>
+      <div class="r2">${(s.dep||[]).map(d=>`<span class="dep">${esc(d)}</span>`).join('')}${badgesHtml(s.badge)}</div>`;
+  }
+  function bindLoopCard(el, s){
+    el.onclick=()=>openSheet(`${s.icon||''} ${esc(s.title)}`,
+      `<span class="sc">${scenesStr(s.scenes)}</span>${badgesHtml(s.badge)}`,
+      (s.dialog&&s.dialog.length?chatBlock(s.dialog):`<div class="blk"><div class="lb"><i></i>它是什么</div><ul class="chain"><li><span>${esc(s.desc)}</span></li></ul></div>`));
+  }
+  function renderLoop(){
+    const L=DATA.skillLoop; if(!L) return;
+    const top=document.getElementById('loopTop');
+    top.innerHTML=`
+      <article class="loopcard" id="loopLeft">${loopCard(L.left)}</article>
+      <article class="loopcard" id="loopRight">${loopCard(L.right)}</article>`;
+    bindLoopCard(top.querySelector('#loopLeft'), L.left);
+    bindLoopCard(top.querySelector('#loopRight'), L.right);
+    document.getElementById('loopArrows').innerHTML=`
+      <span class="larr">${esc(L.leftNote||'↓ 沉淀入池')}</span>
+      <span class="lbase-t">━━━━━━━━━━</span>
+      <span class="larr">${esc(L.rightNote||'↑ 按需取用')}</span>`;
+    const base=document.getElementById('loopBase');
+    base.innerHTML=`
+      <div class="ic">${L.base.icon||'⚙️'}</div>
+      <div><div class="tt">${esc(L.base.title)}</div><div class="ds">${esc(L.base.desc)}</div></div>
+      <div class="r2">${badgesHtml(L.base.badge)}</div>`;
+    bindLoopCard(base, L.base);
+  }
+
+/* ---------- 事件带 / 周期带 ---------- */
+function renderBands(){
+  document.getElementById('eventsGrid').innerHTML=DATA.events.map((e,i)=>`
+    <article class="ecard" data-ev="${i}">
+      <div class="r1"><span class="pill ${e.side}">${e.side==='boss'?'老板侧':'员工侧'}</span><span class="sc">${scenesStr(e.scenes)}</span></div>
+      <div class="tt">${esc(e.title)}</div>
+      <div class="ds">${esc(e.desc)}</div>
+      <div class="r2">${(e.dep||[]).map(d=>`<span class="dep">${esc(d)}</span>`).join('')}${badgesHtml(e.badge)}</div>
+    </article>`).join('');
+  document.querySelectorAll('[data-ev]').forEach(c=>c.onclick=()=>openEvent(+c.dataset.ev));
+
+  document.getElementById('cyclesGrid').innerHTML=DATA.cycles.map((e,i)=>`
+    <article class="ecard" data-cy="${i}">
+      <div class="r1"><span class="pill freq">${esc(e.freq)}</span><span class="sc">${scenesStr(e.scenes)}</span></div>
+      <div class="tt">${esc(e.title)}</div>
+      <div class="ds">${esc(e.desc)}</div>
+      <div class="r2">${(e.dep||[]).map(d=>`<span class="dep">${esc(d)}</span>`).join('')}${badgesHtml(e.badge)}</div>
+    </article>`).join('');
+  document.querySelectorAll('[data-cy]').forEach(c=>c.onclick=()=>openCycle(+c.dataset.cy));
+}
+
+/* ---------- 抽屉 ---------- */
+function bubble(m){
+  if(m.r==='time') return `<div class="time">${m.t}</div>`;
+  if(m.r==='push') return `<div class="push">${m.t}</div>`;
+  const who=m.r==='me';
+  return `<div class="crow ${who?'me':'ai'}"><div class="cav">${who?'人':'AI'}</div><div class="bub">${m.t}</div></div>`;
+}
+function openSheet(title,subHtml,inner){
+  document.getElementById('shTitle').innerHTML=title;
+  document.getElementById('shSub').innerHTML=subHtml;
+  document.getElementById('shBody').innerHTML=inner;
+  document.getElementById('mask').classList.add('on');
+  document.getElementById('sheet').classList.add('on');
+  document.getElementById('sheet').scrollTop=0;
+  document.body.style.overflow='hidden';
+}
+function closeSheet(){
+  document.getElementById('mask').classList.remove('on');
+  document.getElementById('sheet').classList.remove('on');
+  document.body.style.overflow='';
+}
+function chatBlock(dialog){
+  return `<div class="blk"><div class="lb"><i></i>交互细节 · 它跑起来的样子</div><div class="chatbox" style="display:flex;flex-direction:column">${(dialog||[]).map(bubble).join('')}</div></div>`;
+}
+function chainBlock(id){
+  const name=id.startsWith('pool:')?poolMap[id].name:nodeMap[id].title;
+  const ins=DATA.links.filter(l=>l.to===id).map(l=>{
+    const f=l.from.startsWith('pool:')?poolMap[l.from].name:nodeMap[l.from].title;
+    return `<li class="in"><span class="ar">←</span><span>来自 <b>${esc(f)}</b> · ${esc(l.label)}</span></li>`;
+  });
+  const outs=DATA.links.filter(l=>l.from===id).map(l=>{
+    const t=l.to.startsWith('pool:')?poolMap[l.to].name:nodeMap[l.to].title;
+    return `<li class="out"><span class="ar">→</span><span>流向 <b>${esc(t)}</b> · ${esc(l.label)}</span></li>`;
+  });
+  if(!ins.length&&!outs.length) return '';
+  return `<div class="blk"><div class="lb"><i></i>在链条里 · 「${esc(name)}」的产物从哪来、到哪去</div>
+    <ul class="chain">${ins.join('')}${outs.join('')}</ul></div>`;
+}
+function openNode(id){
+  const n=nodeMap[id];
+  openSheet(esc(n.title),
+    `<span class="sc">${n.time} · ${scenesStr(n.scenes)}</span>${badgesHtml(n.badge)}`,
+    chatBlock(n.dialog)+chainBlock(id));
+}
+function openPool(pid){
+  const p=poolMap[pid];
+  const lists=(arr,verb)=>arr.map(x=>`<li class="${verb==='喂'?'out':'in'}"><span class="ar">${verb==='喂'?'↓':'↑'}</span><span>${esc(x)}</span></li>`).join('');
+  openSheet(`${p.icon||''} ${esc(p.name)}`,
+    `<span class="dep">地基层</span><span class="sc">沉淀 → 复用 的闭环底座</span>`,
+    `<div class="blk"><div class="lb"><i></i>它是干什么的</div><ul class="chain"><li><span>${esc(p.desc)}</span></li></ul></div>
+     <div class="blk"><div class="lb"><i></i>谁在喂它</div><ul class="chain">${lists(p.feed||[],'喂')}</ul></div>
+     <div class="blk"><div class="lb"><i></i>谁在取用</div><ul class="chain">${lists(p.use||[],'取')}</ul></div>
+     ${p.note?`<div class="blk"><div class="lb"><i></i>备注</div><ul class="chain"><li><span>${esc(p.note)}</span></li></ul></div>`:''}`);
+}
+function openEvent(i){ const e=DATA.events[i];
+  openSheet(esc(e.title),
+    `<span class="pill ${e.side}" style="font-size:11px">${e.side==='boss'?'老板侧':'员工侧'}</span><span class="sc">${scenesStr(e.scenes)}</span>${badgesHtml(e.badge)}`,
+    `<div class="blk"><div class="lb"><i></i>场景说明</div><ul class="chain"><li><span>${esc(e.desc)}</span></li></ul></div>`+chatBlock(e.dialog));
+}
+function openCycle(i){ const e=DATA.cycles[i];
+  openSheet(esc(e.title),
+    `<span class="pill freq" style="font-size:11px">${esc(e.freq)}</span><span class="sc">${scenesStr(e.scenes)}</span>${badgesHtml(e.badge)}`,
+    `<div class="blk"><div class="lb"><i></i>场景说明</div><ul class="chain"><li><span>${esc(e.desc)}</span></li></ul></div>`+chatBlock(e.dialog));
+}
+
+/* ---------- 播放一天 ---------- */
+let playTimer=[];
+function stopPlay(){ playTimer.forEach(t=>clearTimeout(t)); playTimer=[]; }
+function resetPlay(){
+  stopPlay();
+  DATA.nodes.forEach(n=>{ n._el.classList.remove('live','dim'); });
+  DATA.pools.forEach(p=>p._el.classList.remove('live'));
+  DATA.links.forEach(l=>l._el&&l._el.classList.remove('lit'));
+}
+function playDay(){
+  resetPlay();
+  const seq=[...DATA.nodes].sort((a,b)=>a._x-b._x);
+  DATA.nodes.forEach(n=>n._el.classList.add('dim'));
+  let t=250;
+  seq.forEach(n=>{
+    playTimer.push(setTimeout(()=>{
+      n._el.classList.remove('dim'); n._el.classList.add('live');
+      DATA.links.forEach(l=>{ if(l.to===n.id&&l._el) setTimeout(()=>l._el.classList.add('lit'),260); });
+    },t));
+    t+=950;
+  });
+  playTimer.push(setTimeout(()=>{
+    DATA.pools.forEach(p=>p._el.classList.add('live'));
+    DATA.links.forEach(l=>{ if(l.to.startsWith('pool:')&&l._el) l._el.classList.add('lit'); });
+  },t+200));
+}
+
+document.getElementById('playBtn').onclick=playDay;
+document.getElementById('resetBtn').onclick=resetPlay;
+document.getElementById('mask').onclick=closeSheet;
+document.getElementById('closeBtn').onclick=closeSheet;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
+
+renderLegend();
+renderCanvas();
+renderLoop();
+renderBands();
+</script>
+</body>
+</html>

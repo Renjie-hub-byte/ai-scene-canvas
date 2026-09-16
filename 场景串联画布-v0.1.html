@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>一天，是怎么被 AI 串起来的</title>
+<style>
+  :root{
+    --bg:#f3f6fb; --surface:#ffffff;
+    --line:#e3e9f2; --line-soft:#eef2f8;
+    --ink:#182742; --ink2:#5c6b85; --ink3:#93a0b5;
+    --blue:#2f6bf0; --blue-deep:#2456c4; --blue-soft:#eaf1ff; --blue-ghost:#f0f5ff;
+    --orange:#ff7a1a; --orange-deep:#e2542c; --orange-soft:#fff2e6;
+    --teal:#0d9488; --purple:#7c5cf0;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(24,39,66,.05), 0 10px 28px rgba(24,39,66,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:15px; line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:0 26px}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:52px 0 22px;text-align:center}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.08em;color:var(--ink3);
+    background:var(--surface);border:1px solid var(--line);padding:5px 14px;border-radius:999px;margin-bottom:18px;
+  }
+  .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--blue);display:block}
+  .hero h1{font-size:33px;font-weight:700;letter-spacing:-.01em;line-height:1.35}
+  .hero h1 em{font-style:normal;color:var(--blue)}
+  .hero p{margin:12px auto 0;color:var(--ink2);font-size:14.5px;max-width:780px}
+  .legend{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin-top:18px;font-size:12px;color:var(--ink2)}
+  .legend .lg{display:inline-flex;align-items:center;gap:6px}
+  .legend .sw{width:22px;height:0;border-top:3px solid;border-radius:2px}
+  .legend .sq{width:11px;height:11px;border-radius:3.5px;display:inline-block}
+  .playbar{margin-top:18px;display:flex;justify-content:center;gap:10px}
+  .pbtn{
+    font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;border-radius:999px;padding:9px 22px;
+    border:1px solid var(--blue);background:var(--blue);color:#fff;transition:.15s;
+    box-shadow:0 4px 14px rgba(47,107,240,.25);
+  }
+  .pbtn:hover{background:var(--blue-deep)}
+  .pbtn.ghost{background:var(--surface);color:var(--ink2);border-color:var(--line);box-shadow:none}
+  .pbtn.ghost:hover{color:var(--ink);border-color:#cfd9e6}
+
+  /* ---------- 画布 ---------- */
+  .canvas-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--shadow)}
+  .canvas{position:relative}
+  .ticks{position:absolute;left:0;right:0;height:56px;border-bottom:1px solid var(--line-soft)}
+  .bandtag{position:absolute;top:0;height:100%;padding:10px 0 0 14px;background:linear-gradient(180deg,#fdfefe,rgba(253,254,254,0))}
+  .bandtag b{font-size:13.5px;font-weight:700;color:var(--ink)}
+  .bandtag span{display:block;font-size:10.5px;color:var(--ink3);line-height:1.4;margin-top:1px}
+  .gridline{position:absolute;top:56px;bottom:0;width:1px;background:#edf2f8}
+
+  .lane{position:absolute;left:0;right:0}
+  .lane.person{background:linear-gradient(180deg,#ffffff, #fffdfa)}
+  .lane.ai{background:linear-gradient(180deg,#f0f5ff,#eef4ff)}
+  .lane .lane-tag{
+    position:sticky;left:0;display:inline-flex;flex-direction:column;justify-content:center;
+    width:148px;height:100%;padding:0 16px;vertical-align:top;
+    background:linear-gradient(90deg,var(--surface) 78%,rgba(255,255,255,0));
+    border-right:1px solid var(--line-soft);z-index:5;
+  }
+  .lane .lane-tag b{font-size:13.5px;font-weight:650;line-height:1.4}
+  .lane .lane-tag span{font-size:11px;color:var(--ink3);line-height:1.5;margin-top:3px}
+  .lane.ai .lane-tag b{color:var(--blue-deep)}
+  .lane.person .lane-tag b{color:var(--orange-deep)}
+  .lane .cap{position:absolute;left:0;top:0;width:4px;height:100%}
+  .lane.ai .cap{background:linear-gradient(180deg,var(--blue),#9db9f7)}
+  .lane.person .cap{background:linear-gradient(180deg,var(--orange),#ffc08a)}
+
+  .node{
+    position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:11px 13px 10px;cursor:pointer;transition:.16s ease;z-index:6;
+    box-shadow:0 1px 3px rgba(24,39,66,.06);display:flex;flex-direction:column;gap:5px;
+  }
+  .node:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#cfdaf0}
+  .node::before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:3.5px;border-radius:4px}
+  .node.ai::before{background:var(--blue)}
+  .node.person::before{background:var(--orange)}
+  .node .row1{display:flex;align-items:center;gap:7px}
+  .node .tm{font-size:11px;font-weight:700;color:#fff;border-radius:6px;padding:1.5px 7px;letter-spacing:.02em}
+  .node.ai .tm{background:var(--blue)}
+  .node.person .tm{background:var(--orange)}
+  .node .sc{margin-left:auto;font-size:10px;color:var(--ink3);letter-spacing:.02em}
+  .node .tt{font-size:14.5px;font-weight:650;line-height:1.35}
+  .node .ds{font-size:11.5px;color:var(--ink2);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .node .foot{margin-top:auto;display:flex;align-items:center;gap:6px;min-width:0}
+  .node .pr{font-size:11px;color:var(--blue-deep);background:var(--blue-soft);border-radius:6px;padding:2.5px 8px;line-height:1.5;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .node.person .pr{color:var(--orange-deep);background:var(--orange-soft)}
+  .node .foot .bd{flex:none;font-size:10px;letter-spacing:.02em;white-space:nowrap}
+
+  .node.live{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,122,26,.18), var(--shadow);transform:translateY(-2px)}
+  .node.dim{opacity:.38}
+
+  .poolbar .pool{
+    position:absolute;background:linear-gradient(180deg,#fbfcff,#f6f8fd);border:1px dashed #c6d3ea;
+    border-radius:12px;padding:10px 13px;cursor:pointer;transition:.15s;z-index:6;
+  }
+  .pool:hover{border-color:var(--purple);box-shadow:var(--shadow);transform:translateY(-2px)}
+  .pool.live{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,240,.15)}
+  .pool .pn{font-size:12.5px;font-weight:650;display:flex;align-items:center;gap:6px}
+  .pool .pn .ic{font-size:14px}
+  .pool .pd{font-size:10.5px;color:var(--ink2);line-height:1.5;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pool .pf{font-size:10px;color:var(--purple);margin-top:4px}
+
+  svg.wires{position:absolute;left:0;top:0;pointer-events:none;z-index:4}
+  svg.wires path.w{fill:none;stroke-width:2.2;stroke-linecap:round}
+  svg.wires text{font-size:10.5px;font-weight:600;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+  svg.wires path.lit{stroke-dasharray:9 6;animation:flow .55s linear infinite}
+  @keyframes flow{to{stroke-dashoffset:-15}}
+
+  /* ---------- 事件带 / 周期带 ---------- */
+  .band{padding:34px 0 4px}
+  .band h2{font-size:19px;font-weight:700;display:flex;align-items:center;gap:10px}
+  .band h2 span.bar{width:4px;height:18px;border-radius:2px;background:var(--blue);display:block}
+  .band h2 small{font-weight:400;font-size:13px;color:var(--ink3)}
+  .band .sub{color:var(--ink2);font-size:13.5px;margin-top:7px;max-width:820px}
+  .bandgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;padding:16px 0 8px}
+  .ecard{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 17px 13px;cursor:pointer;transition:.16s;position:relative;
+  }
+  .ecard:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#cfdaf0}
+  .ecard .r1{display:flex;align-items:center;gap:8px}
+  .pill{font-size:10.5px;font-weight:700;border-radius:6px;padding:2px 8px;letter-spacing:.02em}
+  .pill.boss{background:var(--orange-soft);color:var(--orange-deep)}
+  .pill.staff{background:var(--blue-soft);color:var(--blue-deep)}
+  .pill.freq{background:var(--purple);color:#fff}
+  .ecard .sc{margin-left:auto;font-size:10px;color:var(--ink3)}
+  .ecard .tt{font-size:15px;font-weight:650;margin-top:8px}
+  .ecard .ds{font-size:12px;color:var(--ink2);margin-top:3px;line-height:1.6;min-height:38px}
+  .ecard .r2{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+
+  /* ---------- skill 闭环 ---------- */
+  .looptop{display:flex;gap:20px;padding:16px 0 0}
+  .loopcard{
+    flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:15px 17px 12px;cursor:pointer;transition:.16s;position:relative;
+  }
+  .loopcard:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#cfdaf0}
+  .loopcard .ic{font-size:20px}
+  .loopcard .tt{font-size:14.5px;font-weight:650;margin-top:6px}
+  .loopcard .ds{font-size:11.5px;color:var(--ink2);margin-top:3px;line-height:1.6;min-height:38px}
+  .loopcard .r2{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  .looparrows{display:flex;justify-content:space-between;align-items:center;padding:2px 14%}
+  .looparrows .larr{font-size:12px;font-weight:700;color:var(--purple)}
+  .looparrows .lbase-t{color:#d8ccf8;font-size:11px;letter-spacing:-1px}
+  .loopbase{
+    display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;transition:.16s;
+    border:1.5px dashed var(--purple);background:#fbfaff;border-radius:var(--radius);
+  }
+  .loopbase:hover{box-shadow:var(--shadow);background:#f7f2ff}
+  .loopbase .ic{font-size:22px}
+  .loopbase .tt{font-size:15px;font-weight:700;color:var(--ink)}
+  .loopbase .ds{font-size:12px;color:var(--ink2);margin-top:2px;line-height:1.6}
+  .loopbase .r2{margin-left:auto;display:flex;flex-wrap:wrap;gap:5px}
+  .loopnote{font-size:12px;color:var(--purple);text-align:center;padding:10px 0 4px}
+  .dep{font-size:10.5px;color:var(--purple);background:#f4f0ff;border:1px solid #e4dbfc;border-radius:5px;padding:1px 7px}
+  .bdg{display:inline-block;font-size:10.5px;font-weight:600;line-height:1.6;border-radius:5px;padding:1px 7px}
+  .bdg.native{color:#12886a;background:#e7f6f0;border:1px solid #c8ead9}
+  .bdg.sys{color:#33578c;background:#eef3fb;border:1px solid #d3e0f2}
+  .bdg.custom{color:#9a5b12;background:#fff5e9;border:1px solid #f2dcbe}
+
+  /* ---------- 抽屉 ---------- */
+  .mask{position:fixed;inset:0;background:rgba(17,22,34,.4);backdrop-filter:blur(3px);z-index:100;opacity:0;pointer-events:none;transition:.22s}
+  .mask.on{opacity:1;pointer-events:auto}
+  .sheet{
+    position:fixed;top:0;right:0;bottom:0;width:min(640px,100%);background:var(--bg);z-index:101;
+    transform:translateX(103%);transition:transform .3s cubic-bezier(.32,.72,0,1);
+    display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(15,22,40,.16);
+  }
+  .sheet.on{transform:translateX(0)}
+  .sheet-head{background:var(--surface);border-bottom:1px solid var(--line);padding:18px 26px;display:flex;gap:12px;align-items:flex-start;flex:none}
+  .sheet-head h2{font-size:18px;font-weight:650;line-height:1.45}
+  .sheet-head .sub{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center}
+  .sheet-head .sub .sc{font-size:11.5px;color:var(--ink3)}
+  .close{margin-left:auto;flex:none;width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink2);cursor:pointer;font-size:17px;font-family:inherit;line-height:1}
+  .close:hover{background:#f5f6f9;color:var(--ink)}
+  .sheet-body{overflow-y:auto;padding:22px 26px 56px;flex:1}
+  .blk{margin-bottom:22px}
+  .blk .lb{font-size:12px;font-weight:700;color:var(--ink3);letter-spacing:.05em;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .blk .lb i{width:5px;height:5px;border-radius:50%;background:var(--ink3);display:block}
+  .chatbox{background:#f7f9fc;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .time{align-self:center;font-size:11px;color:var(--ink3);background:#eceff4;padding:2px 10px;border-radius:999px;margin:2px 0}
+  .push{align-self:center;font-size:11px;color:var(--orange-deep);background:#fff;border:1px solid #f6d8c4;padding:2px 10px;border-radius:999px;margin:2px 0}
+  .crow{display:flex;gap:9px;margin:9px 0;align-items:flex-end}
+  .crow.me{flex-direction:row-reverse}
+  .cav{width:26px;height:26px;border-radius:8px;flex:none;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff}
+  .crow.ai .cav{background:var(--blue)}
+  .crow.me .cav{background:var(--orange)}
+  .bub{background:#fff;border:1px solid #e7ecf3;border-radius:4px 12px 12px 12px;padding:10px 13px;font-size:13.2px;line-height:1.75;color:#26324a;max-width:82%;word-break:break-word;box-shadow:0 1px 2px rgba(24,39,66,.04)}
+  .crow.me .bub{background:var(--blue);border-color:var(--blue);color:#fff;border-radius:12px 4px 12px 12px}
+  .bub b{font-weight:650}
+  .bub .hr{height:1px;background:#edf1f6;margin:8px 0}
+  .chain li{list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:12.5px;color:var(--ink2);margin-bottom:7px;display:flex;gap:8px;align-items:center}
+  .chain li .ar{flex:none;font-weight:700}
+  .chain li.in .ar{color:var(--blue)}
+  .chain li.out .ar{color:var(--orange)}
+  .chain li b{color:var(--ink);font-weight:600}
+
+  footer{border-top:1px solid var(--line);margin-top:40px;padding:24px 0 46px;color:var(--ink3);font-size:12px;text-align:center;line-height:1.9}
+
+  @media (max-width:720px){
+    .wrap{padding:0 14px}
+    .hero h1{font-size:25px}
+    .sheet-body{padding:16px 16px 46px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow"><i></i>AI 落地 · 场景串联画布 v0.3</div>
+    <h1>一天，是怎么被 AI 串起来的</h1>
+    <p>高管 × 通用办公 · 21 个场景全串联 · 企业微信是唯一入口。全天产物统一收敛为同一载体：一页企业微信文档。每一环都是「AI 先整理 → 人做决策 → AI 再执行」的人机回路：白底泳道是人，蓝底泳道是 AI。画布可横向拖动。</p>
+    <div class="legend" id="legend"></div>
+    <div class="playbar">
+      <button class="pbtn" id="playBtn">▶ 播放这一天</button>
+      <button class="pbtn ghost" id="resetBtn">重置</button>
+    </div>
+  </header>
+</div>
+
+<div class="wrap">
+  <div class="canvas-scroll"><div class="canvas" id="canvas">
+    <div class="ticks" id="ticks"></div>
+    <div id="laneWrap"></div>
+    <svg class="wires" id="wires"></svg>
+    <div class="poolbar" id="poolbar"></div>
+  </div></div>
+
+  <section class="band" id="skillBand">
+    <h2><span class="bar" style="background:var(--purple)"></span>重复动作 → 沉淀 → 复用 <small>· 独立闭环 · 嵌在每天的工作里滚动</small></h2>
+    <p class="sub">这条闭环不发生在某一天里，而是嵌在每天的工作中持续滚动：集团 skill 库是底座，上方两侧分别是「沉淀入池」和「取用复用」——重复动作被 AI 识别、人确认口径后入库，其他成员的 AI 随时取用。贡献计入创新提报参考项。</p>
+    <div class="looptop" id="loopTop"></div>
+    <div class="looparrows" id="loopArrows"></div>
+    <div class="loopbase" id="loopBase"></div>
+    <div class="loopnote">↩ 取用越多、沉淀越厚，库反过来让更多重复动作被识别——循环滚动</div>
+  </section>
+
+  <section class="band">
+    <h2><span class="bar"></span>随时插进来的事 <small>· 不占时段，事件触发，AI 先接住</small></h2>
+    <p class="sub">这些场景不在固定时间表里：审批随时到、客户随时约、报销随时报。共同点都是「一句话发起，AI 先处理，人只做最后的确认或拍板」。</p>
+    <div class="bandgrid" id="eventsGrid"></div>
+  </section>
+
+  <section class="band">
+    <h2><span class="bar"></span>按周期发生的事 <small>· 每周 / 每月 / 每季，到点自动跑</small></h2>
+    <p class="sub">低频但固定节奏的场景：到点 AI 自动产出并推送，人只在需要判断的环节出现。</p>
+    <div class="bandgrid" id="cyclesGrid"></div>
+  </section>
+</div>
+
+<div class="mask" id="mask"></div>
+<aside class="sheet" id="sheet">
+  <div class="sheet-head">
+    <div style="min-width:0">
+      <h2 id="shTitle"></h2>
+      <div class="sub" id="shSub"></div>
+    </div>
+    <button class="close" id="closeBtn">×</button>
+  </div>
+  <div class="sheet-body" id="shBody"></div>
+</aside>
+
+<footer class="wrap">
+  内容来源：场景库《各大场景收集》高管 13 + 通用办公 8，共 21 个场景全串联 · 汇报口径遵守落地六原则（企微唯一入口 / WorkBuddy 后台执行 / 数据不出域）<br>
+  本页由 scene-flow 框架生成：内容在 <b>剧本.json</b>，渲染在画布模板，构建命令 <b>python3 build_canvas.py</b> —— 改剧本不改代码，重新构建即出新画布
+</footer>
+
+<script>
+const DATA = {"meta":{"title":"一天，是怎么被 AI 串起来的","kicker":"AI 落地 · 场景串联画布 v0.3","subtitle":"高管 × 通用办公 · 21 个场景全串联 · 企业微信是唯一入口。全天产物统一收敛为同一载体：一页企业微信文档。每一环都是「AI 先整理 → 人做决策 → AI 再执行」的人机回路：白底泳道是人，蓝底泳道是 AI。画布可横向拖动。","step":380,"leftPad":170,"bands":[{"name":"早间","from":0,"to":1,"tip":"双方 AI 各自备好早报"},{"name":"上午","from":2,"to":4,"tip":"拍板 → 备料 → 人决定"},{"name":"午前","from":5,"to":6,"tip":"AI 拉会 · 各方预备"},{"name":"午后","from":7,"to":8,"tip":"15 分钟短会 → 纪要闭环"},{"name":"傍晚","from":9,"to":10,"tip":"回报与审核 · 材料过人"},{"name":"晚间","from":11,"to":11,"tip":"统一整理 · 沉淀资料库"}],"expectedScenes":21},"lanes":[{"id":"boss","name":"老板 · 王总","type":"person","sub":"人 · 判断与拍板"},{"id":"bossai","name":"老板的 AI","type":"ai","sub":"AI · 归集 / 预备 / 回报"},{"id":"staff","name":"员工 · 小李","type":"person","sub":"人 · 确认 / 审核 / 规划"},{"id":"staffai","name":"员工的 AI（小李 / 小张）","type":"ai","sub":"AI · 备料 / 执行 / 沉淀"}],"nodes":[{"id":"n1a","seq":0,"lane":"bossai","role":"ai","w":230,"title":"早间简报 · 老板侧","desc":"归集昨夜企微消息、经营异常、资讯与三清日报；待拍板事项已附决策卡","scenes":["高管01","高管05","高管06","高管10","高管03"],"badge":["custom"],"prod":"📄 今日重点 5 条 · 企微文档","dialog":[{"r":"push","t":"主动推送 · 每天早间 · 企业微信"},{"r":"ai","t":"早安。昨夜企微 42 条群消息、28 份三清日报、内网经营数据已分析完（数据未出域）。<b>今日重点 5 条</b>：① A 方案比选（待您拍板，小李的 AI 已整理成一页决策卡附后）② 客户 C 续约 45 天倒计时 ③ 回款低于目标 12% ④ …… ⑤ ……"},{"r":"me","t":"第 1 条我看看就定，其他按老规矩分掉。"},{"r":"ai","t":"好。已按既有口径分发，第 3 条回款异常单独标了提醒。"}]},{"id":"n1b","seq":1,"lane":"staffai","role":"ai","w":230,"title":"早间简报 · 员工侧","desc":"员工的 AI 也有自己的早报：今日待办、日程、来自纪要的跟进项","scenes":["通用06"],"badge":["native"],"prod":"📄 今日待办清单 · 企微文档","dialog":[{"r":"push","t":"主动推送 · 每天早间"},{"r":"ai","t":"小李早。你的早报：今天 4 件待办（1 件来自昨晚项目纪要）、午后 1 个会；老板那边刚有个新任务派下来，稍后到。客户跟进消息的草稿我已拟好，你扫一眼就行。"}]},{"id":"n2","seq":2,"lane":"boss","role":"person","w":220,"title":"拍板 + 一句话派单","desc":"对着简报里附好的决策卡直接拍板；顺口一句「这个事你跟一下」，AI 建单派给责任人","scenes":["高管03","高管04"],"badge":["sys"],"prod":"决策记录 + 任务单","dialog":[{"r":"me","t":"方案 B 收益最高，但 6 周延期接不了——按 A 走。另外「新客户交付排期」这个事你跟一下。"},{"r":"ai","t":"好。方案 A 已确认，三个部门同步决策记录。<span class=\"hr\"></span>「交付排期」已建任务：责任人小李、截止本周四，已推给小李的 AI。"}]},{"id":"n3","seq":3,"lane":"staffai","role":"ai","w":230,"title":"员工 AI 备料","desc":"接到任务单：从部门知识库调历史资料，拆解任务生成执行方案，备齐等人确认","scenes":["通用06","高管04"],"badge":["native"],"prod":"📄 执行方案（待确认）· 企微文档","dialog":[{"r":"ai","t":"小李，新任务收到：交付排期核对。已从<b>部门知识库</b>调出上次同类项目的排期口径和 2 份纪要，5 个项目里预判 2 处撞线，执行方案已生成，等你确认。"},{"r":"me","t":"我看看。"}]},{"id":"n4","seq":4,"lane":"staff","role":"person","w":210,"title":"小李确认反馈","desc":"AI 的方案回到人这里：确认口径、改优先级——人决定，AI 执行","scenes":["高管04"],"badge":["native"],"prod":"确认指令 · 已派后台执行","dialog":[{"r":"me","t":"方案可以，B 项目那个撞线先让给交付急的。按这个跑。"},{"r":"ai","t":"好，优先级已调整。排期核对派给 WorkBuddy 后台执行，结果随傍晚的进度回报一起上去。"}]},{"id":"n5","seq":5,"lane":"staffai","role":"ai","w":230,"title":"AI 备料拉会","desc":"小李反馈后 AI 把会安排掉：发邀请、订会议室，议程和材料包同步给各方 AI","scenes":["通用07"],"badge":["sys"],"prod":"会议邀请 + 材料包","dialog":[{"r":"ai","t":"项目同步会我来约：查了各方日历，明天午后有共同空档，按 30 分钟发出邀请（材料已对齐，预计 15 分钟），会议室已订。<span class=\"hr\"></span>议程 + 材料包已同步给参会各方的 AI，请大家提前预备。"},{"r":"me","t":"可以，就这样。"}]},{"id":"n6","seq":6,"lane":"bossai","role":"ai","w":230,"title":"各方 AI 会前预备","desc":"各方的 AI 收到材料包各自消化：标出与自家相关的决策点，供老板会前速览","scenes":["高管02"],"badge":["native"],"prod":"📄 会前速览 · 决策点标注","dialog":[{"r":"push","t":"AI ↔ AI · 材料包已送达"},{"r":"ai","t":"收到材料包，已为老板标注：本场只需拍 <b>2 个决策点</b>（B 部门借调、上线提前一周的风险），其余材料各方 AI 已各自消化完毕，无需会上重讲。"}]},{"id":"n7","seq":7,"lane":"boss","role":"person","w":220,"title":"15 分钟短会","desc":"材料各方都提前看过，会议只拍剩下的 2 个决策点——原定 60 分钟","scenes":["高管02","通用07"],"badge":["native"],"prod":"会议结论 2 条 + 待办 4 条","dialog":[{"r":"time","t":"午后 · 项目会（原定 60 分钟）"},{"r":"ai","t":"决策点只剩 2 个：① B 部门人手借调 ② 上线提前一周的风险。"},{"r":"me","t":"借调同意，上线时间不动。散会。"},{"r":"ai","t":"已录音转写。结论 2 条、待办 4 条，马上出纪要。"}]},{"id":"n8","seq":8,"lane":"staffai","role":"ai","w":230,"title":"纪要自动闭环","desc":"纪要自动生成，待办写入各自 AI，文档归档进部门知识库","scenes":["高管02","通用07"],"badge":["native"],"prod":"📄 会议纪要 · 企微文档","dialog":[{"r":"ai","t":"纪要已生成：结论 2 条、待办 4 条（负责人 / 截止已写入各自待办），文档归档至部门知识库「项目 / 会议纪要」。需要发项目群吗？"},{"r":"me","t":"发吧。"}]},{"id":"n9","seq":9,"lane":"bossai","role":"ai","w":210,"title":"进度主动回报","desc":"后台执行结果加各任务进度，傍晚主动回报——不用老板开口追","scenes":["高管04"],"badge":["sys"],"prod":"📄 任务进度简报 · 企微文档","dialog":[{"r":"push","t":"主动推送 · 傍晚"},{"r":"ai","t":"任务进度：交付排期核对完成（2 处撞线已调整，小李已确认口径）；方案 A 三个部门已收到，B 部门提出人力缺口。"},{"r":"me","t":"B 部门的缺口让小李直接跟，不用再报我。"},{"r":"ai","t":"好，这条已记进口径：同类缺口默认小李对接。"}]},{"id":"n10","seq":10,"lane":"staff","role":"person","w":210,"title":"小李审核日清","desc":"AI 成稿的日清回到人这里确认后再发布——所有对外的材料都过人","scenes":["通用01"],"badge":["sys"],"prod":"📄 日清定稿 · 企微文档","dialog":[{"r":"push","t":"日清初稿已生成"},{"r":"ai","t":"今日日清初稿：产出文档 3 份、沟通 12 人、项目进展 2 条，约 480 字。你确认后我发布并归档。"},{"r":"me","t":"进展那条补一句 B 部门缺口的事，其他发吧。"},{"r":"ai","t":"已补。日清已发布，归档部门知识库，并汇入老板明早的简报。"}]},{"id":"n11","seq":11,"lane":"staffai","role":"ai","w":230,"title":"晚间整理 · 收口","desc":"全天产物统一归档知识库、待办同步到人，生成次日简报底稿——一天的闭环","scenes":["通用01","通用07"],"badge":["native"],"prod":"📄 归档完成 + 次日简报底稿","dialog":[{"r":"ai","t":"晚间整理完成：<b>归档</b>——决策记录、会议纪要、日清已进部门知识库；<b>同步</b>——明日 4 条待办已推给各自 AI；<b>备料</b>——次日简报底稿已生成，明早自动推送。<span class=\"hr\"></span>今天的事到这里闭环，明天从昨天沉淀的地方继续。"}]}],"links":[{"from":"n1a","to":"n2","type":"decision","label":"今日重点 · 待拍板"},{"from":"n1b","to":"n3","type":"task","label":"今日待办 · 已排入"},{"from":"n2","to":"n3","type":"task","label":"任务单 · 小李"},{"from":"n3","to":"n4","type":"task","label":"执行方案 · 待确认"},{"from":"n4","to":"n5","type":"info","label":"确认后的口径"},{"from":"n5","to":"n6","type":"info","label":"材料包 · 分发各方 AI"},{"from":"n6","to":"n7","type":"decision","label":"决策点 · 供会前速览"},{"from":"n7","to":"n8","type":"info","label":"录音转写"},{"from":"n8","to":"n10","type":"task","label":"待办回流 → 日清素材"},{"from":"n10","to":"n11","type":"info","label":"确认后的日清与材料"},{"from":"pool:deptpool","to":"n3","type":"asset","label":"调取历史资料"},{"from":"n11","to":"pool:deptpool","type":"asset","label":"统一归档"}],"skillLoop":{"sub":"这条闭环不发生在某一天里，而是嵌在每天的工作中持续滚动：集团 skill 库是底座，上方两侧分别是「沉淀入池」和「取用复用」——重复动作被 AI 识别、人确认口径后入库，其他成员的 AI 随时取用。贡献计入创新提报参考项。","left":{"icon":"🔍","title":"识别重复 → 沉淀 skill","scenes":["通用03"],"badge":["sys"],"desc":"AI 干活时自动发现重复动作，打包成 skill，人确认数据口径后发布入库","dialog":[{"r":"ai","t":"你这周做了 3 次「竞品对比」，动作完全一样：拉数据 → 对比表 → 出话术。我已打包成 skill「竞品对比 · 标准版」，提交集团库等你确认。"},{"r":"me","t":"发布吧，备注上数据口径用我们部门的。"},{"r":"ai","t":"已发布入池。"}]},"right":{"icon":"🤝","title":"同事的 AI 直接取用","scenes":["通用03"],"badge":["sys"],"desc":"10 分钟干完原本 2 小时的活，用的是沉淀时定好的口径","dialog":[{"r":"push","t":"集团 skill 库 · 通知"},{"r":"ai","t":"小张的 AI 刚取用了你发布的「竞品对比 · 标准版」，10 分钟跑完原本 2 小时的活，用的是你定的数据口径。本周累计被取用 6 次——这类贡献会计入季度创新提报的参考项。"}]},"base":{"icon":"⚙️","title":"集团 skill 库","scenes":[],"badge":["sys"],"desc":"重复动作 → 标准件：一次沉淀，全集团的 AI 都能取用。 库越厚，新活越轻","dialog":[]},"leftNote":"↓ 沉淀入池","rightNote":"↑ 按需取用","loopNote":"↩ 取用越多、沉淀越厚，库反过来让更多重复动作被识别——循环滚动"},"events":[{"side":"boss","title":"审批待办归集","scenes":["高管08"],"badge":["custom","sys"],"dep":["内部系统"],"desc":"多系统审批汇到一个入口：非财务类 AI 预审代批，财务类跳原系统","dialog":[{"r":"push","t":"主动推送 · 当前 9 条待审批"},{"r":"ai","t":"6 条非财务类我按规则预审完：5 条建议通过、1 条建议驳回（理由已拟）。3 条财务类涉付款，已生成跳转卡。"},{"r":"me","t":"过，驳回理由发我备份。"}]},{"side":"boss","title":"差旅行程安排","scenes":["高管11"],"badge":["sys"],"dep":["个人知识库"],"desc":"只说「下周去深圳两天」，偏好已在档，方案与提醒全备好","dialog":[{"r":"me","t":"下周去深圳两天。"},{"r":"ai","t":"3 套方案按你的出行习惯备好了（常住酒店、可免费取消），确认即订；行程单自动同步日历与提醒。"}]},{"side":"boss","title":"社交应酬准备","scenes":["高管12"],"badge":["native"],"dep":["个人知识库"],"desc":"见人前自动调人物档案：上次谈了什么、答应过什么、话题从哪切入","dialog":[{"r":"me","t":"明晚和 xx 总吃饭。"},{"r":"ai","t":"人物档案调好了：上次 3 个月前，你答应引荐的资源还没落实——建议先回应一句；话题从他新开的业务线切入。饭后说一句要点，我归档。"}]},{"side":"staff","title":"汇报材料生成","scenes":["通用02"],"badge":["native"],"dep":["个人知识库"],"desc":"按每位领导的偏好出稿，改过的反馈记进档案，下次直接对口径","dialog":[{"r":"me","t":"这份是给郭总的，帮我过一遍。"},{"r":"ai","t":"他的偏好是先结论后依据、一页以内。初稿好了，缺的数据标黄。你之前改过的反馈我都记着，下次直接按新口径来。"}]},{"side":"staff","title":"重复咨询应答","scenes":["通用04"],"badge":["native"],"dep":["个人知识库"],"desc":"数字分身先接待，答不了的整理好上下文等人回——人不在也不冷场","dialog":[{"r":"ai","t":"上午你开会时，分身替你接待了 3 个咨询：2 个答了（附知识库依据），1 个没把握，已整理好上下文等你回。"},{"r":"me","t":"那个我自己回。"},{"r":"ai","t":"背景贴在下面了。"}]},{"side":"staff","title":"出差报销申请","scenes":["通用05"],"badge":["sys"],"dep":["内部系统"],"desc":"流程入口、材料、标准核对其全自动，人只回一个字","dialog":[{"r":"ai","t":"下周一出差结束，报销材料已备齐（行程、发票 3 张），差旅标准核对无超标。回一个「报」就提交。"},{"r":"me","t":"报。"}]}],"cycles":[{"freq":"每周","title":"报表自动汇总","scenes":["通用08"],"badge":["sys"],"dep":["内部系统"],"desc":"多系统自动拉数、统一口径、异常标红，定时推送","dialog":[{"r":"push","t":"每周一早间 · 定时产出"},{"r":"ai","t":"活动周报已从 3 个系统拉完数，口径与上周一致，异常 1 处标红并附了可能原因。已推送你和 xx。"}]},{"freq":"每周","title":"健康趋势小结","scenes":["高管13"],"badge":["native"],"dep":["个人知识库"],"desc":"只看趋势和值得关注的变化；医疗判断仍由医生做","dialog":[{"r":"push","t":"每周日晚 · 健康小结"},{"r":"ai","t":"本周深睡比上周 +8%，静息心率平稳；上次体检两个异常指标趋势向好。复查约在下周四上午，前一天我会再提醒。"}]},{"freq":"每月","title":"创新提报初筛","scenes":["高管07"],"badge":["custom","sys"],"dep":["内部系统","集团 skill 库"],"desc":"AI 摘要分类打分，对照季度规划排 Top 名单，审核人只看筛过的","dialog":[{"r":"push","t":"每月初 · 提报截止"},{"r":"ai","t":"本月提报 86 条，初筛 Top 12 已对照本季度规划排好序。你只需要看 5 条强相关的，其余已分发各部门初审，3 天内汇总。"}]},{"freq":"每季","title":"绩效查看评价","scenes":["高管09"],"badge":["custom","sys"],"dep":["内部系统"],"desc":"结果 + 过程数据对照，异常分布标出，待评价主动推到企微","dialog":[{"r":"push","t":"每季度 · 评议期"},{"r":"ai","t":"待你评价 14 人。A 比例偏高 3 个点；4 人结果与过程数据有出入，已单独标出。校准 6 月 30 日截止，进度每周一提醒。"}]}],"pools":[{"id":"personal","name":"个人知识库","icon":"🗂","x":190,"w":300,"desc":"每个人的 AI 的记忆：偏好、人物档案、承诺、反馈","feed":["对话沉淀 · 随时写入","汇报反馈 · 沉淀成档案"],"use":["差旅偏好","社交人物档案","数字分身应答","汇报材料口径"]},{"id":"deptpool","name":"部门知识库","icon":"📚","x":2280,"w":340,"desc":"部门级公共资产：历史方案、纪要、排期口径、日清案例——AI 干活前先来这里翻资料","feed":["纪要归档","日清归档","晚间统一归档"],"use":["备料调历史资料","任务拆解调排期口径","新人问答","跨项目回溯"]},{"id":"systems","name":"内部系统","icon":"🏢","x":3480,"w":340,"desc":"三清 / 审批 / 绩效 / CRM / 创新提报——数据源与跳转，敏感数据不出域","feed":["审批 / 绩效 / 三清 / 提报数据"],"use":["早间简报","审批预审","报表拉数","绩效评议"],"note":"🔧 需系统打通 · ⚙️ 部分需定制"}],"legend":{"links":[{"type":"info","name":"信息流 · 摘要 / 材料 / 简报"},{"type":"task","name":"任务流 · 待办 / 派单 / 回流"},{"type":"decision","name":"决策流 · 等人拍板"},{"type":"asset","name":"资产流 · 沉淀 / 调取"}],"roles":[{"k":"ai","name":"AI 节点 · 整理与执行"},{"k":"person","name":"人节点 · 决策与确认"}],"badges":[{"k":"native","name":"✅ 企微原生能跑"},{"k":"sys","name":"🔧 需系统打通"},{"k":"custom","name":"⚙️ 需定制"}]}};
+
+/* ══════════ 布局常量与坐标计算 ══════════ */
+const STEP = DATA.meta.step, LPAD = DATA.meta.leftPad, BANDS = DATA.meta.bands;
+const MAXSEQ = Math.max(...DATA.nodes.map(n=>n.seq));
+const slotX = s => LPAD + s * STEP;           /* 每个 seq 的槽位起点 */
+const TICKS_H = 56, LANE_H = 192, LANE_GAP = 14, NODE_H = 164, POOL_GAP = 20, POOL_H = 116;
+const laneY = i => TICKS_H + i * (LANE_H + LANE_GAP);
+const poolY = TICKS_H + DATA.lanes.length * (LANE_H + LANE_GAP) - LANE_GAP + POOL_GAP;
+const CW = slotX(MAXSEQ) + STEP + 60;
+const CH = poolY + POOL_H + 26;
+
+const laneIdx = {}; DATA.lanes.forEach((l,i)=>laneIdx[l.id]=i);
+const nodeMap = {}; DATA.nodes.forEach(n=>{ nodeMap[n.id]=n; });
+const poolMap = {}; DATA.pools.forEach(p=>{ poolMap['pool:'+p.id]=p; });
+
+/* 节点在槽位内水平居中；同槽同泳道冲突由 build 校验拦截 */
+DATA.nodes.forEach(n=>{ n._x = slotX(n.seq) + (STEP - (n.w||210)) / 2; });
+
+/* ══════════ 渲染 ══════════ */
+const el = (html)=>{ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; };
+const esc = s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const badgeCls = b => b==='native'?'native':(b==='sys'?'sys':'custom');
+const badgeName = k => (DATA.legend.badges.find(x=>x.k===k)||{}).name || k;
+const badgesHtml = bs => (bs||[]).map(b=>`<span class="bdg ${badgeCls(b)}">${badgeName(b)}</span>`).join('');
+const scenesStr = s => (s||[]).join(' · ');
+
+function renderCanvas(){
+  const cv = document.getElementById('canvas');
+  cv.style.width = CW+'px'; cv.style.height = CH+'px';
+
+  /* 时段带标签 + seq 边界竖线 */
+  let th='';
+  BANDS.forEach(b=>{
+    const x=slotX(b.from), w=(b.to-b.from+1)*STEP;
+    th+=`<div class="bandtag" style="left:${x}px;width:${w}px"><b>${esc(b.name)}</b><span>${esc(b.tip||'')}</span></div>`;
+  });
+  for(let s=1;s<=MAXSEQ;s++){
+    th+=`<div class="gridline" style="left:${slotX(s)-6}px"></div>`;
+  }
+  document.getElementById('ticks').innerHTML=th;
+  document.getElementById('ticks').style.width=CW+'px';
+
+  /* 泳道 */
+  document.getElementById('laneWrap').innerHTML = DATA.lanes.map((l,i)=>`
+    <div class="lane ${l.type}" style="top:${laneY(i)}px;height:${LANE_H}px">
+      <div class="cap"></div>
+      <div class="lane-tag"><b>${esc(l.name)}</b><span>${esc(l.sub||'')}</span></div>
+    </div>`).join('');
+
+  /* 节点 */
+  DATA.nodes.forEach(n=>{
+    const y = laneY(laneIdx[n.lane]) + (LANE_H-NODE_H)/2;
+    const w = n.w||180;
+    const d = el(`<div class="node ${n.role}" data-id="${n.id}" style="left:${n._x}px;top:${y}px;width:${w}px;height:${NODE_H}px">
+      <div class="row1"><span class="tm">${esc(n.phase)}</span><span class="sc">${scenesStr(n.scenes)}</span></div>
+      <div class="tt">${esc(n.title)}</div>
+      <div class="ds">${esc(n.desc)}</div>
+      <div class="foot"><span class="pr">产物 · ${esc(n.prod)}</span><span class="bd">${badgesHtml(n.badge)}</span></div>
+    </div>`);
+    d.onclick=()=>openNode(n.id);
+    cv.appendChild(d); n._el=d; n._cy=y+NODE_H/2;
+  });
+
+  /* 地基池 */
+  const pb=document.getElementById('poolbar');
+  DATA.pools.forEach(p=>{
+    const c=el(`<div class="pool" data-id="pool:${p.id}" style="left:${p.x}px;top:${poolY}px;width:${p.w}px;height:${POOL_H}px">
+      <div class="pn"><span class="ic">${p.icon||'📦'}</span>${esc(p.name)}</div>
+      <div class="pd">${esc(p.desc)}</div>
+      <div class="pf">沉淀 / 取用闭环 · 点开详情</div>
+    </div>`);
+    c.onclick=()=>openPool(p.id);
+    pb.appendChild(c); p._el=c;
+  });
+
+  renderWires();
+}
+
+function anchor(id, side){ /* side: 'right'|'left'|'top'|'bottom' */
+  if(id.startsWith('pool:')){
+    const p=poolMap[id];
+    return {x:p.x, r:p.x+p.w, cx:p.x+p.w/2, top:poolY, bot:poolY+POOL_H};
+  }
+  const n=nodeMap[id];
+  return {x:n._x, r:n._x+(n.w||180), cx:n._x+(n.w||180)/2, top:n._cy-NODE_H/2, bot:n._cy+NODE_H/2, cy:n._cy};
+}
+
+const LINK_COLOR={info:'var(--blue)',task:'var(--teal)',decision:'var(--orange)',asset:'var(--purple)'};
+
+function renderWires(){
+  const svg=document.getElementById('wires');
+  svg.setAttribute('width',CW); svg.setAttribute('height',CH);
+  svg.style.width=CW+'px'; svg.style.height=CH+'px';
+  let defs='';
+  Object.entries(LINK_COLOR).forEach(([k,c])=>{
+    defs+=`<marker id="arr-${k}" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${c}"/></marker>`;
+  });
+
+  /* 同一目标多条入线：y 锚点错开 */
+  const inCnt={}, outCnt={}, pinCnt={}, poutCnt={};
+  DATA.links.forEach(l=>{ inCnt[l.to]=(inCnt[l.to]||0); outCnt[l.from]=(outCnt[l.from]||0); });
+
+  let body='';
+  DATA.links.forEach((l,i)=>{
+    const col=LINK_COLOR[l.type]||'var(--blue)';
+    const cls=`w ${l._lit?'lit':''}`;
+    const mk=`url(#arr-${l.type==='asset'?'asset':l.type})`;
+    const dash=(l.loop||l.style==='dashed')?` stroke-dasharray="7 6"`:'';
+
+    if(l.from.startsWith('pool:')||l.to.startsWith('pool:')){
+      /* 资产线：节点底部 ↔ 池顶部，经底部走廊走横平竖直的工程线 */
+      const isDown=!l.from.startsWith('pool:');
+      const nId=isDown?l.from:l.to, pId=isDown?l.to:l.from;
+      const n=anchor(nId), p=anchor(pId);
+      const pid=pId;
+      pinCnt[pid]=pinCnt[pid]||0; poutCnt[pid]=poutCnt[pid]||0;
+      let dPath, lx, ly;
+      if(isDown){
+        const gy=poolY-16;
+        const pin=p.cx-60+pinCnt[pid]*48; pinCnt[pid]++;
+        dPath=`M${n.cx},${n.bot} L${n.cx},${gy} L${pin},${gy} L${pin},${p.top}`;
+        lx=(n.cx+pin)/2; ly=gy-5;
+      }else{
+        const gy=poolY-8;
+        const pout=p.cx+60+poutCnt[pid]*48; poutCnt[pid]++;
+        dPath=`M${pout},${p.top} L${pout},${gy} L${n.cx},${gy} L${n.cx},${n.bot}`;
+        lx=(pout+n.cx)/2; ly=gy-5;
+      }
+      body+=`<path class="${cls}" data-link="${i}" d="${dPath}" stroke="${col}"${dash} marker-end="${mk}" stroke-linejoin="round"/>`;
+      body+=`<text x="${lx}" y="${ly}" fill="${col}" text-anchor="middle">${esc(l.label)}</text>`;
+      return;
+    }
+    if(l.loop){
+      /* 回环：从 from 底部走底部走廊到 to 底部 */
+      const a=anchor(l.from), b=anchor(l.to);
+      const gy=poolY-8;
+      const sx=a.cx, ex=b.cx;
+      body+=`<path class="${cls}" data-link="${i}" d="M${sx},${a.bot} L${sx},${gy} L${ex},${gy} L${ex},${b.bot}" stroke="${col}"${dash} marker-end="${mk}" stroke-linejoin="round"/>`;
+      body+=`<text x="${(sx+ex)/2}" y="${gy-6}" fill="${col}" text-anchor="middle">${esc(l.label)}</text>`;
+      return;
+    }
+    /* 常规：右缘 → 左缘（相邻环节短距线，无长折线） */
+    const a=anchor(l.from), b=anchor(l.to);
+    const k=inCnt[l.to]++; 
+    const y1=a.cy!==undefined?a.cy:(a.top+NODE_H/2);
+    const y2=(b.cy!==undefined?b.cy:(b.top+NODE_H/2))+(k>0?(k%2?10:-10):0);
+    const x1=a.r, x2=b.x;
+    const dx=Math.max(56,(x2-x1)/2);
+    const dPath=`M${x1},${y1} C${x1+dx},${y1} ${x2-dx},${y2} ${x2},${y2}`;
+    const t=0.42, f=3*t*t-2*t*t*t;
+    const mx=x1+(x2-x1)*f, my=y1+(y2-y1)*f;
+    body+=`<path class="${cls}" data-link="${i}" d="${dPath}" stroke="${col}"${dash} marker-end="${mk}"/>`;
+    body+=`<text x="${mx}" y="${my-8}" fill="${col}" text-anchor="middle">${esc(l.label)}</text>`;
+  });
+
+  svg.innerHTML=defs+body;
+  DATA.links.forEach((l,i)=>l._el=svg.querySelector(`[data-link="${i}"]`));
+}
+
+/* ---------- 图例 ---------- */
+function renderLegend(){
+  const L=DATA.legend;
+  document.getElementById('legend').innerHTML =
+    L.links.map(x=>`<span class="lg"><span class="sw" style="border-color:${LINK_COLOR[x.type]}"></span>${esc(x.name)}</span>`).join('')
+    + L.roles.map(x=>`<span class="lg"><span class="sq" style="background:${x.k==='ai'?'var(--blue)':'var(--orange)'}"></span>${esc(x.name)}</span>`).join('')
+    + L.badges.map(x=>`<span class="lg">${esc(x.name)}</span>`).join('');
+}
+
+  /* ---------- skill 闭环 ---------- */
+  function loopCard(s){
+    return `<div class="ic">${s.icon||'📌'}</div>
+      <div class="tt">${esc(s.title)}</div>
+      <div class="ds">${esc(s.desc)}</div>
+      <div class="r2">${(s.dep||[]).map(d=>`<span class="dep">${esc(d)}</span>`).join('')}${badgesHtml(s.badge)}</div>`;
+  }
+  function bindLoopCard(el, s){
+    el.onclick=()=>openSheet(`${s.icon||''} ${esc(s.title)}`,
+      `<span class="sc">${scenesStr(s.scenes)}</span>${badgesHtml(s.badge)}`,
+      (s.dialog&&s.dialog.length?chatBlock(s.dialog):`<div class="blk"><div class="lb"><i></i>它是什么</div><ul class="chain"><li><span>${esc(s.desc)}</span></li></ul></div>`));
+  }
+  function renderLoop(){
+    const L=DATA.skillLoop; if(!L) return;
+    const top=document.getElementById('loopTop');
+    top.innerHTML=`
+      <article class="loopcard" id="loopLeft">${loopCard(L.left)}</article>
+      <article class="loopcard" id="loopRight">${loopCard(L.right)}</article>`;
+    bindLoopCard(top.querySelector('#loopLeft'), L.left);
+    bindLoopCard(top.querySelector('#loopRight'), L.right);
+    document.getElementById('loopArrows').innerHTML=`
+      <span class="larr">${esc(L.leftNote||'↓ 沉淀入池')}</span>
+      <span class="lbase-t">━━━━━━━━━━</span>
+      <span class="larr">${esc(L.rightNote||'↑ 按需取用')}</span>`;
+    const base=document.getElementById('loopBase');
+    base.innerHTML=`
+      <div class="ic">${L.base.icon||'⚙️'}</div>
+      <div><div class="tt">${esc(L.base.title)}</div><div class="ds">${esc(L.base.desc)}</div></div>
+      <div class="r2">${badgesHtml(L.base.badge)}</div>`;
+    bindLoopCard(base, L.base);
+  }
+
+/* ---------- 事件带 / 周期带 ---------- */
+function renderBands(){
+  document.getElementById('eventsGrid').innerHTML=DATA.events.map((e,i)=>`
+    <article class="ecard" data-ev="${i}">
+      <div class="r1"><span class="pill ${e.side}">${e.side==='boss'?'老板侧':'员工侧'}</span><span class="sc">${scenesStr(e.scenes)}</span></div>
+      <div class="tt">${esc(e.title)}</div>
+      <div class="ds">${esc(e.desc)}</div>
+      <div class="r2">${(e.dep||[]).map(d=>`<span class="dep">${esc(d)}</span>`).join('')}${badgesHtml(e.badge)}</div>
+    </article>`).join('');
+  document.querySelectorAll('[data-ev]').forEach(c=>c.onclick=()=>openEvent(+c.dataset.ev));
+
+  document.getElementById('cyclesGrid').innerHTML=DATA.cycles.map((e,i)=>`
+    <article class="ecard" data-cy="${i}">
+      <div class="r1"><span class="pill freq">${esc(e.freq)}</span><span class="sc">${scenesStr(e.scenes)}</span></div>
+      <div class="tt">${esc(e.title)}</div>
+      <div class="ds">${esc(e.desc)}</div>
+      <div class="r2">${(e.dep||[]).map(d=>`<span class="dep">${esc(d)}</span>`).join('')}${badgesHtml(e.badge)}</div>
+    </article>`).join('');
+  document.querySelectorAll('[data-cy]').forEach(c=>c.onclick=()=>openCycle(+c.dataset.cy));
+}
+
+/* ---------- 抽屉 ---------- */
+function bubble(m){
+  if(m.r==='time') return `<div class="time">${m.t}</div>`;
+  if(m.r==='push') return `<div class="push">${m.t}</div>`;
+  const who=m.r==='me';
+  return `<div class="crow ${who?'me':'ai'}"><div class="cav">${who?'人':'AI'}</div><div class="bub">${m.t}</div></div>`;
+}
+function openSheet(title,subHtml,inner){
+  document.getElementById('shTitle').innerHTML=title;
+  document.getElementById('shSub').innerHTML=subHtml;
+  document.getElementById('shBody').innerHTML=inner;
+  document.getElementById('mask').classList.add('on');
+  document.getElementById('sheet').classList.add('on');
+  document.getElementById('sheet').scrollTop=0;
+  document.body.style.overflow='hidden';
+}
+function closeSheet(){
+  document.getElementById('mask').classList.remove('on');
+  document.getElementById('sheet').classList.remove('on');
+  document.body.style.overflow='';
+}
+function chatBlock(dialog){
+  return `<div class="blk"><div class="lb"><i></i>交互细节 · 它跑起来的样子</div><div class="chatbox" style="display:flex;flex-direction:column">${(dialog||[]).map(bubble).join('')}</div></div>`;
+}
+function chainBlock(id){
+  const name=id.startsWith('pool:')?poolMap[id].name:nodeMap[id].title;
+  const ins=DATA.links.filter(l=>l.to===id).map(l=>{
+    const f=l.from.startsWith('pool:')?poolMap[l.from].name:nodeMap[l.from].title;
+    return `<li class="in"><span class="ar">←</span><span>来自 <b>${esc(f)}</b> · ${esc(l.label)}</span></li>`;
+  });
+  const outs=DATA.links.filter(l=>l.from===id).map(l=>{
+    const t=l.to.startsWith('pool:')?poolMap[l.to].name:nodeMap[l.to].title;
+    return `<li class="out"><span class="ar">→</span><span>流向 <b>${esc(t)}</b> · ${esc(l.label)}</span></li>`;
+  });
+  if(!ins.length&&!outs.length) return '';
+  return `<div class="blk"><div class="lb"><i></i>在链条里 · 「${esc(name)}」的产物从哪来、到哪去</div>
+    <ul class="chain">${ins.join('')}${outs.join('')}</ul></div>`;
+}
+function openNode(id){
+  const n=nodeMap[id];
+  openSheet(esc(n.title),
+    `<span class="sc">${n.time} · ${scenesStr(n.scenes)}</span>${badgesHtml(n.badge)}`,
+    chatBlock(n.dialog)+chainBlock(id));
+}
+function openPool(pid){
+  const p=poolMap[pid];
+  const lists=(arr,verb)=>arr.map(x=>`<li class="${verb==='喂'?'out':'in'}"><span class="ar">${verb==='喂'?'↓':'↑'}</span><span>${esc(x)}</span></li>`).join('');
+  openSheet(`${p.icon||''} ${esc(p.name)}`,
+    `<span class="dep">地基层</span><span class="sc">沉淀 → 复用 的闭环底座</span>`,
+    `<div class="blk"><div class="lb"><i></i>它是干什么的</div><ul class="chain"><li><span>${esc(p.desc)}</span></li></ul></div>
+     <div class="blk"><div class="lb"><i></i>谁在喂它</div><ul class="chain">${lists(p.feed||[],'喂')}</ul></div>
+     <div class="blk"><div class="lb"><i></i>谁在取用</div><ul class="chain">${lists(p.use||[],'取')}</ul></div>
+     ${p.note?`<div class="blk"><div class="lb"><i></i>备注</div><ul class="chain"><li><span>${esc(p.note)}</span></li></ul></div>`:''}`);
+}
+function openEvent(i){ const e=DATA.events[i];
+  openSheet(esc(e.title),
+    `<span class="pill ${e.side}" style="font-size:11px">${e.side==='boss'?'老板侧':'员工侧'}</span><span class="sc">${scenesStr(e.scenes)}</span>${badgesHtml(e.badge)}`,
+    `<div class="blk"><div class="lb"><i></i>场景说明</div><ul class="chain"><li><span>${esc(e.desc)}</span></li></ul></div>`+chatBlock(e.dialog));
+}
+function openCycle(i){ const e=DATA.cycles[i];
+  openSheet(esc(e.title),
+    `<span class="pill freq" style="font-size:11px">${esc(e.freq)}</span><span class="sc">${scenesStr(e.scenes)}</span>${badgesHtml(e.badge)}`,
+    `<div class="blk"><div class="lb"><i></i>场景说明</div><ul class="chain"><li><span>${esc(e.desc)}</span></li></ul></div>`+chatBlock(e.dialog));
+}
+
+/* ---------- 播放一天 ---------- */
+let playTimer=[];
+function stopPlay(){ playTimer.forEach(t=>clearTimeout(t)); playTimer=[]; }
+function resetPlay(){
+  stopPlay();
+  DATA.nodes.forEach(n=>{ n._el.classList.remove('live','dim'); });
+  DATA.pools.forEach(p=>p._el.classList.remove('live'));
+  DATA.links.forEach(l=>l._el&&l._el.classList.remove('lit'));
+}
+function playDay(){
+  resetPlay();
+  const seq=[...DATA.nodes].sort((a,b)=>a._x-b._x);
+  DATA.nodes.forEach(n=>n._el.classList.add('dim'));
+  let t=250;
+  seq.forEach(n=>{
+    playTimer.push(setTimeout(()=>{
+      n._el.classList.remove('dim'); n._el.classList.add('live');
+      DATA.links.forEach(l=>{ if(l.to===n.id&&l._el) setTimeout(()=>l._el.classList.add('lit'),260); });
+    },t));
+    t+=950;
+  });
+  playTimer.push(setTimeout(()=>{
+    DATA.pools.forEach(p=>p._el.classList.add('live'));
+    DATA.links.forEach(l=>{ if(l.to.startsWith('pool:')&&l._el) l._el.classList.add('lit'); });
+  },t+200));
+}
+
+document.getElementById('playBtn').onclick=playDay;
+document.getElementById('resetBtn').onclick=resetPlay;
+document.getElementById('mask').onclick=closeSheet;
+document.getElementById('closeBtn').onclick=closeSheet;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSheet(); });
+
+renderLegend();
+renderCanvas();
+renderLoop();
+renderBands();
+</script>
+</body>
+</html>
