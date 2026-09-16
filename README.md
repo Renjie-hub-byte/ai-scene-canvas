@@ -4,9 +4,11 @@
 
 ## 在线预览
 
-**👉 直接打开：https://renjie-hub-byte.github.io/ai-scene-canvas/场景串联画布-v0.1.html**
+- **导航首页（推荐入口）**：https://renjie-hub-byte.github.io/ai-scene-canvas/
+- **场景串联画布**：https://renjie-hub-byte.github.io/ai-scene-canvas/场景串联画布-v0.1.html
+- **场景库（47 个场景拆解）**：https://renjie-hub-byte.github.io/ai-scene-canvas/场景库.html
 
-（也可下载本仓库中的 `场景串联画布-v0.1.html`，双击本地打开，无任何外部依赖）
+（也可下载本仓库中的 HTML，双击本地打开，无任何外部依赖）
 
 ## 这张画布怎么读
 
