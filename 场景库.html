@@ -1,0 +1,2673 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="B6LL0Xm3Mtc49N0jk69eKi">
+<head data-page-node-id="7jALdqwDyzQVvm6tNNd9wk">
+<meta charset="UTF-8" data-page-node-id="TT1nXG31FzA4G94KzE5e35">
+<meta name="viewport" content="width=device-width, initial-scale=1" data-page-node-id="QmnSFOxCXfyX6jyMENyDRN">
+<title>场景库 · 牛马通用 / 销售专场</title>
+<style>
+  :root{
+    --bg:#f5f6f8;
+    --surface:#ffffff;
+    --line:#e8eaef;
+    --line-soft:#f0f1f4;
+    --text:#1b1f27;
+    --text-2:#5b6270;
+    --text-3:#8b929f;
+    --accent:#2f6bf0;
+    --accent-soft:#eaf1ff;
+    --accent-2:#4b8bff;
+    --warn:#e2542c;
+    --warn-soft:#fdeee8;
+    --ok:#12886a;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(20,28,45,.04), 0 8px 24px rgba(20,28,45,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:15px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:56px 0 30px;text-align:center}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12.5px;letter-spacing:.08em;color:var(--text-3);
+    background:var(--surface);border:1px solid var(--line);
+    padding:5px 14px;border-radius:999px;margin-bottom:20px;
+  }
+  .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ok);display:block}
+  .hero h1{font-size:34px;line-height:1.35;font-weight:700;letter-spacing:-.01em}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero p{margin-top:12px;color:var(--text-2);font-size:15px;max-width:660px;margin-left:auto;margin-right:auto}
+
+  .hero-legend{
+    margin:20px auto 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;
+    font-size:12.5px;color:var(--text-3);
+  }
+  .hero-legend .bdg{margin-left:0}
+  .hero-legend .sp{width:1px;height:12px;background:var(--line);display:inline-block;margin:0 6px}
+
+  /* ---------- Tabs ---------- */
+  .tabbar{
+    position:sticky;top:0;z-index:40;
+    background:rgba(245,246,248,.86);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:1px solid transparent;
+    padding:14px 0;
+  }
+  .tabbar.stuck{border-bottom-color:var(--line)}
+  .tablist{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .tab{
+    border:1px solid var(--line);background:var(--surface);color:var(--text-2);
+    padding:9px 20px;border-radius:999px;font-size:14.5px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;
+    transition:.18s ease;font-family:inherit;
+  }
+  .tab:hover{border-color:#d3d8e2;color:var(--text)}
+  .tab .dot{width:7px;height:7px;border-radius:50%;background:#cfd4de;transition:.18s}
+  .tab.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(27,31,39,.14)}
+  .tab.active .dot{background:#fff}
+  .tab .cnt{font-size:12px;opacity:.72}
+  .tab.more{
+    border-style:dashed;color:var(--text-3);cursor:default;background:transparent;
+  }
+  .tab.more:hover{border-color:var(--line);color:var(--text-3)}
+
+  /* ---------- Section head ---------- */
+  .sec-head{padding:34px 0 6px}
+  .sec-head h2{font-size:20px;font-weight:700;display:flex;align-items:center;gap:10px}
+  .sec-head h2 span.bar{width:4px;height:18px;border-radius:2px;background:var(--accent);display:block}
+  .sec-head p{color:var(--text-2);font-size:14px;margin-top:8px;max-width:760px}
+
+  /* ---------- Cards ---------- */
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+    gap:16px;padding:22px 0 60px;
+  }
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 22px 18px;cursor:pointer;position:relative;overflow:hidden;
+    transition:.2s ease;display:flex;flex-direction:column;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#dbe0e9}
+  .card .no{
+    font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--accent);
+    background:var(--accent-soft);border-radius:8px;padding:3px 9px;display:inline-block;
+  }
+  .card h3{font-size:17px;font-weight:650;margin-top:13px;line-height:1.45}
+  .bdg{
+    display:inline-block;font-size:11px;font-weight:600;line-height:1.5;color:var(--accent);
+    background:var(--accent-soft);border-radius:5px;padding:2px 6px;margin-left:6px;vertical-align:2px;
+  }
+  .bdg.custom{
+    color:#9a5b12;background:#fff5e9;border:1px solid #f2dcbe;
+  }
+  .bdg.sys{color:#33578c;background:#eef3fb;border:1px solid #d3e0f2}
+  .bdg.life{color:#5b6474;background:#eef0f4;border:1px solid #e2e6ed}
+  .roles{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+  .role{
+    font-size:11.5px;font-weight:600;color:var(--accent);background:var(--accent-soft);
+    border-radius:20px;padding:2px 9px;line-height:1.6;
+  }
+  .sheet-head .sub .role{font-size:11px;padding:1px 8px;margin-left:6px}
+  .card .tag{color:var(--text-2);font-size:13.5px;margin-top:7px;min-height:40px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .chip{
+    font-size:12px;color:var(--text-2);background:#f4f5f8;border:1px solid var(--line-soft);
+    padding:3px 9px;border-radius:6px;max-width:100%;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .card .foot{
+    margin-top:16px;padding-top:13px;border-top:1px dashed var(--line);
+    display:flex;align-items:center;justify-content:space-between;
+    color:var(--text-3);font-size:13px;
+  }
+  .card .foot b{color:var(--accent);font-weight:600}
+  .card:hover .foot b{text-decoration:underline}
+
+  /* ---------- Modal ---------- */
+  .mask{
+    position:fixed;inset:0;background:rgba(17,22,34,.42);backdrop-filter:blur(3px);
+    z-index:100;opacity:0;pointer-events:none;transition:.22s ease;
+  }
+  .mask.on{opacity:1;pointer-events:auto}
+  .sheet{
+    position:fixed;top:0;right:0;bottom:0;width:min(720px,100%);
+    background:var(--bg);z-index:101;transform:translateX(102%);
+    transition:transform .3s cubic-bezier(.32,.72,0,1);
+    display:flex;flex-direction:column;box-shadow:-16px 0 48px rgba(15,22,40,.16);
+  }
+  .sheet.on{transform:translateX(0)}
+  .sheet-head{
+    background:var(--surface);border-bottom:1px solid var(--line);
+    padding:20px 28px;display:flex;align-items:flex-start;gap:14px;flex:none;
+  }
+  .sheet-head .no{
+    font-size:13px;font-weight:700;color:#fff;background:var(--accent);
+    border-radius:8px;padding:3px 10px;margin-top:4px;flex:none;
+  }
+  .sheet-head h2{font-size:19px;font-weight:650;line-height:1.45}
+  .sheet-head .sub{color:var(--text-2);font-size:13.5px;margin-top:4px}
+  .close{
+    margin-left:auto;flex:none;width:32px;height:32px;border-radius:8px;
+    border:1px solid var(--line);background:#fff;color:var(--text-2);
+    cursor:pointer;font-size:17px;line-height:1;font-family:inherit;
+  }
+  .close:hover{background:#f5f6f9;color:var(--text)}
+  .sheet-body{overflow-y:auto;padding:24px 28px 60px;flex:1}
+
+  .blk{margin-bottom:24px}
+  .blk .lb{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--text-3);letter-spacing:.04em;margin-bottom:10px}
+  .blk .lb i{width:5px;height:5px;border-radius:50%;background:var(--text-3);display:block}
+  .quote{
+    background:var(--surface);border:1px solid var(--line);border-left:3px solid #c9cfdb;
+    border-radius:10px;padding:14px 16px;color:var(--text-2);font-size:14px;line-height:1.8;
+  }
+  .plist{display:flex;flex-direction:column;gap:8px}
+  .plist li{
+    list-style:none;display:flex;gap:10px;background:var(--surface);
+    border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:14px;color:var(--text-2);line-height:1.6;
+  }
+  .plist li .k{
+    flex:none;width:19px;height:19px;border-radius:50%;font-size:11px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:3px;
+  }
+  .pain .k{background:var(--warn-soft);color:var(--warn)}
+  .hope .k{background:var(--accent-soft);color:var(--accent)}
+
+  /* ---------- 画面：聊天窗 ---------- */
+  .stage{
+    background:linear-gradient(180deg,#eef1f6 0%,#e9edf3 100%);
+    border:1px solid var(--line);border-radius:14px;padding:14px;
+  }
+  .stage .cap{font-size:12px;color:var(--text-3);text-align:center;margin-bottom:10px;letter-spacing:.05em}
+  .phone{
+    background:#fff;border-radius:12px;overflow:hidden;
+    box-shadow:0 2px 10px rgba(20,28,45,.07);border:1px solid #e3e7ee;
+  }
+  .phone-top{
+    display:flex;align-items:center;gap:10px;padding:11px 14px;
+    background:#fbfcfd;border-bottom:1px solid #eef0f4;
+  }
+  .ava{
+    width:30px;height:30px;border-radius:8px;flex:none;
+    background:linear-gradient(135deg,var(--accent-2),var(--accent));color:#fff;
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  }
+  .phone-top .nm{font-size:14px;font-weight:600;line-height:1.3}
+  .phone-top .st{font-size:11.5px;color:var(--ok);display:flex;align-items:center;gap:5px}
+  .phone-top .st i{width:5px;height:5px;border-radius:50%;background:var(--ok);display:block}
+  .phone-top .more-dots{margin-left:auto;color:#c3c8d2;font-size:15px;letter-spacing:2px}
+  .chat{padding:16px 14px;display:flex;flex-direction:column;gap:13px;background:#f7f8fa}
+  .time{align-self:center;font-size:11.5px;color:#a6acb8;background:#eceef2;padding:2px 10px;border-radius:999px}
+  .push{
+    align-self:center;font-size:11.5px;color:var(--warn);background:#fff;
+    border:1px solid #f3d6cb;padding:2px 10px;border-radius:999px;display:flex;gap:6px;align-items:center;
+  }
+  .push i{width:5px;height:5px;border-radius:50%;background:var(--warn);display:block}
+  .row{display:flex;gap:9px;align-items:flex-end;max-width:100%}
+  .row.me{flex-direction:row-reverse}
+  .row .pic{width:28px;height:28px;border-radius:8px;flex:none;background:#e6e9ef;color:#8b929f;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .row.me .pic{background:var(--accent-soft);color:var(--accent)}
+  .bub{
+    background:#fff;border:1px solid #e9ecf1;border-radius:4px 12px 12px 12px;
+    padding:11px 14px;font-size:13.8px;line-height:1.75;color:#262c38;max-width:78%;
+    box-shadow:0 1px 2px rgba(20,28,45,.04);
+  }
+  .row.me .bub{
+    background:var(--accent);border-color:var(--accent);color:#fff;border-radius:12px 4px 12px 12px;
+    box-shadow:0 2px 8px rgba(20,28,45,.16);
+  }
+  .bub b{font-weight:650}
+  .bub .hi{background:#fff5e8;padding:0 3px;border-radius:3px;color:#b4520f}
+  .bub ol,.bub ul{margin:6px 0 2px 0;padding-left:18px}
+  .bub li{margin:3px 0}
+  .bub .quote-min{
+    display:block;margin:8px 0 4px;padding:9px 12px;border-left:3px solid #dbe1ea;
+    background:#f7f8fb;border-radius:0 8px 8px 0;color:#4a5266;font-size:13.2px;
+  }
+  .bub .hr{height:1px;background:#eef0f4;margin:9px 0}
+  .bub .code{
+    display:block;margin:8px 0;padding:10px 12px;border:1px solid #e4e8ef;border-radius:8px;
+    background:#f6f8fb;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12.2px;line-height:1.65;color:#39435a;white-space:pre-wrap;word-break:break-all;
+  }
+  .bub.ask{max-width:90%}
+  .opts{display:flex;flex-direction:column;gap:6px;margin-top:11px;padding-top:11px;border-top:1px dashed #e2e7ef}
+  .opt{
+    width:100%;text-align:left;font-family:inherit;font-size:13.2px;line-height:1.55;color:#39435a;
+    background:#fff;border:1px solid #e0e5ee;border-radius:9px;padding:9px 12px;cursor:pointer;
+    display:flex;gap:9px;align-items:flex-start;transition:.15s;
+  }
+  .opt:hover{border-color:var(--accent);color:var(--accent)}
+  .opt .mk{
+    width:15px;height:15px;border-radius:50%;border:1.5px solid #d3d9e3;flex:none;margin-top:3px;
+    display:flex;align-items:center;justify-content:center;font-size:9px;color:transparent;
+  }
+  .opt.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .opt.on .mk{background:var(--accent);border-color:var(--accent);color:#fff}
+  .opt.on .mk::after{content:'✓'}
+  .opt-note{font-size:11.5px;color:#98a0ad;margin-top:7px}
+  .doc{
+    display:flex;gap:11px;align-items:center;background:#fff;border:1px solid #e9ecf1;
+    border-radius:10px;padding:11px 13px;margin-top:9px;max-width:260px;
+    box-shadow:0 1px 2px rgba(20,28,45,.04);
+  }
+  .doc .ic{
+    width:32px;height:32px;border-radius:7px;flex:none;background:var(--accent-soft);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
+  }
+  .doc .t{font-size:13.2px;font-weight:600;line-height:1.4;color:#262c38}
+  .doc .d{font-size:11.5px;color:#98a0ad;margin-top:1px}
+  .typing{display:flex;gap:4px;align-items:center;padding:2px 0}
+  .typing span{width:5px;height:5px;border-radius:50%;background:#b9c0cc;animation:bl 1.2s infinite}
+  .typing span:nth-child(2){animation-delay:.2s}
+  .typing span:nth-child(3){animation-delay:.4s}
+  @keyframes bl{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+  .phone-bot{
+    display:flex;align-items:center;gap:9px;padding:10px 14px;background:#fbfcfd;border-top:1px solid #eef0f4;
+  }
+  .phone-bot .inp{flex:1;background:#fff;border:1px solid #e6e9ef;border-radius:999px;padding:6px 14px;font-size:12.5px;color:#a8aeb9}
+  .phone-bot .btn{font-size:12px;color:#fff;background:var(--accent);border-radius:999px;padding:6px 14px;font-weight:600}
+
+  .fade{opacity:0;transform:translateY(8px)}
+  .grid.in .card{animation:up .34s cubic-bezier(.2,.7,.3,1) forwards}
+  @keyframes up{to{opacity:1;transform:none}}
+
+  /* ---------- 主题色 ----------
+     每个主题只声明 3 个变量：--accent（主色）/ --accent-2（渐变亮端）/ --accent-soft（浅底）。
+     新增角色 Tab 时，在这里加一行即可，其余样式全部自动跟随。 */
+  .tab.blue,.sec-head.blue,.card.blue,.sheet-head.blue,.sheet-body.blue{--accent:#2f6bf0;--accent-2:#4b8bff;--accent-soft:#eaf1ff}
+  .tab.orange,.sec-head.orange,.card.orange,.sheet-head.orange,.sheet-body.orange{--accent:#e2542c;--accent-2:#ff8a5c;--accent-soft:#fdeee8}
+  .tab.purple,.sec-head.purple,.card.purple,.sheet-head.purple,.sheet-body.purple{--accent:#6b4ee8;--accent-2:#8f74ff;--accent-soft:#efecff}
+  .tab.teal,.sec-head.teal,.card.teal,.sheet-head.teal,.sheet-body.teal{--accent:#0d9488;--accent-2:#2dd4bf;--accent-soft:#e6f6f4}
+  .tab.slate,.sec-head.slate,.card.slate,.sheet-head.slate,.sheet-body.slate{--accent:#475569;--accent-2:#8494ad;--accent-soft:#eef1f5}
+  .tab.pink,.sec-head.pink,.card.pink,.sheet-head.pink,.sheet-body.pink{--accent:#db2777;--accent-2:#f472b6;--accent-soft:#fdebf4}
+  .tab.green,.sec-head.green,.card.green,.sheet-head.green,.sheet-body.green{--accent:#16a34a;--accent-2:#4ade80;--accent-soft:#e8f7ee}
+  .tab.amber,.sec-head.amber,.card.amber,.sheet-head.amber,.sheet-body.amber{--accent:#b45309;--accent-2:#f59e0b;--accent-soft:#fdf3e7}
+
+  footer{border-top:1px solid var(--line);padding:26px 0 46px;color:var(--text-3);font-size:12.5px;text-align:center}
+
+  @media (max-width:720px){
+    .wrap{padding:0 16px}
+    .hero h1{font-size:26px}
+    .sheet-body{padding:18px 18px 50px}
+    .sheet-head{padding:16px 18px}
+    .bub{max-width:86%}
+  }
+</style>
+</head>
+<body data-page-node-id="4s3LXAsRQeXThdIyH15FiV">
+
+<div class="wrap" data-page-node-id="BLCf6P6MBsNozPC5aePPLF">
+  <div class="hero" data-page-node-id="r1zpu2bVkuVgXiAWMOfMJ4">
+    <div class="eyebrow" data-page-node-id="PP3d1wwnvD6aSLbZERHrVT"><i data-page-node-id="tuBgDnxIiwojKWiIV84LbN"></i>各大场景收集 · AI 落地场景库</div>
+    <h1 data-page-node-id="vyJ9jaSv3fGp8bg1f9YPUg">把「<em data-page-node-id="uXcz7TwDSbh0z5SbHKXX40">人肉干的活</em>」变成「一句话的事」</h1>
+    <p data-page-node-id="23m77TpJbUgMTwrQEEdDIz">五个视角：高管、通用办公、销售、运营、人力。每个场景都写清了现在的做法、卡在哪、期望 Agent 怎么接手。点开任意一张卡片，看它跑起来的样子。</p>
+    <div class="hero-legend"><span class="bdg custom">定制</span>需按公司现有系统 / 口径做定制，不是开箱即用<span class="sp"></span><span class="bdg sys">系统打通</span>依赖与内部系统对接后才能跑通<span class="sp"></span><span class="bdg life">生活场景</span>个人侧场景，不纳入办公主线</div>
+  </div>
+</div>
+
+<div class="tabbar" id="tabbar" data-page-node-id="5idDFzOrILR0TSmtGxk4pm">
+  <div class="wrap" data-page-node-id="Pbu0UV9nB34f84f0A0LAIE">
+    <div class="tablist" id="tablist" data-page-node-id="omIAtEq67DHpO4ObVu4oIB"></div>
+  </div>
+</div>
+
+<div class="wrap" data-page-node-id="j5RDR5mA47hfAVzHD4GyQe">
+  <div class="sec-head" id="secHead" data-page-node-id="k0rlY9Ix746aD1T3v7IWH0"></div>
+  <div class="grid" id="grid" data-page-node-id="Fy0nRHKTW8B038OXC43Fpq"></div>
+</div>
+
+<footer class="wrap" data-page-node-id="3onHV6i2qDun55gpB1fT8B">内容来源：企业微信智能文档《各大场景收集》· 高管移动端 AI 提效一体化方案 · 专业岗场景由框架推演补全 · 后续新增角色，在数据里加一个 Tab 即可</footer>
+
+<div class="mask" id="mask" data-page-node-id="Xx2GzG8FaMaDWQFbV9pJEe"></div>
+<aside class="sheet" id="sheet" data-page-node-id="eEuBIcWk33BkIZMgEccmvy">
+  <div class="sheet-head" id="sheetHead" data-page-node-id="N6L24FyaXmSxo8TL8dFzRq"></div>
+  <div class="sheet-body" id="sheetBody" data-page-node-id="C8bJe6AD1r3Sp6xmrasIcR"></div>
+</aside>
+
+<script>
+/* ============================================================
+   场景数据
+   扩展方式：往 TABS 数组里再加一项（复制任一对象改内容即可），
+   页面会自动生成 Tab、卡片和详情，不需要改任何渲染逻辑。
+   ============================================================ */
+const TABS = [
+  {
+    "id": "exec",
+    "name": "高管场景",
+    "theme": "purple",
+    "desc": "把高管的 AI 提效收敛到微信和企业微信，辅助高管洞察业务、决策和工作减负。",
+    "scenes": [
+      {
+        "no": "01",
+        "title": "每日消息归集",
+        "tag": "几百条消息归成「今日重点 5 条」",
+        "status": "消息、文件、PPT、报告太多，看不过来，也不知道什么最重要。",
+        "pains": [
+          "信息量远超人的处理速度，靠自己判断容易漏",
+          "材料散在企微、本地电脑、邮件，要来回翻",
+          "看完也不知道哪几件是需要自己拍板的"
+        ],
+        "hopes": [
+          "企微 / 个微收进来 → 智能助理先总结 → WorkBuddy 取本地材料深度分析 → 结果统一回企微",
+          "只给结论级输出：今日重点、这份材料的 3 个结论、这个项目最大的风险",
+          "需要拍板的事项单独标出来"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "今天有什么需要我看的？"
+          },
+          {
+            "r": "ai",
+            "t": "已汇总：企微 32 条群消息 + 3 份文件 + 本地 2 份材料。<span class=\"hr\"></span><b>今日重点 5 条</b><ol><li>……（需您拍板）</li><li>……（需您拍板）</li><li>……</li><li>……</li><li>……</li></ol>其中第 1、2 条需要您拍板。<span class=\"hr\"></span>另外，「xx 项目」目前最大的风险是 <span class=\"hi\">xx</span>，已附判断依据。需要我把第 1 条展开吗？"
+          },
+          {
+            "r": "ai",
+            "t": "这 5 条我打算这样处理，您确认一下口径：",
+            "opts": [
+              "第 1、2 条标为「待拍板」并提醒对应负责人补材料，其余 3 条直接归档",
+              "5 条全部推给您自己判断，我不代判",
+              "只留第 1 条，其余按常规流程走"
+            ],
+            "pick": 0,
+            "note": "（选定后同类消息默认沿用这个口径，随时可改）"
+          },
+          {
+            "r": "me",
+            "t": "按第一种"
+          },
+          {
+            "r": "ai",
+            "t": "好。第 1、2 条已挂上「待您拍板」，并提醒对应负责人今天 18:00 前把材料补齐。<span class=\"hr\"></span>其余 3 条已归档，需要的时候说一声我就能调出来。"
+          }
+        ]
+      },
+      {
+        "no": "02",
+        "title": "会议纪要闭环",
+        "tag": "老板只管听、问、判断，会后自动出结论和待办",
+        "status": "老板应该听、问、判断，不应该自己记；会后结论和待办容易散。",
+        "pains": [
+          "记笔记占用注意力，反而听不进去",
+          "结论、责任人靠会后回忆，容易变形",
+          "外部客户会面、移动场景企微覆盖不到"
+        ],
+        "hopes": [
+          "正式内部会用企微「记录面聊」，外部 / 移动场景用 YoooClaw 持续采集",
+          "会后自动回传企微：结论、待办、责任人、需要老板继续拍板的事项",
+          "长录音也能被回看与问询"
+        ],
+        "chat": [
+          {
+            "r": "time",
+            "t": "今天 15:30 · 会议刚结束"
+          },
+          {
+            "r": "push",
+            "t": "随身设备已采集完整录音"
+          },
+          {
+            "r": "ai",
+            "t": "会议已结束（14:00–15:30，外部客户会面）。<span class=\"hr\"></span><b>3 个结论</b>：……<br><b>5 条待办</b>（负责人 / 截止时间已同步到各自企微待办）：……<br><b>2 项需要您继续拍板</b>：……<span class=\"hr\"></span>已回传企微，需要我把纪要发到项目群吗？",
+            "doc": {
+              "t": "xx 会议纪要 · 09-07",
+              "d": "企业微信文档 · 含结论 / 待办 / 待拍板"
+            }
+          }
+        ]
+      },
+      {
+        "no": "03",
+        "title": "多方案决策卡",
+        "tag": "口径统一成一张「老板决策卡」",
+        "status": "多套方案格式、口径不同，老板要自己重新整理才能比较。",
+        "pains": [
+          "口径不统一，摆在一起也没法直接比",
+          "关键差异被格式差异淹没",
+          "不知道还缺什么信息、该问谁要"
+        ],
+        "hopes": [
+          "企微收集方案 → WorkBuddy 补本地材料 → 后台多方案比较",
+          "输出「老板决策卡」：A/B/C 差异、投入 / 收益 / 风险、还缺什么信息",
+          "明确列出老板需要决定的到底是哪几件事"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "三个部门的方案都交了，帮我比一下"
+          },
+          {
+            "r": "ai",
+            "t": "已统一口径（投入 / 收益 / 风险 / 周期 / 资源）：<span class=\"hr\"></span><b>A 方案</b>：投入低、见效快，但天花板低<br><b>B 方案</b>：收益最高，需追加 2 个人力，周期多 6 周<br><b>C 方案</b>：折中，风险点集中在交付排期<span class=\"hr\"></span>还缺 2 项信息（xx、yy），我已向对应部门发起补充。",
+            "doc": {
+              "t": "老板决策卡 · A/B/C 对比",
+              "d": "企业微信文档 · 一页看完"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "您需要决定的其实只有两件事：① 是否接受 6 周延期换最高收益；② 追加的人力从哪里出。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "04",
+        "title": "任务交办跟进",
+        "tag": "群里说一句，任务建好、进度自己回来",
+        "status": "「这个事你跟一下」说完容易散在聊天里，还要自己追进度。",
+        "pains": [
+          "口头交办没有沉淀，过两天谁都记不清",
+          "进度靠人追，追也不好意思追",
+          "电脑端才能做的事，手机上交代不了"
+        ],
+        "hopes": [
+          "一句话 → AI 识别事项 / 责任人 / 时间 → 自动生成待办或任务",
+          "需要电脑执行的交给 WorkBuddy 后台处理，结果回企微",
+          "老板只看到「任务已建立」「当前进度」「最终结果」三件事"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "这个事你跟一下"
+          },
+          {
+            "r": "ai",
+            "t": "已识别：<b>事项</b> xx｜<b>责任人</b> xx｜<b>截止</b> 本周五 18:00。<span class=\"hr\"></span>其中「xx」需要在电脑上处理，我会派给 WorkBuddy 后台执行。<span class=\"hr\"></span>建单前跟您确认一下，免得后面返工：",
+            "opts": [
+              "事项 / 责任人 / 截止都按我识别的来，直接建",
+              "责任人改成 xx 的直属下属，让他去落",
+              "先不建正式任务，只在群里 @ 一下，等他回复了再建"
+            ],
+            "pick": 0
+          },
+          {
+            "r": "me",
+            "t": "直接建，另外截止提前到周四"
+          },
+          {
+            "r": "ai",
+            "t": "已调整：截止改为本周四 18:00，并同步给对方。任务已建立，同步到他的企微待办。<span class=\"hr\"></span>其中「xx」已派给 WorkBuddy 后台执行。进度我会在周三、周五各回报一次。"
+          },
+          {
+            "r": "time",
+            "t": "周五 18:00"
+          },
+          {
+            "r": "ai",
+            "t": "任务已完成，结果如下：……<span class=\"hr\"></span>提示：「一句话自动建任务并跟进」建议列为重点配置 / 实测项，目前依赖企微的机器人接口与定时任务能力。"
+          }
+        ]
+      },
+      {
+        "no": "05",
+        "title": "经营数据洞察",
+        "tag": "原始数据留内网，只把异常推给老板",
+        "status": "报表很多，但真正需要老板关注的异常很少；经营原始数据又不能上公有云。",
+        "pains": [
+          "报表多，异常藏在里面找不到",
+          "原始经营数据敏感，不能传外部云",
+          "看细节耗时，但不看又不放心"
+        ],
+        "hopes": [
+          "原始数据留内网 → 本地 AI 做异常识别与趋势分析",
+          "企微 / 个微只接收摘要、异常和需要老板判断的结果",
+          "数据不出域，需要时再看细节"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "主动推送 · 每天 09:00"
+          },
+          {
+            "r": "ai",
+            "t": "今天有 <b>3 件经营事项需要关注</b>：<ol><li>xx 业务线回款低于目标 xx%</li><li>xx 区域成本环比上升 xx%（近 6 周首次）</li><li>xx 产品续约率跌破阈值</li></ol>其中第 2 项已附趋势与可能原因。<span class=\"hr\"></span>原始数据在<b>内网本地</b>完成分析，未上传任何外部云。需要看细节我再把完整报表推给您。"
+          },
+          {
+            "r": "ai",
+            "t": "这 3 件我打算这样跟，您定个口径：",
+            "opts": [
+              "只推结论，细节我要的时候再问",
+              "每天推一次，直到指标回到正常区间",
+              "第 1 项涉及回款，帮我约 xx 负责人明天上午聊 15 分钟"
+            ],
+            "pick": 1
+          }
+        ],
+        "badges": [
+          "定制",
+          "系统打通"
+        ]
+      },
+      {
+        "no": "06",
+        "title": "三清报表归集",
+        "tag": "几十份报表浓缩成一页，看完全集团",
+        "status": "各部门日报、周报、月报堆积，老板要翻几十份报表才知道集团整体运转状态。",
+        "pains": [
+          "报表数量大，翻不过来",
+          "各部门口径不一致，横向没法比",
+          "异常被平均值掩盖"
+        ],
+        "hopes": [
+          "三清系统打通，自动归集各部门日报 / 周报 / 月报",
+          "AI 提炼关键数据与异常，一页看完全集团运转状态",
+          "异常项自动标出并给出可能原因"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "这周各事业群情况怎么样？"
+          },
+          {
+            "r": "ai",
+            "t": "已归集 28 份周报。<span class=\"hr\"></span><b>整体</b>：营收 xx，环比 +xx%；<b>3 个需关注</b>：A 事业群回款低于目标 xx%、B 事业群交付平均延期 x 天、C 事业群新增订单创新高。<span class=\"hr\"></span>一页看板已生成，需要我把 B 事业群的延期明细拉出来吗？",
+            "doc": {
+              "t": "本周集团经营一页看板",
+              "d": "企业微信文档 · 28 份周报归集"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "B 事业群的延期我想追一下，追到什么深度您选：",
+            "opts": [
+              "只要结论：谁延期、延期多久、什么时候能补上",
+              "要原因：连同根因分析和责任人说明一起给",
+              "先不追，我自己问 B 事业群负责人"
+            ],
+            "pick": 0
+          }
+        ],
+        "badges": [
+          "定制",
+          "系统打通"
+        ]
+      },
+      {
+        "no": "07",
+        "title": "创新提报审核",
+        "tag": "AI 先筛一遍，老板只看 Top 名单",
+        "status": "每月大量创新提报涌入，审核人看不过来，审完也难跟踪后续推进。",
+        "pains": [
+          "提报量大、质量参差，人工初筛耗时",
+          "好点子容易被埋没",
+          "审核通过后推进情况无人跟踪"
+        ],
+        "hopes": [
+          "AI 自动摘要、分类、初筛打分，标出高潜力项",
+          "审核人只看 AI 筛过的 Top 名单",
+          "审核通过后自动跟踪推进进度并定期回报"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "主动推送 · 本月提报已截止"
+          },
+          {
+            "r": "ai",
+            "t": "本月本集团共有 <b>xx 条</b>提报，其中「产品创新」<b>x 条</b>、「流程优化」<b>y 条</b>、「技术预研」<b>z 条</b>。<span class=\"hr\"></span>需要您审核的有 <b>n 条</b>，其余为信息备案。<span class=\"hr\"></span>根据公司本季度规划（重点方向：xx / xx），您可重点看的提报如下：<br>①《xx》—— 直接支撑本季度 xx 目标<br>②《xx》—— 已在 xx 部门小范围验证，具备复制条件<br>③《xx》—— 投入小、见效快，但需确认资源是否到位"
+          },
+          {
+            "r": "ai",
+            "t": "AI 初筛后 <b>Top 12</b> 进入待审（判断依据：可行性 / 预期收益 / 资源需求），已附初筛评分和摘要。",
+            "doc": {
+              "t": "本月创新提报 · Top 12",
+              "d": "企业微信文档 · 含初筛评分"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "这批提报我打算这样处理，您确认一下：",
+            "opts": [
+              "Top 12 逐条推给我审，其余按「已阅」归档",
+              "只推与本季度规划强相关的 5 条，其余分发给分管部门初审",
+              "按分类先推给对应部门负责人，我只看他们筛上来的"
+            ],
+            "pick": 1
+          },
+          {
+            "r": "me",
+            "t": "按第二种"
+          },
+          {
+            "r": "ai",
+            "t": "好。已按本季度规划匹配度排序，先推 5 条给您；其余 xx 条已分发给对应部门初审，3 天内汇总回来。<span class=\"hr\"></span>上月通过的 5 项当前进度：3 项正常、<span class=\"hi\">2 项滞后</span>（已提醒负责人，并同步了卡点）。"
+          }
+        ],
+        "badges": [
+          "定制",
+          "系统打通"
+        ]
+      },
+      {
+        "no": "08",
+        "title": "审批待办归集",
+        "tag": "多系统待办汇到一个入口，非财务类可代批",
+        "status": "审批待办散在多个系统，老板要在系统之间来回切。",
+        "pains": [
+          "入口多，不知道今天还欠哪些审批",
+          "各系统格式不一，来回切上下文成本高",
+          "财务类涉及付款，不能简单代批"
+        ],
+        "hopes": [
+          "多系统审批待办统一归集到企微",
+          "非财务类 AI 可代批，附规则依据",
+          "财务类跳转原系统处理，老板只在关键节点介入"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "主动推送 · 当前 9 条待审批"
+          },
+          {
+            "r": "ai",
+            "t": "其中 <b>6 条非财务类</b>：我已按规则预审，5 条建议通过、1 条建议驳回（理由：超出预算且无补充说明）。<br><b>3 条财务类</b>：涉及付款，需您跳转原系统确认。<span class=\"hr\"></span>要不要先批量处理那 5 条建议通过的？驳回那条需要您先确认理由。",
+            "opts": [
+              "5 条一起通过，驳回那条我自己写理由",
+              "5 条一起通过，驳回理由用你拟的那版",
+              "先别动，9 条我都要看一遍"
+            ],
+            "pick": 1
+          },
+          {
+            "r": "me",
+            "t": "按第二种，驳回理由发我先看看"
+          },
+          {
+            "r": "ai",
+            "t": "理由拟好了：「本次申请超出年度预算且未附情况说明，建议补充说明后重新提交」。<span class=\"hr\"></span>您回一个「发」我就提交。<span class=\"hr\"></span>另外 3 条财务类涉及付款，已生成跳转卡片，点一下直接进原系统。"
+          }
+        ],
+        "badges": [
+          "定制",
+          "系统打通"
+        ]
+      },
+      {
+        "no": "09",
+        "title": "绩效查看评价",
+        "tag": "结果和过程一起看，待评价的推到面前",
+        "status": "绩效数据都在绩效系统里，评审季要逐个部门点开看；等级分布靠人工拉表比对，评价意见线下收集，容易堆到截止前几天。",
+        "pains": [
+          "绩效结果和日常过程数据脱节，只有结论没有上下文",
+          "等级分布靠人工统计，跨部门口径不一致",
+          "待评价项没有提醒，容易拖到截止前集中处理",
+          "强制分布、跨部门校准这些规则全靠人记"
+        ],
+        "hopes": [
+          "按组织树汇总绩效结果与等级分布，异常分布自动标出",
+          "结合过程数据（项目交付、客户反馈、协作评价）给评价参考",
+          "待我评价的项主动推到企微，可直接填写提交",
+          "跨部门校准时给出同职级横向对比，辅助拉齐尺度"
+        ],
+        "badges": [
+          "定制",
+          "系统打通"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "主动推送 · 本季度绩效评议已开始"
+          },
+          {
+            "r": "ai",
+            "t": "本季度共 xx 人参与，其中需要您评价 / 校准的 <b>xx 人</b>（含 3 位下级管理者提交的评价）。<span class=\"hr\"></span>当前分布：A xx%、B xx%、C xx% —— 与集团参考分布相比，<span class=\"hi\">A 比例偏高 x 个百分点</span>，主要集中在 xx 部门。<span class=\"hr\"></span>另外筛出 <b>4 人</b>的结果与过程数据存在明显出入（例如 xx：交付评分高，但期间有 2 次客户投诉），已单独标出。",
+            "doc": {
+              "t": "本季度绩效分布 · 待评价清单",
+              "d": "绩效系统 · 含过程数据对照"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "这次评议我打算这样安排，您看按哪种走：",
+            "opts": [
+              "先只推「结果有出入」的 4 人，其余按建议等级走",
+              "按部门推，每个部门一次推完",
+              "需要我评价的 xx 人一次全推，我自己排优先级"
+            ],
+            "pick": 0,
+            "note": "（涉及个人绩效，所有内容仅您可见，我不会对外同步）"
+          },
+          {
+            "r": "me",
+            "t": "按第一种"
+          },
+          {
+            "r": "ai",
+            "t": "好。这 4 人的过程数据、评价参考和建议意见已推给您，其余人的建议等级我都生成好了，您随时说「下一批」就继续。<span class=\"hr\"></span>提醒一句：校准 x 月 x 日截止，按现在的进度还剩 xx 人未评，刚好卡线。要不要把提醒提前到每周一？",
+            "doc": {
+              "t": "4 人 · 绩效与过程数据对照",
+              "d": "企业微信文档 · 含建议评价意见"
+            }
+          }
+        ]
+      },
+      {
+        "no": "10",
+        "title": "前沿资讯定制",
+        "tag": "缺的不是信息，是筛选信息的时间",
+        "status": "老板缺的不是信息，而是筛选信息的时间。",
+        "pains": [
+          "信息过载，看不过来",
+          "通用新闻与自己关注的方向不匹配",
+          "没有固定时间看，容易断"
+        ],
+        "hopes": [
+          "企微记录长期关注方向与临时感兴趣的主题",
+          "后台研究 / 搜索类 Agent 自动搜集、去重、总结",
+          "每天固定时间只推「今天最值得知道的 5 件事」"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "主动推送 · 每天 08:30"
+          },
+          {
+            "r": "ai",
+            "t": "今天最值得知道的 5 件事（按您关注的 xx、yy 方向筛选）：<ol><li>……（与您关注的 xx 强相关）</li><li>……</li><li>……</li><li>……</li><li>……</li></ol>已自动去重，来源已附。需要我把第 1 条展开成详细简报吗？"
+          },
+          {
+            "r": "ai",
+            "t": "后面这类资讯我打算这样推，您看合不合适：",
+            "opts": [
+              "每条给一句话结论 + 一句「跟我们有什么关系」，不展开",
+              "只推标题和来源，我自己挑着看",
+              "按方向分好类，同一方向攒够 3 条再一起推"
+            ],
+            "pick": 0
+          },
+          {
+            "r": "me",
+            "t": "按第一种。另外第 3 条也留意一下，后面帮我持续跟踪"
+          },
+          {
+            "r": "ai",
+            "t": "好的，第 3 条已加入长期关注，后续有进展我单独提醒，不再混在日报里。"
+          }
+        ],
+        "badges": [
+          "定制"
+        ]
+      },
+      {
+        "no": "11",
+        "title": "差旅行程安排",
+        "tag": "只说「下周去深圳两天」，方案和提醒都备好",
+        "status": "航班、酒店、路线、天气、会议地点信息分散，临时变化多。",
+        "pains": [
+          "信息分散在多个平台，每次重新查",
+          "临时变动通知不及时",
+          "个人偏好每次都要重说一遍"
+        ],
+        "hopes": [
+          "企微 / 个微语音记录出行需求、人物与会议时间、长期偏好",
+          "后台携程 / 地图 / 手机系统级 Agent 查机票、酒店、路线并预订",
+          "只说一句话，后续方案和提醒由系统准备好"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "下周去深圳两天"
+          },
+          {
+            "r": "ai",
+            "t": "好，深圳 2 天。我按您的出行习惯拟了 3 套，您先选一套，我再动手订：<span class=\"quote-min\">① 早去晚回：周二 09:15 去 / 周三 20:30 回 —— 白天完整两天<br>② 早去早回：周二 09:15 去 / 周三 12:40 回 —— 周三下午能回公司<br>③ 周一下午走：周一 16:40 去 / 周三 20:30 回 —— 周一晚上可以先见一面</span>三套都按您常住的 xx 酒店、可免费取消的房锁定，价格都在差旅标准内。"
+          },
+          {
+            "r": "ai",
+            "t": "行程定了之后，票和房我打算这样订：",
+            "opts": [
+              "机票 + 酒店一起订，都选可免费取消的",
+              "只订机票，酒店我自己定",
+              "先发我看一眼，确认了再下单"
+            ],
+            "pick": 0,
+            "note": "（涉及付款的动作我一律先问您，不会自己下单）"
+          },
+          {
+            "r": "me",
+            "t": "按第一种，酒店换个离客户近的"
+          },
+          {
+            "r": "ai",
+            "t": "好。酒店改到客户公司附近（到会议地点 8 分钟），周二 09:15 去 / 周三 20:30 回，机票和酒店都已订好，都可免费取消。<span class=\"hr\"></span>差旅标准核对过了：机票 xx 元、酒店 xx 元 / 晚，都在标准内，报销单据我会自动归好。<span class=\"hr\"></span>周二 07:30 提醒您出发，航班有变动第一时间通知。",
+            "doc": {
+              "t": "深圳出差 · 行程单",
+              "d": "企业微信文档 · 含机票 / 酒店 / 行程"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "还有一处想跟您确认：周三 20:30 落地，到市区约 40 分钟，到家估计 22:00 以后。",
+            "opts": [
+              "就这样，晚点没事",
+              "改到 18:00 那班，早点到家",
+              "改成周四上午回，多待一晚"
+            ],
+            "pick": 0
+          }
+        ],
+        "badges": [
+          "生活场景",
+          "系统打通"
+        ]
+      },
+      {
+        "no": "12",
+        "title": "社交应酬准备",
+        "tag": "见人前自动拿到「上次谈了什么、这次该关注什么」",
+        "status": "见的人多，上次聊什么、对方关注什么、自己答应了什么容易忘。",
+        "pains": [
+          "人物信息全靠记忆，久了就模糊",
+          "答应过的事没有沉淀，容易失信",
+          "见前准备来不及，见面只能寒暄"
+        ],
+        "hopes": [
+          "会后直接语音记录人物、重点、判断、承诺",
+          "长期按人物 / 项目沉淀成结构化人物档案",
+          "见前自动生成人物简报与建议话题切入点"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "明天晚上和 xx 总吃饭"
+          },
+          {
+            "r": "ai",
+            "t": "已调取人物档案：<b>xx 总</b>（xx 公司 CEO）。<span class=\"hr\"></span>上次见面 3 个月前，当时谈到 xx；<span class=\"hi\">您答应帮他引荐 xx 资源，目前尚未落实</span>——建议这次先主动回应一句。他近期公开关注 xx。<span class=\"hr\"></span>建议话题切入点：从他们新开的 xx 业务线聊起。<span class=\"hr\"></span>饭后您说一句今天的要点，我直接归档到他的人物档案里。"
+          },
+          {
+            "r": "ai",
+            "t": "您答应帮他引荐 xx 资源、目前还没落实这件事，饭前想怎么处理：",
+            "opts": [
+              "饭前我先发个消息，先有个交代",
+              "饭桌上当面说，帮我准备一句自然点的说法",
+              "先不提，等他先开口"
+            ],
+            "pick": 1,
+            "note": "（我只提醒和准备，发不发由您定）"
+          },
+          {
+            "r": "me",
+            "t": "第二种，给我一句说法"
+          },
+          {
+            "r": "ai",
+            "t": "可以这样说：「上次说的 xx 资源我一直在惦记，这两天正好理顺了，下周我把人拉个群。」<span class=\"hr\"></span>说明：这样说既回应了，也给自己留了缓冲；如果对方当场追问细节，您可以直接说「细节我周一发你」。<span class=\"hr\"></span>饭后您说一句今天的要点，我直接归档进他的人物档案。"
+          }
+        ],
+        "badges": [
+          "生活场景"
+        ]
+      },
+      {
+        "no": "13",
+        "title": "健康趋势解读",
+        "tag": "日常只看趋势和值得关注的变化",
+        "status": "体检、睡眠、运动数据很多，平时没人持续整理。",
+        "pains": [
+          "数据多但没人解读，看不懂指标",
+          "趋势变化没人提醒，发现时已经晚了",
+          "医疗判断不能交给 AI，边界需要清楚"
+        ],
+        "hopes": [
+          "企微 / 个微记录个人关注项、习惯和需要长期跟踪的事项",
+          "后台专业健康工具解读报告，日常只看趋势与值得关注的变化",
+          "医疗判断仍由医生完成，AI 只做整理与提醒"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "主动推送 · 本周健康小结"
+          },
+          {
+            "r": "ai",
+            "t": "下面这一步涉及您的健康数据，我不擅自处理，您来定：",
+            "opts": [
+              "只留在本地，谁都不发",
+              "发给家庭医生，并帮我约一次复查",
+              "帮我约复查就行，报告我自己带过去"
+            ],
+            "pick": 2,
+            "note": "（健康数据默认不外发，除非您明确同意）"
+          },
+          {
+            "r": "me",
+            "t": "第三种，报告我自己带"
+          },
+          {
+            "r": "ai",
+            "t": "好。已约 x 月 x 日上午 xx 医院 xx 科，到点前一天我再提醒一次。<span class=\"hr\"></span>报告我整理成一页纸：两次异常指标的对比、趋势、以及建议问医生的 3 个问题，您直接带着去。<span class=\"hr\"></span>原始数据不会外发，这页纸也只存在您本地。"
+          }
+        ],
+        "badges": [
+          "生活场景"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "general",
+    "name": "通用办公",
+    "theme": "blue",
+    "desc": "全员都躲不开的日常办公：写总结、做汇报、开会、报销、追待办、找资料。共性痛点是「信息散、重复多、靠人肉」。",
+    "scenes": [
+      {
+        "no": "01",
+        "title": "三清自动成稿",
+        "tag": "各端口信息自动汇总，定时成稿发布",
+        "status": "要去各端口搜集信息（做过的文档、聊过的天，微信、企业微信、电话、短信……），自己总结再填写。",
+        "pains": [
+          "各端口信息繁杂，每天整理很费时",
+          "端口多，容易遗漏信息",
+          "每次写的格式都不固定"
+        ],
+        "hopes": [
+          "用一个 Agent 或工作流串起所有端口，定时整理、总结、生成文案",
+          "最终按日 / 周 / 月定时发布"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "请给我写今天的日清"
+          },
+          {
+            "r": "ai",
+            "t": "好的，查到：<ol><li>今日产出文档 xx</li><li>今日在微信沟通 x 人，关于 xx</li><li>今日在企业微信沟通 x 人，关于 xx</li><li>发现今日 xx 项目有新进展 xx</li></ol><span class=\"hr\"></span>整理中…… 您的今日日清如下："
+          },
+          {
+            "r": "ai",
+            "t": "已按您上周用过的格式生成，可直接发布。",
+            "doc": {
+              "t": "今日日清 · 09-07",
+              "d": "企业微信文档 · 约 480 字"
+            }
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "02",
+        "title": "汇报材料生成",
+        "tag": "按领导偏好出稿，反馈还能沉淀成档案",
+        "status": "要给不同领导汇报不同的事，每位领导关注点不一样、思路不一样，反复改；汇报要用的信息也散落各处，收集困难。",
+        "pains": [
+          "领导的思路很难完全跟上",
+          "因为 1 导致反复返工",
+          "和日清一样，信息散"
+        ],
+        "hopes": [
+          "汇报后的反馈被整理进 Agent 记忆与「对人的档案」，下次产出可参考",
+          "各类信息被统一收集和整理",
+          "根据反馈快速迭代，提升返工效率"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "这份汇报是要给 xx 领导的，你帮我按他的偏好优化一下"
+          },
+          {
+            "r": "ai",
+            "t": "好的，xx 领导过往的反馈有：<b>xx、yy、zz</b>。这份汇报应该 <span class=\"hi\">先讲结论和数据</span>，还差 <b>xxxx</b> 这部分信息，我可以帮您整理，需要吗？我先产出："
+          },
+          {
+            "r": "ai",
+            "t": "初稿已生成，缺的那部分我标黄了，您补一句我就填进去。",
+            "doc": {
+              "t": "给 xx 领导的汇报",
+              "d": "企业微信文档 · 等待补充中…"
+            }
+          }
+        ]
+      },
+      {
+        "no": "03",
+        "title": "生成和分享skill",
+        "tag": "做过几次就自动沉淀成 Skill / 工具",
+        "status": "有大量有固定流程、逻辑、标准、边界的事情：做调查、收数据、做分析等。希望 Agent 能自己沉淀成工具，不用每次重做。",
+        "pains": [
+          "重复性劳动怎么被解构和沉淀",
+          "员工自己开发工具的能力门槛",
+          "有些工具需要部署，没有云空间"
+        ],
+        "hopes": [
+          "Agent 自己沉淀工作流（Hermes 或基于 LangFlow 的开发）",
+          "提供公司内「工具广场」，按使用数促进员工减负",
+          "自己的 Agent 能去广场找现成功能，直接用或稍改就用"
+        ],
+        "chat": [
+          {
+            "r": "ai",
+            "t": "你这项工作其实已经做过几次了，我给你沉淀成 skill 吧，顺便开发一个脚本，帮你自动化完成。"
+          },
+          {
+            "r": "me",
+            "t": "你做吧。也可以参考看看，公司里有没有已经开发好能用的？或者简单改改就能用的"
+          },
+          {
+            "r": "ai",
+            "t": "搜到 <b>xx</b> 和 <b>yy</b>，由 x 同事贡献，本周已被下载 xx 次。我看看详细……嗯，很符合你的需求，只需要稍微改一下数据参数格式。执行中……<span class=\"hr\"></span>完成，以后你和我说一句「给我做一下 xxx」，我会自动执行。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "04",
+        "title": "重复咨询应答",
+        "tag": "数字分身先接待，人在忙也不冷场",
+        "status": "总有人来问同样的事，对被问的人来说，很多解答是重复的；人一忙就回不过来。",
+        "pains": [
+          "重复询问和处理占用时间精力",
+          "被问的人如果在忙，不能及时响应"
+        ],
+        "hopes": [
+          "自动沉淀个人知识库 + 数字分身",
+          "被问讯时优先由数字人接待，本人有空再根据结果补充回复"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "你好，我问一下，xx 项目的 x 事情怎么介入，需要参考什么？"
+          },
+          {
+            "r": "ai",
+            "t": "您好，我的主人现在不在，不过您这个问题，我用现有知识可以解答：<span class=\"hr\"></span>xx 项目的 xx 事情，目前进展是 xx，您可以 <b>xxxx</b>。以下是参考信息："
+          },
+          {
+            "r": "ai",
+            "t": "已把相关资料打包，需要我直接发到您邮箱吗？",
+            "doc": {
+              "t": "xx 项目介入指南",
+              "d": "来自知识库 · 最近更新 3 天前"
+            }
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "05",
+        "title": "出差报销申请",
+        "tag": "流程入口、材料、权限，一句话搞定",
+        "status": "报销、出差、申请权限等内部流程，入口、对接人、要求散落各地，要挨个问、按格式填，申请人和审核人都消耗。",
+        "pains": [
+          "流程和权限入口散乱、描述不清，要到处问人",
+          "各类事项的申请格式和材料差异大，得现场咨询"
+        ],
+        "hopes": [
+          "和自己 Agent 说一句想干什么，它去走流程、写材料",
+          "需要咨询时走场景四，先和对方的数字分身沟通"
+        ],
+        "chat": [
+          {
+            "r": "ai",
+            "t": "您好，下周一即将结束出差，是否为您提报报销流程？同时，xx 事情在实际使用中需要 <b>xx 权限</b>，是否帮您一起申请？"
+          },
+          {
+            "r": "me",
+            "t": "需要，做吧"
+          },
+          {
+            "r": "ai",
+            "t": "报销所需材料整理中…… xx 权限申请中……<span class=\"hr\"></span>您还需要提供 x 发票一张，截图和 PDF 都可以，发我就行。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "06",
+        "title": "待办识别跟进",
+        "tag": "自动识别、临期提醒、部门看板一目了然",
+        "status": "个人待办散落在微信、企业微信、口头、邮件、企微待办里，靠人脑或记事本记；部门负责人要统筹多个项目和人，缺统一看板，临时派下来的活容易淹没。",
+        "pains": [
+          "待办散落多入口，临近截止才发现没做",
+          "负责人缺全局视角，只能挨个问进度",
+          "个人待办和部门待办没打通，统计 / 复盘 / 分派都麻烦",
+          "口头或消息里临时派的事容易漏"
+        ],
+        "hopes": [
+          "Agent 主动从对话 / 邮件 / 纪要里识别待办并确认「要不要挂到您的待办，截止 xx」",
+          "临近截止自动提醒，过期标红；每天早上「今天要做什么」播报",
+          "个人与部门待办双向流转，负责人可一键分派",
+          "部门可视化看板：按项目 / 人 / 截止时间多维查看"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "今天还有什么没做完的？明天要交的东西有哪些？"
+          },
+          {
+            "r": "ai",
+            "t": "您今天还有 3 件事未办：<ol><li>xx 报告（今天 18:00 前，已超 50%）</li><li>xx 回复（明天 12:00 前）</li><li>xx 会议纪要（明天 16:00 前）</li></ol>其中第 1 项已经临期，建议先处理。<span class=\"hr\"></span>另外，部门本周整体待办看板同步给您：xx 项目有 x 项待办，其中 x 项卡点在您这里；yy 项目整体进度正常。需要我针对那几项卡点拉个群催一下吗？"
+          }
+        ]
+      },
+      {
+        "no": "07",
+        "title": "会议筹备闭环",
+        "tag": "一句话约会，会后自动闭环",
+        "status": "会前要发起会议、发邀请、订会议室、同步议程，来回切系统；会中要么没录音，要么录了没人整理；会后纪要靠回忆、待办靠口头分。",
+        "pains": [
+          "筹备琐碎，约人 + 订会议室要来回切系统",
+          "会中信息容易遗漏",
+          "纪要延迟、待办没人跟，闭环不了",
+          "长会议没人愿意回听录音，等于白开"
+        ],
+        "hopes": [
+          "一句话拉起会议，自动发邀请、订会议室、同步议程",
+          "会中实时转写、识别发言人、重点自动打点",
+          "会后自动生成结构化纪要（议题 / 结论 / 待办 / 责任人 / 截止时间），待办自动同步个人",
+          "重要会议可标记，之后可问询「上次评审会的结论是啥」"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "明天下午 3 点约 xx、yy、zz，开个 30 分钟的项目同步会，议题是 xx"
+          },
+          {
+            "r": "ai",
+            "t": "好的，已向 xx、yy、zz 发出邀请（明天 15:00–15:30），会议室已预订，议程已同步至邀请。需要我明天上午再提醒一次吗？"
+          },
+          {
+            "r": "time",
+            "t": "第二天 15:30 · 会议已结束"
+          },
+          {
+            "r": "ai",
+            "t": "纪要已生成（基于 14:00–15:30 转写）：<ul><li><b>3 个结论</b>……</li><li><b>5 条待办</b>：xx（负责人 xx，截止 xx）、yy（负责人 yy，截止 yy）…… 已同步到对应人的个人待办</li><li><b>2 个待决策事项</b>……</li></ul>",
+            "doc": {
+              "t": "2026-09-08 项目同步 · 纪要",
+              "d": "已归档至知识库「xx 项目 / 会议纪要」"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "需要我把纪要发到项目群里吗？"
+          }
+        ]
+      },
+      {
+        "no": "08",
+        "title": "报表自动汇总",
+        "tag": "多源自动拉数，异常标红，定时推送",
+        "status": "每周 / 每月要出各种报表（活动数据、用户数据、运营指标、预算执行），数据散落在企微后台、内部 BI、第三方平台、Excel，固定时间人工拉数、汇总、做表、汇报。",
+        "pains": [
+          "拉数耗时长，光开系统导数据就 1–2 小时",
+          "数据口径要反复确认，不同系统还不一致",
+          "报表格式调整频繁，每次重做",
+          "异常数据靠人肉发现，容易漏"
+        ],
+        "hopes": [
+          "一句话出报表，Agent 自动从各系统拉数、按统一口径汇总",
+          "报表模板可沉淀，支持定时任务自动产出并推送",
+          "异常数据自动标红并附可能原因，支持环比 / 同比自动计算"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "给我出本周的活动数据汇总，按渠道拆分"
+          },
+          {
+            "r": "ai",
+            "t": "已从 xx、yy、zz 三个系统拉取本周数据（更新时间：今天 09:00）。<span class=\"hr\"></span>本周总参与：<b>xxxx 人次</b>（环比 +xx%）<br>按渠道拆分：……<span class=\"hr\"></span>其中 xx 渠道环比下降 xx%，可能原因：该渠道本周投放减少 / 落地页有异常（已标注）。"
+          },
+          {
+            "r": "ai",
+            "t": "完整报表已生成，需要我：1. 导出 Excel；2. 设为每周一 09:00 自动产出并推送给您和 xx 吗？",
+            "doc": {
+              "t": "本周活动数据汇总",
+              "d": "企业微信文档 · 含 4 张图表"
+            },
+            "opts": [
+              "导出 Excel 就行，我自己看",
+              "设为每周一 09:00 自动产出并推送",
+              "两个都要"
+            ],
+            "pick": 2
+          },
+          {
+            "r": "me",
+            "t": "两个都要，另外把 xx 渠道的异常单独标出来"
+          },
+          {
+            "r": "ai",
+            "t": "好。Excel 已导出，定时推送也设好了（每周一 09:00，接收人：您、xx）。<span class=\"hr\"></span>xx 渠道的异常我单独做了一页，附了两种可能原因和对应的排查步骤，需要我顺手问一下负责这个渠道的同事吗？",
+            "doc": {
+              "t": "本周活动数据汇总 · 按渠道",
+              "d": "Excel · 含异常标注页"
+            }
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sales",
+    "name": "销售场景",
+    "theme": "orange",
+    "desc": "面向销售岗位的专属场景。通用场景全员适用，这里只放销售特有的：跟客户、做洞察、盯商机、维护关系、沉淀话术、协调资源。",
+    "scenes": [
+      {
+        "no": "A",
+        "title": "客户跟进提效",
+        "badge": "主线",
+        "tag": "自动记录跟进、给出下一步策略、实时提示",
+        "status": "销售每天要在微信、企业微信、电话、线下见面对接多个客户，跟进记录靠手工录 CRM 或干脆不记；客户说过的关键信息（预算、时间节点、痛点、竞品）散落在聊天记录里；新人接手老客户基本从零开始。",
+        "pains": [
+          "跟进记录靠人写，要么不写要么潦草，信息大量丢失",
+          "关键信息散落各处，跟进前临时翻记录，容易遗漏",
+          "跟进节奏靠销售自己把握，缺策略性",
+          "客户画像不完整，往往只有联系方式"
+        ],
+        "hopes": [
+          "自动从各渠道抓取沟通内容，生成结构化跟进记录并同步 CRM",
+          "基于客户阶段、历史互动、行业特征给出下一步建议",
+          "沟通中实时识别情绪、关注点、异议、承诺信号并提示",
+          "自动补全客户及公司的公开信息，形成完整画像"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "我今天和 xx 总聊了一下，帮我记一下"
+          },
+          {
+            "r": "ai",
+            "t": "好的，已整理本次跟进记录：<ul><li><b>时间</b>：今天 14:00–14:40（电话）</li><li><b>参与人</b>：您、xx 总（xx 公司 CEO）</li><li><b>客户关注点</b>：① 交付周期（希望 3 个月内上线）② 数据安全（关心是否本地化部署）</li><li><b>客户异议</b>：价格高于竞品 xx</li><li><b>您的承诺</b>：本周内提供同行业案例和报价明细</li><li><b>下一步</b>：建议周四前发材料，下周二跟进</li></ul><span class=\"hr\"></span>已同步到 CRM。另外我检测到该客户本次沟通中 <span class=\"hi\">3 次提到「时间紧」</span>，建议下次沟通强化我们「xx 天快速上线」的能力。需要我起草一份跟进消息吗？",
+            "opts": [
+              "起草一份跟进消息，我改完自己发",
+              "先发给我看一眼，没问题再发",
+              "先不急，周四再提醒我"
+            ],
+            "pick": 1
+          },
+          {
+            "r": "me",
+            "t": "发给我看一眼"
+          },
+          {
+            "r": "ai",
+            "t": "草稿在这儿（约 120 字，语气按您上次跟他的沟通习惯写的）：<span class=\"quote-min\">「xx 总，上次聊到的交付周期和数据安全两点，我这边整理了一份同行业案例和报价明细，周四前发您……」</span>要调语气或者删掉报价那句，直接说就行。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "B",
+        "title": "客户洞察简报",
+        "tag": "见客户前自动生成简报、行业补课、梳理决策链",
+        "status": "见客户方关键决策人（老板 / 高管）前，销售要自己查对方背景、公司近况、行业动态，时间紧经常来不及；对客户行业理解不够，聊不到点子上，专业度受质疑。",
+        "pains": [
+          "见前准备耗时，信息零散（官网、新闻、公众号、企查查）",
+          "不了解对方个人的关注点、风格、过往观点，难产生共鸣",
+          "对客户行业的深层痛点、趋势理解不够",
+          "决策链梳理不清，不知道还有谁在影响决策"
+        ],
+        "hopes": [
+          "自动生成对方及公司的洞察简报：近况、行业动态、公开观点、共同人脉、话题切入点",
+          "针对客户行业快速补上常识：产业链、核心痛点、标杆案例、关键术语",
+          "梳理决策链（决策人 / 影响者 / 执行者 / 把关人）并给应对策略",
+          "给出谈资与破冰建议，同时提示需要避开的话题"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "明天上午要见 xx 公司的 xx 总，帮我准备一下"
+          },
+          {
+            "r": "ai",
+            "t": "好的，已生成见前简报：<ul><li><b>公司</b>：xx 公司，主营 xx，近 3 个月动态：① 完成 B 轮融资 ② 新开了 xx 业务线</li><li><b>xx 总背景</b>：创始人兼 CEO，过往在 xx 公司任 xx，近期公开观点「xx」</li><li><b>行业要点</b>：该行业当前核心痛点是 xx，标杆做法有 xx（已附 2 个可参考案例）</li><li><b>决策链</b>：xx 总拍板；CFO xx 关注成本；业务负责人 xx 关注落地效果</li><li><b>建议切入点</b>：先聊他们新开的 xx 业务线（刚起步，正是我们的切入点）</li><li><b>需要避开</b>：对方曾公开表示对 xx 方案的顾虑，建议不要主动提</li></ul>",
+            "doc": {
+              "t": "见前简报 · xx 公司 xx 总",
+              "d": "企业微信文档 · 共 6 个模块"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "需要我再生成一份 5 分钟速记版要点吗？可以发到您手机上，路上看。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "C",
+        "title": "商机信号预警",
+        "tag": "主动盯动态、提前预警流失、唤醒沉默客户",
+        "status": "客户公司动态（融资、扩张、招聘、新品、舆情）隐含商机，但销售没精力逐个盯；流失前通常有信号，却往往是流失了才知道；长期未跟进的沉默客户越来越多。",
+        "pains": [
+          "客户公司动态靠人工盯，覆盖面窄、不及时",
+          "流失信号滞后，发现时已经晚了",
+          "沉默客户没人管，浪费历史积累",
+          "续约、增购时机靠人记，容易错过"
+        ],
+        "hopes": [
+          "自动跟踪客户公司动态，识别商机信号并主动推送",
+          "基于互动频率、关键人变动、情绪倾向评估健康度，异常预警",
+          "识别长期未跟进客户，自动生成唤醒策略和个性化内容",
+          "基于合同周期和使用情况，提前提醒并生成续约方案"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "主动推送 · 今天 09:00"
+          },
+          {
+            "r": "ai",
+            "t": "检测到 3 个信号，建议您处理：<ol><li><b>【商机】</b> 客户 A（xx 公司）本周完成 B 轮融资 5000 万。历史规律显示融资后 1–2 个月有预算释放，建议本周内触达，切入角度：业务扩张带来的 xx 需求</li><li><b>【风险】</b> 客户 B（xx 公司）近 30 天互动下降 70%，且原对接人 xx 已于上周离职，新对接人未知，存在流失风险。建议尽快确认新对接人</li><li><b>【续约】</b> 客户 C 合同还有 45 天到期，当前使用率 xx%，续约方案已生成</li></ol><span class=\"hr\"></span>需要我针对第 1 项起草一份触达消息吗？",
+            "opts": [
+              "3 个都帮我起草动作，我逐个确认",
+              "只处理第 1 项（融资商机），其余我晚点自己看",
+              "第 2 项同步给客户成功负责人，让他先去确认新对接人"
+            ],
+            "pick": 2
+          },
+          {
+            "r": "me",
+            "t": "按第三种。第 1 项也别放，帮我约一下"
+          },
+          {
+            "r": "ai",
+            "t": "好。第 2 项已同步给客户成功负责人 xx，请他本周内确认新对接人，我周五回来看结果。<span class=\"hr\"></span>第 1 项：查到您和该客户 xx 总有 2 次会面记录，我拟了本周四 / 周五两个时间段，需要我直接发邀约，还是先给您确认？"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "D",
+        "title": "关系维护提醒",
+        "tag": "关键节点不漏，祝福有细节不群发",
+        "status": "企业家、高管很看重关系和分寸感，逢年过节、生日、客户公司的关键节点都是经营关系的时机；但全靠销售自己记，忙起来就忘，想起时只能发一条一眼看穿的群发模板。",
+        "pains": [
+          "关系维护靠人脑记，关键节点容易漏",
+          "临时想起只能发模板，显得敷衍",
+          "不知道送什么、说什么合适，分寸难拿捏",
+          "客户的重要事常常事后才知道，错过最佳祝贺时机"
+        ],
+        "hopes": [
+          "自动捕捉客户及公司关键节点（生日、周年、融资、新品、获奖、行业活动）并提前提醒",
+          "基于关系深度和沟通风格代拟个性化内容，带具体细节而非群发",
+          "提示该客户的沟通偏好与禁忌，避免弄巧成拙",
+          "记录彼此往来，形成可查的「人情账本」"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "主动推送 · 本周关系维护节点"
+          },
+          {
+            "r": "ai",
+            "t": "本周有 3 个关系维护节点：<ol><li>客户 A（xx 公司 xx 总）——后天是其公司成立 5 周年。对方对仪式感比较在意，建议发一条祝贺。我拟了一版：<span class=\"quote-min\">「xx 总，看到贵司今天五周年，恭喜！印象里您上次提到 xx 业务刚起步，现在应该是这个板块最难也最有机会的时候，改天当面请教。」</span>这条带了我们上次聊的具体细节，比群发祝福好。需要我调整语气或直接发吗？</li><li>客户 B（xx 总）——下周一生日。该客户风格偏内敛，建议简短专业，不要发长段祝福。</li><li>客户 C——上月您答应给对方引荐 xx 资源，还没落实。这类承诺拖久了伤信任，建议本周处理。</li></ol><span class=\"hr\"></span>需要我把第 1 条发出去吗？"
+          }
+        ]
+      },
+      {
+        "no": "E",
+        "title": "话术沉淀提醒",
+        "tag": "好话术自动入库，提竞品时实时给弹药",
+        "status": "每个销售都有一套自己的话术（怎么破冰、怎么应对「太贵了」、怎么讲案例），但基本都在个人脑子里，人走了就带走；遇到客户提竞品，往往凭印象临时应对。",
+        "pains": [
+          "好话术沉淀在个人身上，无法团队复用，人员流动即流失",
+          "新人上手慢，重复踩坑",
+          "客户提竞品时临时应对，缺准备和统一口径",
+          "话术没有按成单 / 丢单结果迭代的机制"
+        ],
+        "hopes": [
+          "从成单沟通记录中自动抽取有效话术入库，不用人额外写",
+          "按场景、客户类型、行业组织，支持自然语言检索",
+          "识别到客户提竞品时，实时推送优劣势对比、差异化点和建议话术",
+          "话术与成单结果挂钩：好用的自动置顶，差的降级，丢单自动复盘",
+          "新人可直接调用团队 Top 话术"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "沟通中 · 实时侧边提示"
+          },
+          {
+            "r": "ai",
+            "t": "客户提到「xx 竞品」，实时为您调取：<ul><li><b>对方优势</b>：价格低约 30%、交付快</li><li><b>我方差异化</b>：数据可本地化部署（对方仅 SaaS）、服务响应 SLA 2 小时（对方 24 小时）</li><li><b>建议话术</b>：<span class=\"quote-min\">「如果主要考虑成本，xx 确实有价格优势。不过您上次提到数据安全是底线，这点上我们支持本地化部署，这个他们目前做不到。」</span></li><li><b>参考案例</b>：去年 xx 项目遇到同一竞品，我们用「安全合规 + 总拥有成本」的角度打赢，当时对方报价其实只低 15%</li></ul>"
+          },
+          {
+            "r": "time",
+            "t": "沟通结束后"
+          },
+          {
+            "r": "ai",
+            "t": "本次您回应「太贵了」时用了新的说法（「我们把 xx 折算成您的 xx 成本来看」），客户当场没有继续压价。这条话术已入库，标记为「待验证」，若后续 3 个同类客户使用都有效，将提升为推荐话术。<span class=\"hr\"></span>另外，上月入库的「xx 话术」在 5 次使用中成单 1 单，转化率偏低，已降级，建议复盘。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "F",
+        "title": "个人品牌运营",
+        "tag": "内容代写、定时发布、咨询先接住",
+        "status": "越来越多销售靠朋友圈、视频号、小红书、领英持续输出内容来建立人设、吸引客户主动咨询；但主业忙，内容生产占时间难坚持；不知道发什么、什么时候发；发完没精力维护评论私信。",
+        "pains": [
+          "内容生产耗时长，坚持不下来，账号容易断更",
+          "缺乏内容规划，人设不清晰",
+          "不知道目标客户（企业家 / 高管）爱看什么",
+          "发完没人管，评论私信响应慢，线索流失",
+          "效果无法衡量，投入产出不清楚"
+        ],
+        "hopes": [
+          "给出人设定位建议并规划内容方向和发布节奏",
+          "一句话生成内容：文案 + 配图建议 + 话题标签",
+          "内容日历与定时发布，行业热点主动提示",
+          "私信 / 评论咨询先做初步应答并索要联系方式，识别高意向后提醒销售亲自跟进",
+          "追踪哪些内容带来咨询，反哺内容策略"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "这周我想发两条，一条讲行业痛点，一条讲我们刚做的客户案例，帮我写一下"
+          },
+          {
+            "r": "ai",
+            "t": "好的，基于您的人设定位（xx 行业的增长顾问），我起草了两条：<span class=\"hr\"></span>1. 【行业痛点】<span class=\"quote-min\">内容草稿……</span>2. 【客户案例】<span class=\"quote-min\">内容草稿……</span><span class=\"hr\"></span>建议发布时间：第一条周三 09:00（高管晨间刷手机高峰），第二条周五 15:00。<span class=\"hr\"></span>需要我：1. 存到您的朋友圈草稿箱；2. 生成配图；3. 加入内容日历自动发布？"
+          },
+          {
+            "r": "time",
+            "t": "两天后"
+          },
+          {
+            "r": "ai",
+            "t": "您周三发的行业痛点内容，带来 5 条咨询，其中 2 条是高意向：xx 公司的 xx 总（问了交付周期）、yy 公司的 yy 总（问了价格区间）。<span class=\"hr\"></span>我已做了初步应答并索要了联系方式，建议今天内您亲自跟进——这类主动咨询的转化率是陌生触达的 8 倍，别拖。<span class=\"hr\"></span>另外，本周行业热点：xx 政策发布，跟您的领域强相关，建议下周发一条解读，容易蹭到流量。需要我起草吗？"
+          }
+        ]
+      },
+      {
+        "no": "G",
+        "title": "团队打法互用",
+        "tag": "把「这个客户要慢慢磨」变成可复制的步骤",
+        "status": "每个销售、每个团队都会摸索出有效打法（某行业的切入路径、某类客户的攻坚节奏），但主要靠师徒口传或在复盘会讲一遍，讲完就散；跨团队更难流通，同样的坑不同团队各踩一遍。",
+        "pains": [
+          "好打法沉淀在个人或小团队身上，人走了就带走",
+          "跨团队不流通，重复试错成本高",
+          "打法只可意会，缺乏可复制的具体步骤，新人学不会",
+          "新人培养周期长",
+          "缺乏验证机制，谁都说自己方法好，没有客观数据比较"
+        ],
+        "hopes": [
+          "从成单项目中自动提炼打法，形成结构化「打法卡」，不用人额外复盘",
+          "按行业、客户规模、项目类型、竞争态势组织，支持自然语言查询",
+          "客户画像匹配到已有打法时主动推送",
+          "打法与成单率、成交周期挂钩，好用的自动置顶推广",
+          "识别某团队的有效打法后主动推给其他团队，并自动生成培训材料"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "我手上有个制造业的客户，中等规模，我之前没接触过这个行业，怎么打？"
+          },
+          {
+            "r": "ai",
+            "t": "正在匹配集团内相似客户和项目的成功 / 失败案例……<span class=\"hr\"></span>已比对 <b>xx 个</b>同类客户档案（同行业 + 同规模区间）、<b>xx 个</b>成单与丢单项目记录，其中失败案例 <b>xx 个</b>（会一并给出避坑点）。"
+          },
+          {
+            "r": "ai",
+            "t": "查到 3 个可借鉴的打法（按匹配度和成单率排序）：<span class=\"hr\"></span>1.「xx 打法」（来自华东团队，去年 8 个同类项目成单 6 个，平均周期 45 天）<br>　<b>核心路径</b>：先做免费诊断切入 → 用诊断报告建立专业信任 → 拉对方业务负责人进来看数据 → 最后才谈商务<br>　<b>关键动作</b>：第 1 次接触不要讲产品，只讲「我们看过 20 家同类工厂，发现你们这个环节普遍有 xx 问题」<br>　<b>所需资源</b>：诊断工具（可在工具广场申请）、同行业案例库<br>　<b>注意点</b>：这类客户 CFO 会在最后阶段介入压价，建议提前准备 ROI 测算<span class=\"hr\"></span>2.「yy 打法」（来自华南团队，成单率 50%）……<span class=\"hr\"></span>需要我把第 1 个打法展开成一份完整的行动清单吗？可以细化到每周该做什么。"
+          },
+          {
+            "r": "push",
+            "t": "主动推送给销售负责人"
+          },
+          {
+            "r": "ai",
+            "t": "检测到华南团队近 3 个月在「xx 行业」的成单率比其他团队高 40%。我比对了他们的沟通记录，提炼出关键差异：他们在第 2 次接触时会主动提供一份行业对标数据，这一步其他团队普遍没做。<span class=\"hr\"></span>建议推广，我已生成培训材料（含话术示例和数据模板），需要我发给其他团队吗？",
+            "doc": {
+              "t": "xx 行业打法 · 培训材料",
+              "d": "企业微信文档 · 含话术示例"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "这条打法我打算推广，怎么推您定：",
+            "opts": [
+              "先发 3 个试点团队，两周后回收反馈再全量推",
+              "直接全量推给所有销售，同步进新人培训",
+              "先只发给华南以外的团队，避免重复造轮子"
+            ],
+            "pick": 0
+          },
+          {
+            "r": "me",
+            "t": "按第一种"
+          },
+          {
+            "r": "ai",
+            "t": "好，已发给 3 个试点团队，并设了两周后的反馈回收提醒。<span class=\"hr\"></span>等反馈回来我会把有效部分合并进标准打法库，再决定是否全量。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "H",
+        "title": "内部资源协调",
+        "tag": "智能派单、进度可视、超时自动升级",
+        "status": "跟单中经常需要内部资源：技术方案找售前、报价找商务、合同找法务、排期找交付、折扣找上级。目前靠在群里喊人或私聊找人，响应快慢全看关系；销售也不知道该找谁、流程是什么、卡在哪。",
+        "pains": [
+          "不知道该找谁，跨部门尤其要打听",
+          "请求发出去没有回执，不知道对方收到没有",
+          "跟催全靠人盯，不好意思催，或者忙起来忘了催",
+          "内部响应时效无法衡量",
+          "同样的事重复问，之前的结论没沉淀"
+        ],
+        "hopes": [
+          "智能派单：描述需求，自动识别该找谁并生成结构化请求单",
+          "所有内部请求集中看板，状态、负责人、预计完成时间可视",
+          "临近承诺时间自动提醒，超时自动升级到上级，不用销售自己催",
+          "答复自动沉淀进知识库，下次同类问题直接给答案",
+          "统计各部门 / 个人的响应时效"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "我这边有个客户，尾款马上要到了，但卡在两个事上：一个 xx 问题，还有一个 xx 要求，需要内部尽快解决"
+          },
+          {
+            "r": "ai",
+            "t": "收到。尾款节点我先记下来（合同金额 xx，约定到账日 x 月 x 日，还剩 x 天）。<span class=\"hr\"></span>您说的两件事我拆开看：<ol><li><b>xx 问题</b> —— 属于 xx 类问题，责任方大概率在 xx 部门，需要他们确认后才能闭环</li><li><b>xx 要求</b> —— 涉及承诺条款，得先确认是否在合同范围内；如果在，就是我方必须交付项</li></ol><span class=\"hr\"></span>其中第 2 项如果超出合同范围，贸然答应会影响验收口径，我建议先核合同再回复客户。"
+          },
+          {
+            "r": "ai",
+            "t": "我打算这样推进，您看要不要调整：",
+            "opts": [
+              "两件事并行：我分别找对应负责人，4 小时内给您答复",
+              "先解决卡尾款的第 1 项，第 2 项缓一天",
+              "先拉个临时群把相关方拉齐，省得来回传话"
+            ],
+            "pick": 2
+          },
+          {
+            "r": "me",
+            "t": "先拉群吧，快一点"
+          },
+          {
+            "r": "ai",
+            "t": "好，临时群已建好：您、我、xx 部门 xx（xx 问题的 owner）、法务 xx（核合同条款）。<span class=\"hr\"></span>我把客户背景、合同关键条款、两件事的现状各写了一段发进群里，大家不用从头问。<span class=\"hr\"></span>设了两个时间点：今天 16:00 回收第 1 项答复、明天 12:00 前给出第 2 项口径。到点没回我直接提醒到人，并抄送他主管。",
+            "doc": {
+              "t": "xx 客户尾款问题 · 协同清单",
+              "d": "企业微信文档 · 含责任人与时间点"
+            }
+          },
+          {
+            "r": "time",
+            "t": "今天 16:00"
+          },
+          {
+            "r": "ai",
+            "t": "第 1 项已解决（xx 部门给出的处理意见：……）。给客户的话术我拟好了，您确认后可以直接发。<span class=\"hr\"></span>第 2 项法务还在核，预计明天上午给结论。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ops",
+    "name": "运营管理",
+    "theme": "teal",
+    "desc": "覆盖私域、业务、内容、数据、市场五类运营。核心是把「重复产出 + 多平台搬运 + 人工盯盘」这三件事交出去。卡片上的标签标明它主要服务哪类运营。",
+    "scenes": [
+      {
+        "no": "01",
+        "title": "选题内容策划",
+        "tag": "每天打开就有 3 个能写的选题，附热度和角度",
+        "status": "选题靠刷同行、翻热榜、拍脑袋，想到什么写什么。热点出来时往往晚半天，写完发现别人早就发过了；月底回看，说不清哪些选题真的带来了转化。",
+        "pains": [
+          "选题靠个人经验和灵感，质量波动大，人也累",
+          "热点发现滞后，等看到时红利期已经过了",
+          "选题和账号定位、当前业务目标经常对不上"
+        ],
+        "hopes": [
+          "每天主动推 3–5 个选题：每个标热度、和账号定位的匹配度、建议切入角度",
+          "盯住同行账号 / 热榜 / 搜索词，热点出现半小时内提醒",
+          "选题和历史数据打通：直接说明这类选题过往的阅读与转化表现"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "今天发点什么？"
+          },
+          {
+            "r": "push",
+            "t": "今日 3 个热点已同步到选题池"
+          },
+          {
+            "r": "ai",
+            "t": "结合你账号近 30 天的表现（干货类阅读最高、转化最好），今天推荐这 3 个：<span class=\"hr\"></span><ol><li><b>「xx 功能上线后，我们踩的 3 个坑」</b> — 热度 82，匹配度 高<span class=\"hr\"></span>同类选题你过往平均阅读高 40%，且带来过 12 条销售线索</li><li><b>「同行 xx 昨天发布的新玩法拆解」</b> — 热度 91，匹配度 中<span class=\"hr\"></span>热点还早，目前同类内容 < 10 篇，是窗口期</li><li><b>「客户最常问的 5 个问题，一次讲清」</b> — 热度 65，匹配度 高<span class=\"hr\"></span>常青型选题，适合做成合集反复引流</li></ol><span class=\"hr\"></span>建议做第 1 个，和第 2 个组合：借热点讲自己的实战。"
+          },
+          {
+            "r": "me",
+            "t": "可以，先出个大纲"
+          },
+          {
+            "r": "ai",
+            "t": "大纲已出，结构走「结论先行 + 踩坑复盘」，保留了你惯用的小标题风格：<span class=\"hr\"></span>1）背景：为什么做这个功能<br>2）坑一：xx（现象 → 原因 → 解法）<br>3）坑二：xx<br>4）坑三：xx<br>5）如果重来一次我们会怎么做<span class=\"hr\"></span>要不要我把每个小标题下的要点也填出来？",
+            "doc": {
+              "t": "选题大纲 · xx 功能踩坑复盘",
+              "d": "企业微信文档 · 可编辑"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "另外提醒：第 2 个选题（同行新玩法）建议在明早 10 点前发，之后同类内容会明显变多。"
+          }
+        ],
+        "roles": [
+          "内容运营"
+        ]
+      },
+      {
+        "no": "02",
+        "title": "一稿多端改写",
+        "tag": "一篇成稿，自动出 4 个平台版本",
+        "status": "一篇成稿要手动改成公众号长文、小红书图文、视频号口播脚本、知乎回答，改一遍至少两小时，语气和结构还常常拿捏不准，标题更是要憋半天。",
+        "pains": [
+          "同一内容重复改写 3–4 遍，纯体力活",
+          "各平台语气、长度、结构规则不同，容易踩坑",
+          "改完还要另配标题、封面文案、话题标签"
+        ],
+        "hopes": [
+          "一稿输入，自动出各平台版本，各自符合平台调性",
+          "每版配 3 个标题备选和话题标签建议",
+          "保留原意和关键数据，不添油加醋、不改事实"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "这篇稿子帮我改成小红书和视频号的版本"
+          },
+          {
+            "r": "ai",
+            "t": "改写前确认一下尺度，免得改完返工：",
+            "opts": [
+              "两个平台都按「保留全部事实和数据、只换表达」来改",
+              "小红书可以口语化、加 emoji，视频号保持专业一点",
+              "事实部分可以精简，只要不影响原意"
+            ],
+            "pick": 1
+          },
+          {
+            "r": "me",
+            "t": "按第二种"
+          },
+          {
+            "r": "ai",
+            "t": "已按两个平台的调性改写，事实和数字全部保留原样：<span class=\"hr\"></span><b>小红书版（约 600 字）</b><br>开头改成第一人称痛点引入，加了 3 个小标题和 emoji 分隔，把专业说法换成了口语表达。<span class=\"hr\"></span><b>标题备选</b><ol><li>踩了 3 个坑才明白，xx 真不是这么用的</li><li>做 xx 半年，这 3 件事劝你早点知道</li><li>我们花了 2 个月试错，帮你省下来</li></ol><b>话题标签</b>：#xx #踩坑复盘 #效率工具",
+            "doc": {
+              "t": "改写稿 · 小红书版",
+              "d": "企业微信文档 · 可编辑"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "<b>视频号口播脚本（约 90 秒）</b><br>按「钩子 → 冲突 → 三点干货 → 引导」结构写，每句话都标了停顿和画面提示。<span class=\"hr\"></span>开头 3 秒用了原文里最有冲击力的数据：<span class=\"hi\">「这个功能上线第一个月，我们的返工率翻了一倍。」</span>",
+            "doc": {
+              "t": "口播脚本 · 90 秒版",
+              "d": "企业微信文档 · 含分镜提示"
+            }
+          },
+          {
+            "r": "me",
+            "t": "小红书那个标题用第二个，再给我配个封面文案"
+          },
+          {
+            "r": "ai",
+            "t": "已替换标题。封面文案给了 3 组（主标 + 副标），都控制在 12 字内、适合竖版排版：<span class=\"hr\"></span>1）主「别踩」副「3 个坑」<br>2）主「半年试错」副「帮你省 2 个月」<br>3）主「过来人」副「劝你早点看」<span class=\"hr\"></span>需要我直接生成封面图吗？"
+          }
+        ],
+        "roles": [
+          "内容运营"
+        ]
+      },
+      {
+        "no": "03",
+        "title": "线上活动管理",
+        "tag": "以线上拉新裂变为例：方案 → 落地 → 发布 → 数据跟进 → 复盘",
+        "status": "以线上拉新裂变活动为例：从方案、落地、发布到数据跟进、复盘，要跨文档、审批、投放后台、数据表好几个系统。进度靠群里问，数据靠手动汇总，复盘会开完就散了，下次照样踩同样的坑。",
+        "pains": [
+          "流程长、角色多，进度全靠口头同步",
+          "活动数据散在多个后台，汇总一次要半天",
+          "复盘靠回忆，没有沉淀，下次重复踩坑"
+        ],
+        "hopes": [
+          "一句话立项：自动生成方案骨架、时间表、责任人",
+          "上线期间每天自动汇总关键数据，异常当天提醒",
+          "结束后自动出复盘：目标完成度、各渠道效果、可复用结论"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "下周做个拉新活动，帮我起个方案"
+          },
+          {
+            "r": "ai",
+            "t": "方案骨架已生成，参考了你们上次 xx 活动的实际数据（转化率 3.2%，主要来自渠道 A）：<span class=\"hr\"></span><b>目标</b>：新增注册 2000，获客成本控制在 xx 元内<br><b>时间</b>：下周一预热 → 周三正式 → 周日收口<br><b>渠道</b>：沿用上次表现最好的 A、B，新增 C 做测试<br><b>风险</b>：上次活动第 3 天素材疲劳，这次建议准备 2 套备用素材",
+            "doc": {
+              "t": "活动方案 · xx 拉新（草稿）",
+              "d": "企业微信文档 · 已建任务"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "已拆出 9 个待办并分派到人，截止时间按上线日倒推排好了。需要你确认预算和最终目标，其余我盯着。"
+          },
+          {
+            "r": "time",
+            "t": "周五 18:00"
+          },
+          {
+            "r": "push",
+            "t": "活动数据日报已生成"
+          },
+          {
+            "r": "ai",
+            "t": "<b>上线第 3 天</b><ul><li>注册 1180 / 目标 2000（进度 59%，略慢于计划）</li><li>渠道 A 转化 4.1%（优于上次），渠道 C 只有 1.2%</li><li><span class=\"hi\">需要关注</span>：整体获客成本比预期高 18%，主要由渠道 C 拉高</li></ul><span class=\"hr\"></span>建议：把 C 的预算挪一半到 A，预计能把整体成本拉回目标线内。要我现在改投放吗？"
+          },
+          {
+            "r": "time",
+            "t": "活动结束 · 周一"
+          },
+          {
+            "r": "ai",
+            "t": "复盘报告已出：<span class=\"hr\"></span><b>结果</b>：注册 2130，达成 106%；获客成本比目标高 4%<br><b>关键发现</b>：渠道 A 的素材在第 4 天明显疲劳，换素材后转化回升 1.8 个点<br><b>下次可复用</b>：素材准备量按「天数 × 1.5」备；渠道 C 不适合这类人群<span class=\"hr\"></span>已存进活动档案，下次立项时会自动调出来参考。",
+            "doc": {
+              "t": "复盘报告 · xx 拉新活动",
+              "d": "企业微信文档 · 已归档"
+            }
+          }
+        ],
+        "roles": [
+          "业务运营",
+          "内容运营"
+        ]
+      },
+      {
+        "no": "04",
+        "title": "素材批量测试",
+        "tag": "一个卖点出 20 套素材，效果自动比出结论",
+        "status": "投放素材靠人工堆量，写一条改一条；A/B 测试用表格手记，最后哪个素材好全凭感觉；渠道效果归因说不清，预算分配只能靠经验。",
+        "pains": [
+          "素材产量跟不上投放消耗速度，很快就跑疲",
+          "多变量测试记录混乱，结论靠拍，不可靠",
+          "各渠道 ROI 口径不一致，横向比不了"
+        ],
+        "hopes": [
+          "给一个卖点，批量产出素材文案和配图方向",
+          "自动设计并跟踪 A/B 测试，给出明确的显著性结论",
+          "统一各渠道归因口径，算出真实 ROI 并给出预算调整建议"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "围绕「3 天上线」这个卖点，出一批投放素材"
+          },
+          {
+            "r": "ai",
+            "t": "按 4 类人群 × 3 种语气，出了 24 条文案，配图方向一并给了建议：<span class=\"hr\"></span><b>决策人（老板）</b>：偏结果 ——「从签约到上线，最快 3 天」<br><b>执行人（运营）</b>：偏省事 ——「不用等排期，3 天就能用上」<br><b>技术侧</b>：偏靠谱 ——「3 天上线，不含隐藏实施成本」<br><b>价格敏感</b>：偏划算 ——「同样的预算，早 3 周见效」",
+            "doc": {
+              "t": "素材文案 24 条 · 3 天上线",
+              "d": "在线表格 · 分人群分组"
+            }
+          },
+          {
+            "r": "me",
+            "t": "拿前 4 条跑个测试"
+          },
+          {
+            "r": "ai",
+            "t": "已建 A/B 测试：单一变量（标题），每组预算相同，跑满 2000 次曝光或 3 天后自动出结论。期间不打扰你，有结果我再叫你。"
+          },
+          {
+            "r": "time",
+            "t": "3 天后"
+          },
+          {
+            "r": "push",
+            "t": "A/B 测试已跑出结论"
+          },
+          {
+            "r": "ai",
+            "t": "<b>结论（置信度 95%）</b><ol><li>「不用等排期，3 天就能用上」— 转化 5.4%（最优）</li><li>「从签约到上线，最快 3 天」— 转化 3.8%</li><li>其余两组低于 3%，建议淘汰</li></ol><span class=\"hr\"></span><b>值得注意</b>：最优组胜在「省事」而不是「快」，说明这个人群真正的痛点是等排期，不是速度。<span class=\"hr\"></span>要不要把这个结论同步给内容组？后面的选题可以往「省事」这条线靠。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ],
+        "roles": [
+          "内容运营",
+          "数据运营"
+        ]
+      },
+      {
+        "no": "05",
+        "title": "私域用户运营",
+        "tag": "群里的重复提问 AI 先答，答不上来再找人",
+        "status": "几十上百个群，消息刷不过来，用户问的八成是重复问题；活跃度靠人工盯，沉默用户没人管，等发现流失已经晚了。",
+        "pains": [
+          "群消息量大，重要问题转眼被刷走",
+          "重复问题反复回答，人力全耗在上面",
+          "沉默用户识别不出来，流失了才知道"
+        ],
+        "hopes": [
+          "AI 在群里先答，答不上来再 @ 人工，并附上已整理好的上下文",
+          "自动识别高意向和即将流失的用户，提醒跟进",
+          "每天出一份群动态摘要：热点话题、待回复、风险信号"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "群消息助手已接入 12 个群"
+          },
+          {
+            "r": "ai",
+            "t": "<b>昨 日 群 动 态</b><ul><li>12 个群共 847 条消息，AI 直接答完 231 条（86%）</li><li><span class=\"hi\">待你处理</span>：3 条 AI 没把握，已整理好上下文</li><li>高频新问题：「xx 功能支持导出吗」出现 19 次 —— 建议加到 FAQ</li></ul><span class=\"hr\"></span>另：A 群有 2 位用户上周还很活跃、这周零发言，已列入关注名单。"
+          },
+          {
+            "r": "me",
+            "t": "那 3 条什么情况"
+          },
+          {
+            "r": "ai",
+            "t": "<b>1）B 群 · 用户问定价</b><span class=\"hr\"></span>涉及非标准报价，AI 没答。已调出该用户档案：某行业、40 人规模、试用第 9 天、上周问过对接问题 —— 购买意向较高，建议销售今天跟进。<span class=\"hr\"></span><b>2）C 群 · 用户反馈报错</b><span class=\"hr\"></span>已复现，疑似 xx 场景下的已知问题，已建单给技术，工单号 xx。<span class=\"hr\"></span><b>3）D 群 · 用户问能不能定制</b><span class=\"hr\"></span>超出标准方案范围，建议你直接回。已准备两种回复口径供选。"
+          },
+          {
+            "r": "me",
+            "t": "第 3 个用保守口径回，另外把导出那个加进 FAQ"
+          },
+          {
+            "r": "ai",
+            "t": "已用保守口径回复，FAQ 也更新了（第 27 条）。<span class=\"hr\"></span>下次再有用户问导出相关，我会直接答并附上操作截图。同类问题预计每周能省你 40 分钟左右。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ],
+        "roles": [
+          "私域运营"
+        ]
+      },
+      {
+        "no": "06",
+        "title": "数据看板报表",
+        "tag": "每天自动出看板，异常自己跳出来",
+        "status": "每天从五六个后台导数据、粘表格、算环比，做一张日报；周报月报再重来一遍。做完大家也只看最后那句结论，过程全是白干。",
+        "pains": [
+          "多平台数据手动搬运，容易出错还耗时",
+          "口径不统一，和别人对不上数，来回解释",
+          "做完就过期，没人看过程，只要结论"
+        ],
+        "hopes": [
+          "定时自动拉数，按统一口径出看板",
+          "异常自动标红，并给出可能原因",
+          "一句话生成日报周报：只讲变化和需要关注的事"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "出一份本周的数据周报"
+          },
+          {
+            "r": "ai",
+            "t": "已按统一口径汇总 6 个平台数据（口径说明附在文末），只挑了值得说的：<span class=\"hr\"></span><b>本周关键变化</b><ol><li>整体新增用户 3,418，环比 +12%，主要来自渠道 A（+38%）</li><li><span class=\"hi\">需要关注</span>：活跃度环比 -6%，新增涨了但活跃没跟上</li><li>内容侧：视频类内容的完播率比图文高 21%，但发布量只占 15%</li></ol><span class=\"hr\"></span><b>可能原因</b>：渠道 A 带来的人群更偏浅层兴趣，活跃度天然低；同时高粘性的视频内容产能不足。<span class=\"hr\"></span>要不要看下周把视频产量提到 30% 试试？我可以先排个内容计划。",
+            "doc": {
+              "t": "运营数据周报 · 第 xx 周",
+              "d": "企业微信文档 · 含口径说明"
+            }
+          },
+          {
+            "r": "me",
+            "t": "周报发群里，另外活跃度这个帮我盯着"
+          },
+          {
+            "r": "ai",
+            "t": "已发到部门群。<span class=\"hr\"></span>活跃度已设为每日监控项：只要连续 2 天低于阈值就提醒你，并把同期所有相关指标（留存、使用深度、渠道结构）一起拉出来对比，省得你再找。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ],
+        "roles": [
+          "数据运营"
+        ]
+      },
+      {
+        "no": "07",
+        "title": "竞品动态监控",
+        "tag": "竞品一有动作，当天就知道",
+        "status": "靠人肉刷竞品公众号、App、活动页，发现动作时经常已经上线好几天。行业报告靠临时搜，信息零散，也没地方沉淀。",
+        "pains": [
+          "监控靠人，覆盖不全也跟不上节奏",
+          "发现了也只是知道，来不及反应",
+          "信息零散，没有沉淀，过几个月就断档"
+        ],
+        "hopes": [
+          "竞品公众号、官网、App 更新和活动上线自动抓取并推送",
+          "每周出一份竞品动态摘要：做了什么、可能什么意图、要不要跟进",
+          "需要时能回溯某个竞品近半年的动作时间线"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "竞品动态 · 今日 2 条"
+          },
+          {
+            "r": "ai",
+            "t": "<b>1）竞品 A 上线了 xx 功能</b><span class=\"hr\"></span>昨天下午更新，官方推文主打了「一键接入」。<b>判断</b>：这是他们 3 月发布会预告过的，不算意外；但我们最近收到的客户咨询里有 6 条问到同类能力，建议尽快给出应对口径。<span class=\"hr\"></span><b>2）竞品 B 换了定价</b><span class=\"hr\"></span>入门版提价 20%，同时加了按量计费档。<b>判断</b>：像是在清退低付费用户、提升客单价，对我们中端市场是个窗口。"
+          },
+          {
+            "r": "me",
+            "t": "A 那个功能我们有没有？"
+          },
+          {
+            "r": "ai",
+            "t": "有近似能力，但入口更深、需要配置；体验上确实不如他们的一键接入。<span class=\"hr\"></span>我整理了对比表（功能覆盖、上手成本、限制条件），并给销售准备了 3 句应对话术 —— 主打「我们配置灵活、能适配你们的特殊流程」，避开正面比易用性。<span class=\"hr\"></span>要不要我把这个也同步给产品，排进下个版本评估？",
+            "doc": {
+              "t": "竞品对比 · xx 功能",
+              "d": "企业微信文档 · 含应对话术"
+            }
+          }
+        ],
+        "roles": [
+          "业务运营"
+        ]
+      },
+      {
+        "no": "08",
+        "title": "用户反馈处理",
+        "tag": "全渠道反馈自动归集，负面激增提前预警",
+        "status": "用户反馈散在客服工单、社群、应用商店、社媒评论里，靠人工翻；负面情绪往往升级成舆情才被看到；反馈也没结构化，产品侧用不上。",
+        "pains": [
+          "渠道分散，全貌看不清，只能看到眼前那一块",
+          "负面反馈发现晚，等爆发了才处理",
+          "反馈没结构化，流程和责任人都没有"
+        ],
+        "hopes": [
+          "全渠道反馈自动归集打标签，定期出 VOC 报告",
+          "负面激增自动预警，直接推给负责人",
+          "把反馈转成结构化需求，同步给产品并跟踪"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "本周 VOC 报告已生成 · 共 412 条反馈"
+          },
+          {
+            "r": "ai",
+            "t": "<b>本周 Top 3 问题</b><ol><li>导出速度慢（68 次，环比 +120%）—— 集中在大批量导出场景</li><li>移动端编辑体验差（41 次，长期存在）</li><li>找不到历史版本（29 次，新增）</li></ol><span class=\"hr\"></span><span class=\"hi\">需要预警</span>：第 1 项环比翻了一倍多，且集中出现在最近 5 天，怀疑和上周的版本更新有关。已拉了同期版本记录，<b>建议技术今天排查</b>。",
+            "doc": {
+              "t": "VOC 周报 · 第 xx 周",
+              "d": "企业微信文档 · 412 条反馈"
+            }
+          },
+          {
+            "r": "me",
+            "t": "导出这个确实像是我们的问题。能转成需求给产品吗"
+          },
+          {
+            "r": "ai",
+            "t": "已转成结构化需求，附了原始反馈原文、影响用户数、出现时间分布和初步定位线索，直接发给产品负责人了，并建了跟踪任务。<span class=\"hr\"></span>同时给客服准备了一段统一回复口径，用户再问到可以直接答，不用每次都解释。<span class=\"hr\"></span>问题修复后我会自动回访这批用户，确认是否解决。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ],
+        "roles": [
+          "私域运营",
+          "数据运营"
+        ]
+      },
+      {
+        "no": "09",
+        "title": "线下展会活动",
+        "tag": "展会前的准备和展后的跟进，一次配齐",
+        "status": "展前要准备物料、话术、客户邀约名单；展中收名片、记要点，晚上回酒店才补记录；展后跟进不及时，热度一过就凉了。",
+        "pains": [
+          "展前准备杂，清单靠人记，容易漏",
+          "展中记录靠手写或拍照，回去整理耗时",
+          "展后跟进慢，且没有针对性，群发居多"
+        ],
+        "hopes": [
+          "展前自动生成物料清单、邀约名单和话术包",
+          "展中一句话录入客户信息，自动建档并打标签",
+          "展后 24 小时内生成个性化跟进内容，按热度排序"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "下周参加 xx 展会，帮我准备一下"
+          },
+          {
+            "r": "ai",
+            "t": "展前准备已就绪：<span class=\"hr\"></span><b>物料清单</b>：易拉宝、一页纸、演示设备、小礼品（按去年展会消耗量备了 1.2 倍）<br><b>邀约名单</b>：从 CRM 里筛出 47 家展会城市及周边的老客户和未成交线索，已分好优先级<br><b>话术包</b>：3 类场景（路过的 / 老客户 / 竞品客户），每类给了开场白、提问清单和常见问题应答",
+            "doc": {
+              "t": "xx 展会准备包",
+              "d": "企业微信文档 · 含话术"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "另外提醒：去年展会后统计，48 小时内跟进的转化率是 72 小时后的 3 倍。<span class=\"hr\"></span>我会每天展会结束后提醒你当天录入，并直接生成第二天的待跟进清单。"
+          },
+          {
+            "r": "time",
+            "t": "展会第 1 天 · 21:00"
+          },
+          {
+            "r": "push",
+            "t": "今日录入 23 家客户，跟进草稿已生成"
+          },
+          {
+            "r": "ai",
+            "t": "今天 23 家已建档并打了标签，按热度排了序：<span class=\"hr\"></span><b>高优先（5 家）</b>：明确提到预算和时间点，建议明天上午就联系<br><b>中（11 家）</b>：有兴趣但没说时间，走标准培育<br><b>低（7 家）</b>：同行或学生，标记不跟进<span class=\"hr\"></span>高优先那 5 家的跟进内容我已各自写好，都引用了当天聊到的具体细节（不是群发模板），你确认后我明早 9 点发。"
+          }
+        ],
+        "roles": [
+          "市场运营"
+        ]
+      },
+      {
+        "no": "10",
+        "title": "品牌舆情管理",
+        "tag": "负面一冒头就知道，附应对口径",
+        "status": "品牌评价散在社媒、论坛、应用商店、问答平台，靠人工搜索；负面内容发现晚，往往扩散了才知道；回应口径临时想，容易说错。",
+        "pains": [
+          "监测靠人工搜，覆盖不全也不及时",
+          "负面发现晚，错过最佳回应窗口",
+          "回应口径临时定，质量不稳定"
+        ],
+        "hopes": [
+          "全平台品牌提及自动监测，负面情绪实时预警",
+          "发现负面时同步给出影响面评估和建议回应口径",
+          "定期出品牌口碑报告：声量、情绪、关键议题"
+        ],
+        "chat": [
+          {
+            "r": "push",
+            "t": "检测到 1 条负面内容需关注"
+          },
+          {
+            "r": "ai",
+            "t": "<b>内容</b>：某平台用户发帖吐槽售后响应慢，发布 2 小时，目前 43 条评论、12 次转发。<span class=\"hr\"></span><b>影响评估</b>：目前还在小范围，但评论区有 3 条同类附和（都说响应慢），有扩散风险。<span class=\"hr\"></span><b>已核实</b>：查了工单系统，该用户确实有 1 张工单待处理已超 48 小时 —— <b>情况属实</b>，不是误解。"
+          },
+          {
+            "r": "ai",
+            "t": "<b>建议回应口径</b>（三段式）：<span class=\"hr\"></span>1）先认：确实是我们的响应超时了，抱歉<br>2）再说：已定位到原因（工单分配规则有漏洞），正在修<br>3）最后给动作：已安排专人今天内处理，并会回访确认<span class=\"hr\"></span><b>不建议</b>解释客观原因或强调「平时不这样」，会显得推卸。<span class=\"hr\"></span>要不要我同步通知售后负责人先把工单处理掉？处理好再公开回应，效果会好很多。"
+          },
+          {
+            "r": "time",
+            "t": "3 天后"
+          },
+          {
+            "r": "ai",
+            "t": "该帖已平息：用户后续更新说问题解决了，还补了一句「处理态度不错」。<span class=\"hr\"></span><b>顺带发现</b>：近 30 天「响应慢」相关的吐槽共有 11 条，比上月的 4 条明显上升，不是偶发。根源是工单分配规则的问题（同一类问题积压在特定人那里）。<span class=\"hr\"></span>已整理成问题单给售后负责人。<span class=\"hr\"></span>这类「先有零星吐槽、后成大问题」的情况，我设了个阈值：同类负面 7 天内超过 5 条就提前预警，不用等发酵。"
+          }
+        ],
+        "roles": [
+          "市场运营"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hr",
+    "name": "人力资源",
+    "theme": "green",
+    "desc": "招聘、入职、培训、员工服务、人才盘点。涉及个人隐私的数据需脱敏处理，最终决策由人来做。",
+    "scenes": [
+      {
+        "no": "01",
+        "title": "招聘需求撰写",
+        "tag": "用人部门说清楚要什么，JD 当场就有",
+        "status": "用人部门提需求常常只有「招个有经验的」；HR 要来回问好几轮才能写 JD；写出来的 JD 要么是套话，要么把要求堆得过高，筛不出人来。",
+        "pains": [
+          "需求描述模糊，来回确认成本高",
+          "JD 套话多，对候选人没有吸引力",
+          "要求写得过高或过全，把合适的人筛掉了"
+        ],
+        "hopes": [
+          "通过几个问题把需求问清楚，直接产出 JD",
+          "JD 自动对齐公司职级体系和薪酬带宽",
+          "给出岗位卖点建议，提升吸引力"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "业务部门要招个运营，让我先出个 JD"
+          },
+          {
+            "r": "ai",
+            "t": "我先问 4 个问题，答完 JD 就能出：<span class=\"hr\"></span>1）这个岗位最核心要解决的 1 件事是什么？<br>2）需要几年经验？带不带人？<br>3）是补员还是新增？上一个人为什么走？<br>4）薪酬区间有定吗？"
+          },
+          {
+            "r": "me",
+            "t": "核心是做用户增长，3 年以上，不带人，补员，上一个是觉得成长空间小走了。薪酬还没定"
+          },
+          {
+            "r": "ai",
+            "t": "JD 已出，同时有三点提醒：<span class=\"hr\"></span><b>1）关于「成长空间」</b>：上一个人因此离职，我在 JD 里明确写了晋升路径和这个岗位能接触到的业务面 —— 这是你们真实的短板，不如提前讲清楚。<br><b>2）薪酬</b>：按公司职级体系，3 年经验的用户增长岗对应带宽是 xx–xx K，建议写区间，能显著提升投递量。<br><b>3）要求</b>：删掉了原草稿里的「熟悉 xx 工具」「有 xx 行业经验」两条 —— 这两条会筛掉 60% 的合适候选人，且不是核心能力。",
+            "doc": {
+              "t": "JD · 用户增长运营（P6）",
+              "d": "企业微信文档 · 可编辑"
+            }
+          },
+          {
+            "r": "me",
+            "t": "要求删了会不会来的人不合适"
+          },
+          {
+            "r": "ai",
+            "t": "不会。我把这两条从「硬性要求」降级成了「加分项」—— 简历里有的优先看，没有的不卡。这样既不漏人，也不放低标准。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "02",
+        "title": "简历筛选排序",
+        "tag": "200 份简历自动排序，附淘汰理由",
+        "status": "一个岗位几百份简历，HR 平均每份看 30 秒；筛人的标准在脑子里，容易前后不一致；筛掉的人没有沉淀，下次招聘又要重来。",
+        "pains": [
+          "简历量大，粗看容易漏掉合适的人",
+          "筛选标准不统一，不同的人筛出不同的结果",
+          "筛过的简历没有沉淀，人才库是空的"
+        ],
+        "hopes": [
+          "按岗位要求自动排序，标出匹配点和风险点",
+          "给出明确的分档建议（推荐面试 / 备选 / 不通过）和不通过理由",
+          "未录用的优质简历自动进人才库，下次优先召回"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "这个岗位收到 217 份简历，帮我筛一下"
+          },
+          {
+            "r": "ai",
+            "t": "已按岗位核心要求（用户增长实操 + 数据能力 + 3 年以上）筛完：<span class=\"hr\"></span><b>推荐面试 18 份</b> — 匹配度 80% 以上<br><b>备选 31 份</b> — 部分条件吻合，可当备选池<br><b>不通过 168 份</b> — 附了归类原因（经验不足 62%、方向不符 48%、其他）",
+            "doc": {
+              "t": "简历筛选结果 · 用户增长运营",
+              "d": "在线表格 · 含评分明细"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "<b>3 个特别提醒</b><ul><li>编号 045 的候选人简历写得一般，但有完整从 0 到 1 做增长的项目，且有具体数据 —— <b>建议给面试机会</b></li><li>编号 112 有大厂背景，但近 3 年换了 4 份工作，每段都不到 1 年 —— <span class=\"hi\">稳定性风险</span></li><li>有 7 份简历明显是模板海投（岗位关键词堆砌、无具体经历），已单独标记</li></ul><span class=\"hr\"></span>另外：人才库里有 5 位去年面试过、当时因为 HC 冻结没发 offer 的候选人，条件匹配，要不要先联系？"
+          },
+          {
+            "r": "me",
+            "t": "好，那 5 个先联系。另外筛掉的里面有潜力的吗"
+          },
+          {
+            "r": "ai",
+            "t": "有 23 份虽然不符合这个岗位、但条件不错（比如偏内容运营、偏品牌），已打上标签存进人才库。<span class=\"hr\"></span>以后开类似岗位，这批人会被优先召回。<span class=\"hr\"></span>提醒：联系这 5 位时，我建议用「岗位重新开放了」的说法，而不是「我们缺人」—— 前者对方更有议价感。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "03",
+        "title": "面试安排出题",
+        "tag": "约面试不用来回问，题目按人出",
+        "status": "约面试要和业务部门、候选人反复对时间；面试题目靠面试官自己想，深浅不一；面试官临时拿到简历，来不及准备，问的问题很随意。",
+        "pains": [
+          "约时间来回沟通，占用大量时间",
+          "面试题目不统一，评价标准不一致",
+          "面试官临时看简历，准备不足"
+        ],
+        "hopes": [
+          "自动协调多方时间，候选人自助选时段",
+          "按候选人简历生成针对性问题，而不是通用题",
+          "面试前把候选人的亮点和待验证点推给面试官"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "安排 18 个人面试"
+          },
+          {
+            "r": "ai",
+            "t": "已协调完成：<span class=\"hr\"></span>· 已向 16 位候选人发出自助约面链接，其中 12 位已选定时间<br>· 4 位时间冲突，已给出备选时段（避开他们标注的不方便时段）<br>· 面试官日程已同步，冲突的 2 场我已建议换面试官<span class=\"hr\"></span>面试前 1 天我会提醒候选人，前 2 小时提醒面试官。"
+          },
+          {
+            "r": "ai",
+            "t": "<b>面试题目已按人生成</b>，以编号 045 为例（从 0 到 1 做过增长）：<span class=\"hr\"></span><b>重点验证</b>：项目里他个人的贡献占比、数据是否真实、有没有踩过坑<br><b>建议问题</b><ol><li>让他讲那个增长项目：从发现机会到落地的完整过程（听他自己做了多少）</li><li>追问具体数字怎么来的、哪个渠道贡献最大（验数据和归因能力）</li><li>问一次失败的尝试，以及怎么判断该停（验判断力）</li><li>问如果资源砍半他会怎么做（验优先级取舍）</li></ol>",
+            "doc": {
+              "t": "面试提纲 · 用户增长运营",
+              "d": "企业微信文档 · 每人一份"
+            }
+          },
+          {
+            "r": "me",
+            "t": "业务面试官那边要不要也给点提示"
+          },
+          {
+            "r": "ai",
+            "t": "已给每位面试官发了 3 句话的简历速览：候选人的亮点、需要重点验证的点、以及建议别问的（比如涉及婚育、家庭计划等合规红线）。<span class=\"hr\"></span>另外附了评分维度说明，避免各面试官标准差异太大。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "04",
+        "title": "面试评价决策",
+        "tag": "各轮评价自动汇总，分歧点单独标出",
+        "status": "各轮面试评价散在聊天记录和文档里，汇总靠人工；面试官意见不一致时，决策靠职级高的人拍；评价写得太主观，事后回看没参考价值。",
+        "pains": [
+          "评价分散，汇总耗时",
+          "面试官有分歧时缺少客观依据",
+          "评价偏主观，事后无法复盘"
+        ],
+        "hopes": [
+          "各轮评价自动汇总，标出共识和分歧",
+          "分歧点附上具体证据，辅助讨论而不是替人决策",
+          "评价结构化沉淀，形成可查的录用质量档案"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "这个候选人的几轮面试评价汇总一下"
+          },
+          {
+            "r": "ai",
+            "t": "4 轮评价已汇总：<span class=\"hr\"></span><b>共识</b>：执行力强、有数据意识、沟通清晰 —— 4 位面试官都提到<br><b>分歧</b>：<ul><li>技术面认为「深度不够，偏执行」</li><li>业务面认为「正好，我们需要能落地的人」</li></ul><span class=\"hr\"></span><b>分歧的本质</b>：两位面试官对这个岗位的定位假设不同 —— 一个认为需要能独立设计增长策略的人，一个认为需要能把策略执行到位的人。"
+          },
+          {
+            "r": "ai",
+            "t": "<b>客观信息补充</b><ul><li>候选人过往 3 段经历都是执行角色，没有独立负责策略的记录</li><li>薪资期望在带宽内（xx K，带宽 xx–xx K）</li><li>可到岗时间：1 个月内</li></ul><span class=\"hr\"></span>这个分歧我不建议我来定，建议你们先对齐岗位定位：到底是要「设计者」还是「执行者」。<span class=\"hr\"></span>如果定位是执行者，这个候选人匹配度很高；如果是设计者，他可能不是最优。",
+            "doc": {
+              "t": "面试评价汇总 · 候选人 xx",
+              "d": "企业微信文档 · 含原始评价"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "这个分歧我不建议我来定，但我可以先帮你们把定位对齐，方式您选：",
+            "opts": [
+              "约一次 15 分钟对齐会，我把双方判断依据整理成一页",
+              "分别问两位面试官一个问题：这个岗位第一年要交付什么",
+              "直接给两版岗位画像对比，您和用人负责人各选一版"
+            ],
+            "pick": 2,
+            "note": "（我只呈现依据和差异，不替人做判断）"
+          },
+          {
+            "r": "me",
+            "t": "不用开会，直接给画像对比"
+          },
+          {
+            "r": "me",
+            "t": "定位是执行者。那就发 offer 吧"
+          },
+          {
+            "r": "ai",
+            "t": "已生成 offer 审批单，含薪酬、职级、到岗时间。<span class=\"hr\"></span>提醒两点：<span class=\"hr\"></span>1）他的期望薪资比现职高 15%，在带宽内但需要走上一级审批<br>2）他在面试中提到手上还有 1 个 offer 在谈，建议 3 天内给正式答复<span class=\"hr\"></span>审批单已发出。另外我会把这次的分歧记录进岗位档案 —— 下次开同类岗位时，一开始就把定位写清楚。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "05",
+        "title": "入职融入引导",
+        "tag": "入职第一天，人和设备都准备好了",
+        "status": "入职前要跨 IT、行政、用人部门好几个组准备账号和设备，靠 checklist 人工盯；新人入职后问题多，全靠带教的人答；试用期没人系统跟踪，到期才想起来评估。",
+        "pains": [
+          "入职准备跨部门，容易漏项（账号没开、设备没到）",
+          "新人重复问题多，占用带教时间",
+          "试用期缺乏跟踪，转正评估靠印象"
+        ],
+        "hopes": [
+          "入职前自动生成准备清单并跟催到人，缺什么提前预警",
+          "新人常见问题由 AI 先答，答不上来再转人",
+          "试用期节点自动提醒，并收集带教反馈辅助评估"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "下周一有 3 个新人入职"
+          },
+          {
+            "r": "ai",
+            "t": "已建好 3 人的入职准备清单，分工到人并设了截止时间：<span class=\"hr\"></span><b>IT</b>：账号 3 套、电脑 3 台（已确认库存够）<br><b>行政</b>：工位、门禁、文具<br><b>用人部门</b>：带教人指定、第一周任务安排<br><b>HR</b>：合同、社保、入职引导<span class=\"hr\"></span><span class=\"hi\">待办</span>：用人部门还没指定带教人（2 个岗位），我已去催，周五还没定我升级提醒。"
+          },
+          {
+            "r": "time",
+            "t": "下周一 · 新人入职"
+          },
+          {
+            "r": "push",
+            "t": "新人入职助手已接入"
+          },
+          {
+            "r": "ai",
+            "t": "已向 3 位新人推送了入职指引（含第一周安排、常用系统入口、常见问题）。<span class=\"hr\"></span>今天共回答 14 个问题，主要是：报销流程、假期规则、系统权限申请、工位周边。<b>需要你处理的 0 个。</b><span class=\"hr\"></span>其中「VPN 怎么连」被问了 5 次，建议加到新员工 FAQ 里。"
+          },
+          {
+            "r": "time",
+            "t": "试用期第 2 个月"
+          },
+          {
+            "r": "ai",
+            "t": "试用期跟踪提醒：3 位新人满 2 个月，已收集带教人反馈：<span class=\"hr\"></span><b>2 位进展正常</b>，能独立完成基础任务<br><b>1 位需要关注</b>：带教反馈「上手比预期慢，主动性偏弱」<span class=\"hr\"></span>建议：这周安排一次 1 对 1，明确说清期望和差距，别等转正时才谈。<span class=\"hr\"></span>我准备了谈话要点（先肯定已做到的、再具体说差距、最后约定改进目标和检查时间），要发给他主管吗？"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "06",
+        "title": "员工政策问答",
+        "tag": "80% 的重复提问，AI 直接答",
+        "status": "HR 微信和邮箱每天被问：年假怎么算、报销标准多少、社保怎么转、产假怎么请。这些问题答案都在制度文档里，但员工懒得翻，HR 重复答到麻木。",
+        "pains": [
+          "重复问题占了大半时间，价值感低",
+          "制度文档更新后，口头答复容易过时",
+          "员工不好意思问，或者问错人得到错误答案"
+        ],
+        "hopes": [
+          "常见问题 AI 直接答，并附上制度依据和原文链接",
+          "答案统一取自最新制度，不会过期",
+          "涉及个人特殊情况的问题自动转人工，并带上已整理的背景"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "这个月员工问了多少问题"
+          },
+          {
+            "r": "ai",
+            "t": "共 236 个咨询，分布如下：<span class=\"hr\"></span><b>AI 直接解答 201 个（85%）</b> — 平均响应时间 8 秒<br><b>转人工 35 个（15%）</b> — 主要是个案和需要审批的<span class=\"hr\"></span><b>高频问题 Top 5</b><ol><li>年假怎么算、能跨年吗（41 次）</li><li>差旅住宿标准（33 次）</li><li>加班与调休规则（29 次）</li><li>社保公积金转移（24 次）</li><li>补充医疗怎么报销（19 次）</li></ol><span class=\"hr\"></span>这 5 类占了 62%，建议做成「新员工必读」主动推送，能从源头减少提问。"
+          },
+          {
+            "r": "ai",
+            "t": "<b>需要注意的 2 个信号</b><ul><li>「年假跨年」被问了 41 次 —— 说明制度这条写得不够清楚，建议改写规则本身，而不只是靠答疑</li><li>有 6 次咨询转人工后，我发现答案在制度里也确实没写 —— 属于制度空白，已整理给你，建议补充</li></ul><span class=\"hr\"></span>另外：所有 AI 答复都附了制度原文链接，员工点开能自己核对，不会因为我答错而产生争议。"
+          },
+          {
+            "r": "me",
+            "t": "涉及个人隐私的问题 AI 会不会乱答"
+          },
+          {
+            "r": "ai",
+            "t": "不会。涉及个人薪酬、绩效、档案、具体审批结果的问题，我一律不答，直接转给你，并把问题背景整理好。<span class=\"hr\"></span>这类问题这个月有 11 个，全部转人工了，没有一个被自动回答。<span class=\"hr\"></span>另外所有咨询记录都做了脱敏，分析用的只是问题类型，不含个人信息。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "07",
+        "title": "培训课程生成",
+        "tag": "给个岗位，直接出学习路径和课件",
+        "status": "培训需求收集靠问卷，课程靠外部采购或 HR 自己做，做完没人看；新人学习路径靠部门自己摸索；培训效果难衡量，只能看出勤率。",
+        "pains": [
+          "课程制作耗时，且和实际业务脱节",
+          "学习路径不清晰，新人不知道该学什么",
+          "效果只能看出勤，学没学会没人知道"
+        ],
+        "hopes": [
+          "按岗位和职级自动生成学习路径，配套内部真实案例",
+          "课程素材从内部文档、优秀实践里自动整理，不用从零做",
+          "学习效果用实际任务检验，而不是满意度问卷"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "新入职的客户成功岗，要做个培训计划"
+          },
+          {
+            "r": "ai",
+            "t": "已按岗位能力模型生成 4 周学习路径，素材全部取自内部（不是通用课件）：<span class=\"hr\"></span><b>第 1 周 · 懂产品</b>：核心功能 + 常见问题（素材：产品文档 + 客服高频问题库）<br><b>第 2 周 · 懂客户</b>：典型客户画像、行业场景（素材：5 个真实客户案例）<br><b>第 3 周 · 会做事</b>：续费流程、风险识别、 escalation 路径（素材：优秀员工实操记录）<br><b>第 4 周 · 实战</b>：跟真实客户会议，出复盘",
+            "doc": {
+              "t": "客户成功岗 · 4 周学习路径",
+              "d": "企业微信文档 · 含素材链接"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "<b>课件已生成</b>：每节配了讲解稿、要点卡片和 5 道检验题，题目用的是真实场景（比如「客户说要考虑一下，你怎么回应」），不是概念背诵。<span class=\"hr\"></span><b>提醒</b>：第 3 周的续费流程，我发现内部文档有两个版本在流传（去年和今年的不一样），建议让业务负责人确认用哪个，别让新人学错。"
+          },
+          {
+            "r": "time",
+            "t": "4 周后"
+          },
+          {
+            "r": "ai",
+            "t": "培训效果：<span class=\"hr\"></span><b>完成任务 100%）</b>，检验题平均 82 分<br><b>薄弱点</b>：风险识别那节平均只有 61 分 —— 多数人识别不出客户流失的早期信号<br><b>实战表现</b>：4 次真实客户会议，主管评价「产品问题答得不错，但客户犹豫时不会推进」<span class=\"hr\"></span>建议：给第 3 周补一个「客户异议处理」的实操模块，用真实的对话录音做练习。要我做吗？"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      },
+      {
+        "no": "08",
+        "title": "人才盘点继任",
+        "tag": "谁是关键人、谁有风险，一目了然",
+        "status": "人才盘点一年做一次，靠各级主管填表，信息主观且滞后；关键岗位有没有继任者说不清；人员流失风险只能事后知道。",
+        "pains": [
+          "盘点靠填表，主观且一年才一次，信息早就过期",
+          "关键岗位继任者空缺，风险无人知",
+          "流失风险事前看不出，人走了才发现是关键人"
+        ],
+        "hopes": [
+          "结合绩效、项目贡献、跨度等客观数据，辅助形成人才地图",
+          "关键岗位自动标出继任空缺和培养建议",
+          "从工作模式变化中识别流失风险信号，提前提醒（仅提示关注，不做判断结论）"
+        ],
+        "chat": [
+          {
+            "r": "me",
+            "t": "年底人才盘点帮忙准备一下材料"
+          },
+          {
+            "r": "ai",
+            "t": "已汇总客观数据（绩效、项目参与、跨部门协作、任职年限、带教记录），按九宫格排了初步分布：<span class=\"hr\"></span><b>高绩效高潜力 12 人</b> — 建议重点保留和加速培养<br><b>高绩效稳定贡献 31 人</b> — 业务骨干，注意激励<br><b>待观察 8 人</b> — 需主管补充判断<span class=\"hr\"></span><b>提醒</b>：这份是数据层面的初步分布，<span class=\"hi\">潜力判断仍需主管来做</span>，我不替这个结论。",
+            "doc": {
+              "t": "人才盘点初步分布 · xx 年度",
+              "d": "在线表格 · 含数据来源"
+            }
+          },
+          {
+            "r": "ai",
+            "t": "<b>关键岗位继任情况</b><ul><li><span class=\"hi\">风险</span>：3 个关键岗位无明确继任者（含 xx 系统负责人，该岗位只有 1 人掌握核心逻辑）</li><li>另有 2 个岗位的继任者尚未ready，预计还需 6–12 个月培养</li></ul><span class=\"hr\"></span>建议：对这 3 个岗位，优先安排「影子计划」或文档化沉淀，把个人知识转成团队资产。"
+          },
+          {
+            "r": "me",
+            "t": "流失风险能看出来吗"
+          },
+          {
+            "r": "ai",
+            "t": "只能给信号，不能下判断。以下是基于工作模式变化的观察（已脱敏处理，不含个人隐私数据）：<span class=\"hr\"></span>· 2 位核心员工近 2 个月参与新项目明显减少、主动发言下降<br>· 1 位高潜员工近 3 周频繁请假、加班时长骤降<span class=\"hr\"></span><b>这些只是信号，原因可能很多（家庭、健康、压力）</b>，建议由主管做一次 1 对 1 关心，而不是当成「要离职」来处理。<span class=\"hr\"></span>我可以帮你起草沟通思路，但不会替你判断谁要走 —— 这个误判的代价太大。"
+          }
+        ],
+        "badges": [
+          "系统打通"
+        ]
+      }
+    ]
+  }
+];
+
+
+
+
+
+/* ================= 渲染 ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const themeCls = t => t.theme==='blue' ? '' : t.theme;
+let cur = 0;
+
+function renderTabs(){
+  $('#tablist').innerHTML = TABS.map((t,i)=>
+    `<button class="tab ${themeCls(t)} ${i===cur?'active':''}" data-i="${i}">
+       <span class="dot"></span>${t.name}<span class="cnt">${t.scenes.length}</span>
+     </button>`).join('')
+    + `<span class="tab more" title="后续可扩展：市场 / 营销、研发 / 设计 / 视频 / 数据分析 / 产品 / 财务 / 法务…">＋ 更多角色场景</span>`;
+  $('#tablist').querySelectorAll('.tab:not(.more)').forEach(b=>{
+    b.onclick = ()=>{ cur = +b.dataset.i; renderTabs(); renderGrid(); window.scrollTo({top:0,behavior:'smooth'}); };
+  });
+}
+
+const badgeList = s => s.badges || (s.badge ? [s.badge] : []);
+const badgeCls = b => b==='定制' ? 'custom' : (b==='系统打通' ? 'sys' : (b==='生活场景' ? 'life' : ''));
+const badgesHtml = s => badgeList(s).map(b=>
+  `<span class="bdg ${badgeCls(b)}">${b}</span>`).join('');
+const rolesHtml = s => (s.roles && s.roles.length)
+  ? `<div class="roles">${s.roles.map(r=>`<span class="role">${r}</span>`).join('')}</div>` : '';
+
+function renderGrid(){
+  const t = TABS[cur];
+  const cls = themeCls(t);
+  $('#secHead').className = 'sec-head' + (cls?' '+cls:'');
+  $('#secHead').innerHTML = `
+    <h2><span class="bar ${cls}"></span>${t.name}<span style="font-weight:400;color:var(--text-3);font-size:14px">· ${t.scenes.length} 个场景</span></h2>
+    <p>${t.desc}</p>`;
+  const g = $('#grid');
+  g.classList.remove('in');
+  g.innerHTML = t.scenes.map((s,i)=>`
+    <article class="card ${cls} fade" style="animation-delay:${i*35}ms" data-i="${i}">
+      <span class="no">${s.no}</span>
+      <h3>${s.title}${badgesHtml(s)}</h3>
+      ${rolesHtml(s)}
+      <div class="tag">${s.tag}</div>
+      <div class="chips">${s.pains.slice(0,2).map(p=>`<span class="chip">${p}</span>`).join('')}</div>
+      <div class="foot"><span>现状 · 痛点 · 期待 · 画面</span><b>看画面 →</b></div>
+    </article>`).join('');
+  void g.offsetWidth;
+  g.classList.add('in');
+  g.querySelectorAll('.card').forEach(c=> c.onclick = ()=> openScene(+c.dataset.i));
+}
+
+function bubbleHtml(m, cls){
+  if(m.r==='time') return `<div class="time">${m.t}</div>`;
+  if(m.r==='push') return `<div class="push"><i></i>${m.t}</div>`;
+  const rowCls = ['row', m.r==='me'?'me':'', cls&&m.r==='me'?cls:''].join(' ');
+  const avatar = m.r==='me' ? '我' : 'AI';
+  let body = m.t;
+  if(m.opts && m.opts.length){
+    body += `<div class="opts">${m.opts.map((o,i)=>
+      `<button type="button" class="opt ${m.pick===i?'on':''}"><span class="mk">✓</span><span>${o}</span></button>`
+    ).join('')}</div>` + (m.note?`<div class="opt-note">${m.note}</div>`:'');
+  }
+  if(m.doc){
+    body += `<div class="doc ${cls}"><div class="ic">DOC</div><div><div class="t">${m.doc.t}</div><div class="d">${m.doc.d}</div></div></div>`;
+  }
+  return `<div class="${rowCls}"><div class="pic">${avatar}</div><div class="bub">${body}</div></div>`;
+}
+
+function openScene(i){
+  const t = TABS[cur], s = t.scenes[i];
+  const cls = themeCls(t);
+  const head = $('#sheetHead');
+  head.className = 'sheet-head' + (cls?' '+cls:'');
+  head.innerHTML = `
+    <span class="no">${s.no}</span>
+    <div><h2>${s.title}</h2><div class="sub">${t.name}${s.roles&&s.roles.length?' · '+s.roles.join(' · '):''} · ${s.tag}${badgesHtml(s)}</div></div>
+    <button class="close" id="closeBtn">×</button>`;
+  $('#sheetBody').innerHTML = `
+    <div class="blk">
+      <div class="lb"><i></i>现在是怎么做的</div>
+      <div class="quote">${s.status}</div>
+    </div>
+    <div class="blk">
+      <div class="lb"><i></i>卡在哪（${s.pains.length}）</div>
+      <ul class="plist pain">${s.pains.map((p,k)=>`<li><span class="k">${k+1}</span><span>${p}</span></li>`).join('')}</ul>
+    </div>
+    <div class="blk">
+      <div class="lb"><i></i>期望 Agent 做到什么（${s.hopes.length}）</div>
+      <ul class="plist hope ${cls}">${s.hopes.map((p,k)=>`<li><span class="k">${k+1}</span><span>${p}</span></li>`).join('')}</ul>
+    </div>
+    <div class="blk" style="margin-bottom:0">
+      <div class="lb"><i></i>画面：它跑起来长这样</div>
+      <div class="stage">
+        <div class="cap">— 对 话 窗 口 —</div>
+        <div class="phone">
+          <div class="phone-top ${cls}">
+            <div class="ava">AI</div>
+            <div><div class="nm">工作助理</div><div class="st"><i></i>在线 · 已接入各端口</div></div>
+            <div class="more-dots">···</div>
+          </div>
+          <div class="chat">${s.chat.map(m=>bubbleHtml(m,cls)).join('')}
+            <div class="row ${cls}"><div class="pic">AI</div><div class="bub" style="padding:9px 14px"><div class="typing"><span></span><span></span><span></span></div></div></div>
+          </div>
+          <div class="phone-bot ${cls}">
+            <div class="inp">说点什么…</div><div class="btn">发送</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  $('#mask').classList.add('on');
+  $('#sheet').classList.add('on');
+  $('#sheetBody').className = 'sheet-body' + (cls?' '+cls:'');
+  document.body.style.overflow='hidden';
+  $('#closeBtn').onclick = closeSheet;
+  $('#sheetBody').scrollTop = 0;
+}
+function closeSheet(){
+  $('#mask').classList.remove('on');
+  $('#sheet').classList.remove('on');
+  document.body.style.overflow='';
+}
+$('#mask').onclick = closeSheet;
+$('#sheetBody').addEventListener('click', e=>{
+  const b = e.target.closest && e.target.closest('.opt');
+  if(!b) return;
+  b.parentNode.querySelectorAll('.opt').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSheet(); });
+window.addEventListener('scroll', ()=>{
+  $('#tabbar').classList.toggle('stuck', window.scrollY > 90);
+});
+
+renderTabs();
+renderGrid();
+</script>
+</body>
+</html>

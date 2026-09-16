@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 场景库 · 串联画布 · 导航</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#f3f6fb;color:#182742;min-height:100%;display:flex;align-items:center;justify-content:center;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;padding:32px;
+  }
+  .wrap{max-width:860px;width:100%}
+  .eyebrow{display:inline-flex;font-size:12.5px;letter-spacing:.08em;color:#93a0b5;background:#fff;
+    border:1px solid #e3e9f2;padding:5px 14px;border-radius:999px;margin-bottom:18px}
+  h1{font-size:30px;font-weight:700;letter-spacing:-.01em}
+  h1 em{font-style:normal;color:#2f6bf0}
+  p.sub{margin:10px 0 26px;color:#5c6b85;font-size:14.5px;line-height:1.7;max-width:640px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  a.card{display:block;background:#fff;border:1px solid #e3e9f2;border-radius:16px;padding:22px;
+    text-decoration:none;color:inherit;transition:.18s}
+  a.card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(24,39,66,.08);border-color:#cfdaf0}
+  .card .ic{font-size:26px}
+  .card h2{font-size:17px;font-weight:650;margin:10px 0 6px}
+  .card p{font-size:13px;color:#5c6b85;line-height:1.7}
+  .card .go{margin-top:12px;font-size:13px;font-weight:600;color:#2f6bf0}
+  footer{margin-top:26px;font-size:12px;color:#93a0b5;line-height:1.9}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">AI 落地 · 高管 × 通用办公</div>
+  <h1>47 个场景，和<em>串起来的一天</em></h1>
+  <p class="sub">两个入口：《场景库》是单个场景的拆解——现状、痛点、期望、对话画面；《串联画布》是把场景串成一天的样子——谁在什么时候做什么，人和 AI 怎么接力。</p>
+  <div class="grid">
+    <a class="card" href="场景串联画布-v0.1.html">
+      <div class="ic">🧭</div>
+      <h2>场景串联画布 v0.3</h2>
+      <p>高管 × 通用办公 21 个场景串成一天：四条泳道（人 / AI）、产物流转连线、点开看对话细节、播放动画。skill 沉淀闭环独立呈现。</p>
+      <div class="go">打开画布 →</div>
+    </a>
+    <a class="card" href="场景库.html">
+      <div class="ic">🗂</div>
+      <h2>场景库（47 个场景）</h2>
+      <p>高管 13 · 通用办公 8 · 销售 8 · 运营管理 10 · 人力资源 8。每个场景含现状、痛点、期望与「跑起来」的对话画面。</p>
+      <div class="go">打开场景库 →</div>
+    </a>
+  </div>
+  <footer>配套文档：《AI 场景实现路径说明》（企业微信智能文档）—— 每个场景用什么现有工具落地、AI 边界与人的职责、需开发清单。<br>画布改版：改 剧本.json → python3 build_canvas.py，改内容不改代码。</footer>
+</div>
+</body>
+</html>
